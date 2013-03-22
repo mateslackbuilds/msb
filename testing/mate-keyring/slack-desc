@@ -1,0 +1,12 @@
+            |-----handy-ruler------------------------------------------------------|
+mate-keyring: mate-keyring (password program for the MATE desktop)
+mate-keyring:
+mate-keyring: mate-keyring is a program that keeps passwords and other secrets for
+mate-keyring: users.  It is run as a daemon in the session, similar to ssh-agent,
+mate-keyring: and other applications locate it via an environment variable or a
+mate-keyring: dbus.  The program can manage several keyrings, each with its own
+mate-keyring: master password, and there is also a session keyring which is never
+mate-keyring: stored to disk but forgotten when the session ends.
+mate-keyring:
+mate-keyring: Homepage: http://www.mate-desktop.org
+mate-keyring:

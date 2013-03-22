@@ -1,0 +1,6 @@
+This directory contains extra packages for the MATE desktop environment.  None
+of them are required for basic functionality, but instead are extra additions
+or additional software or plugins.  Some of them may have additional
+dependencies that will be noted in a README and that may be added here as time
+permits.  Working packages will be added to the 'mate-build-extra.sh' script.
+More packages may be added here over time.
