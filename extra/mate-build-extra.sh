@@ -42,7 +42,6 @@ for package in \
   mate-media \
   mate-menu-editor \
   mate-power-manager \
-  mate-screensaver \
   mate-terminal \
     ; do
   cd $package || exit 1
