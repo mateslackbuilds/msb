@@ -32,6 +32,7 @@ polkit-gnome, the result of which might be duplicate attempts at polkit
 actions when inserting a usb stick, for example.  You may want to disable
 polkit-gnome and see if polkit-mate works by itself.  Also, if you use
 mate-power-manager from /extra then you might want to disable the Xfce power
-manager if it is listed.
+manager if it is listed.  Same with mate-keyring from /extra - if you
+installed that, you might want to disable the gnome-keyring entries.
 
 5.  Enjoy and let me know of any issues.  Thanks!
