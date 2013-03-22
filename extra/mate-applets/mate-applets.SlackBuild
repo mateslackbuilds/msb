@@ -132,7 +132,7 @@ cat $CWD/doinst.sh > $PKG/install/doinst.sh
 # Remove help files for now - until MATE upstream fixes help documentation
 # buttons and menuso.  Confirmed help button problem w/ upstream.
 for i in {mate-cpufreq-applet,mate-drivemount,mateweather,mate-char-palette,mate-accessx-status,mate-stickynotes_applet,mate-trashapplet,mate-battstat,mate-geyes,mate-invest-applet}; do
-  find $PKG/usr/share/mate/help/$i/* -maxdepth 0 -type d ! -name C -exec rm -rf {} \;
+  find $PKG/usr/share/mate/help/$i/* -maxdepth 0 -type d ! -name C -exec rm -rf {} \; || true
 done
 
 cd $PKG
