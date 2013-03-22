@@ -10,7 +10,7 @@ How to install:
 
 1.  Clone the Git repo or download a tarball/zip of the repo and then go into
 the 'base' directory.  Run the 'mate-build-base.sh' which will build and
-install all the base (required) packages.  There are a total of 26 packages
+install all the base (required) packages.  There are a total of 25 packages
 and they do not replace any stock Slackware packages.  The SlackBuilds will
 use wget to download the sources.  Or, you can also manually download the
 sources from: http://pub.mate-desktop.org/releases/1.5/ and put each source
