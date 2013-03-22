@@ -1,6 +1,18 @@
 The following is a list of known issues with MATE on Slackware:
 
-Fri Mar 22 12:00:49 EDT 2013
+Fri Mar 22 16:45:28 UTC 2013
+Mate-screensaver in /testing doesn't seem to work -- at least, the locking
+feature does not seem to work in my testing.  I tried it with xscreensaver
+disabled and also uninstalled but it never kicked in.  More testing is
+necessary.
+
+Fri Mar 22 16:44:59 UTC 2013
 Help menus and help buttons do not work -- this is a known issue per a MATE
 upstream developer and scheduled to be fixed at some point but not in the next
 release (1.6).
+
+Fri Mar 22 16:43:36 UTC 2013
+Working to determine whether mate-polkit is necessary.  According to upstream,
+it is, although it results in duplicative polkit actions when a USB stick is
+inserted, for example.  Disabling polkit-gnome in the "Startup Applications"
+is a workaround until more testing is done.

@@ -26,4 +26,12 @@ SlackBuild will download the source.
 can use 'xwmconfig' to select the mate session.  Or, if you use KDM, just log
 out and select MATE from the KDM session dialog.
 
-4.  Enjoy and let me know of any issues.  Thanks!
+4.  Check the 'startup applications' because there might be some duplicate or
+conflicting entries.  For example, there will be an entry for polkit-mate and
+polkit-gnome, the result of which might be duplicate attempts at polkit
+actions when inserting a usb stick, for example.  You may want to disable
+polkit-gnome and see if polkit-mate works by itself.  Also, if you use
+mate-power-manager from /extra then you might want to disable the Xfce power
+manager if it is listed.
+
+5.  Enjoy and let me know of any issues.  Thanks!
