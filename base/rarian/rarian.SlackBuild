@@ -113,8 +113,8 @@ cp -a \
   MAINTAINERS TODO COPYING NEWS README INSTALL COPYING.UTILS COPYING.LIB ChangeLog \
   $PKG/usr/doc/$PRGNAM-$VERSION
 mv $PKG/usr/share/help $PKG/usr/doc/$PRGNAM-$VERSION/help
-mv $PKG/usr/share/librarian $PKG/usr/doc/$PRGNAM-$VERSION/librarian
-rm -r $PKG/usr/share
+(ln -s /usr/share/librarian $PKG/usr/doc/$PRGNAM-$VERSION/librarian)
+
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 find $PKG/usr/doc/$PRGNAM-$VERSION/ -type f -exec chmod 644 {} \;
 chown -R root:root $PKG/usr/doc/$PRGNAM-$VERSION
