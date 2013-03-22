@@ -32,6 +32,8 @@ INST=1
 TMP=${TMP:-/tmp}
 
 for package in \
+  libmatekeyring \
+  mate-keyring \
   mate-applets \
   mate-calc \
   mate-character-map \
