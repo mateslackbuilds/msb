@@ -61,7 +61,7 @@ for package in \
   cd $package || exit 1
   sh ${package}.SlackBuild || ( touch /tmp/${package}.failed ; exit 1 ) || exit 1
   if [ "$INST" = "1" ]; then
-    PACKAGE="$(ls -t $TMP/$(ls ${package}*.{xz,bz2,tar.gz} | rev | cut -f2- -d - | rev)-*txz | head -n 1)"
+    PACKAGE="$(ls -t $TMP/$(ls ${package}-*.tar.?z* | rev | cut -f2- -d - | rev)-*txz | head -n 1)"
     if [ -f $PACKAGE ]; then
       upgradepkg --install-new --reinstall $PACKAGE
     else
