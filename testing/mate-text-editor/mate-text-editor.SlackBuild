@@ -122,7 +122,7 @@ cat $CWD/doinst.sh > $PKG/install/doinst.sh
 
 # Remove help files for now - until MATE upstream fixes help documentation
 # buttons and menus.
-find $PKG/usr/share/mate/help/$PRGNAM/* -maxdepth 0 -type d ! -name C -exec rm -rf {} \;
+find $PKG/usr/share/mate/help/$PRGNAM/* -maxdepth 0 -type d ! -name C -exec rm -rf {} \; || true
 
 cd $PKG
 /sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
