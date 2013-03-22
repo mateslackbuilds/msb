@@ -1,0 +1,6 @@
+The following is a list of known issues with MATE on Slackware:
+
+Fri Mar 22 12:00:49 EDT 2013
+Help menus and help buttons do not work -- this is a known issue per a MATE
+upstream developer and scheduled to be fixed at some point but not in the next
+release (1.6).

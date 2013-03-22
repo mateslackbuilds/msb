@@ -1,0 +1,7 @@
+The following is list of to-do items for MATE on Slackware:
+
+Fri Mar 22 12:03:46 EDT 2013
+Determine whether mate-polkit is really needed or whether MATE can rely on
+polkit-gnome which is installed by default in Slackware.  This was discussed
+with upstream MATE developer in IRC who thought that mate-polkit was still
+required.
