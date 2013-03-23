@@ -89,7 +89,6 @@ CXXFLAGS="$SLKCFLAGS" \
   --enable-unique \
   --disable-update-mimedb \
   --disable-introspection \
-  --disable-tests \
   --build=$ARCH-slackware-linux
 
 make $NUMJOBS || make
