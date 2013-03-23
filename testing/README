@@ -1,4 +1,5 @@
 This directory contains packages that are being tested.  The SlackBuilds may
 be unfinished and may not build correctly.  Some of these packages have
-additional dependencies that will be noted in a README and that may be added
-here as time permits.  More packages may be added here over time.
+additional dependencies that are not in the repo yet.  Dependencies  will be
+noted in a README and may be added here as time permits.  More packages may be
+added here over time.
