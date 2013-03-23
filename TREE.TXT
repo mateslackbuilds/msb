@@ -98,6 +98,10 @@
 |       `-- slack-desc
 |-- extra
 |   |-- README
+|   |-- libmatekeyring
+|   |   |-- README
+|   |   |-- libmatekeyring.SlackBuild
+|   |   `-- slack-desc
 |   |-- mate-applets
 |   |   |-- doinst.sh
 |   |   |-- mate-applets.SlackBuild
@@ -127,6 +131,11 @@
 |   |   |-- doinst.sh
 |   |   |-- mate-icon-theme-faenza.SlackBuild
 |   |   `-- slack-desc
+|   |-- mate-keyring
+|   |   |-- README
+|   |   |-- doinst.sh
+|   |   |-- mate-keyring.SlackBuild
+|   |   `-- slack-desc
 |   |-- mate-media
 |   |   |-- doinst.sh
 |   |   |-- mate-media.SlackBuild
@@ -139,24 +148,17 @@
 |   |   |-- doinst.sh
 |   |   |-- mate-power-manager.SlackBuild
 |   |   `-- slack-desc
-|   |-- mate-screensaver
-|   |   |-- doinst.sh
-|   |   |-- mate-screensaver.SlackBuild
-|   |   `-- slack-desc
 |   `-- mate-terminal
 |       |-- doinst.sh
 |       |-- mate-terminal.SlackBuild
 |       `-- slack-desc
 `-- testing
     |-- README
-    |-- libmatekeyring
-    |   |-- README
-    |   |-- libmatekeyring.SlackBuild
-    |   `-- slack-desc
-    |-- mate-keyring
+    |-- mate-build-testing.sh
+    |-- mate-screensaver
     |   |-- README
     |   |-- doinst.sh
-    |   |-- mate-keyring.SlackBuild
+    |   |-- mate-screensaver.SlackBuild
     |   `-- slack-desc
     |-- mate-system-monitor
     |   |-- README
@@ -174,4 +176,4 @@
         |-- mate-utils.SlackBuild
         `-- slack-desc
 
-45 directories, 129 files
+45 directories, 131 files
