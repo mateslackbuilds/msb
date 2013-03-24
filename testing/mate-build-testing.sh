@@ -34,6 +34,7 @@ TMP=${TMP:-/tmp}
 for package in \
   mate-netspeed \
   mate-screensaver \
+  mate-sensors-applet \
   mate-system-monitor \
   mate-text-editor \
   mate-utils \
