@@ -32,6 +32,7 @@ INST=1
 TMP=${TMP:-/tmp}
 
 for package in \
+  mate-image-viewer \
   mate-netspeed \
   mate-screensaver \
   mate-sensors-applet \
