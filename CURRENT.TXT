@@ -1,0 +1,12 @@
+The following is a list of notes on building MATE on Slackware -current:
+
+Sun Mar 24 04:48:35 UTC 2013
+Pat just added dconf to Slackware -current and dconf is included as a
+dependency package in the /base directory.  So, if you are building MATE on
+-current with Pat's new dconf installed, you don't need to build the dconf
+package in the MATE SlackBuild repository.  And if you are using the
+mate-build-bash.sh script, then please edit that script and remove line 52:
+
+dconf \
+
+And then proceed with running the script.  Please report any issues.  Thanks!
