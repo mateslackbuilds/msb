@@ -32,6 +32,7 @@ INST=1
 TMP=${TMP:-/tmp}
 
 for package in \
+  mate-netspeed \
   mate-screensaver \
   mate-system-monitor \
   mate-text-editor \
