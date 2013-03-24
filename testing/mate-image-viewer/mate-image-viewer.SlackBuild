@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Slackware build script for <appname>
+# Slackware build script for mate-image-viewer
 
 # Copyright 2013 Chess Griffin <chess.griffin@gmail.com> Raleigh, NC
 # All rights reserved.
