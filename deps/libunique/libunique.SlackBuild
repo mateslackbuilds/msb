@@ -90,7 +90,6 @@ CXXFLAGS="$SLKCFLAGS" \
   --docdir=/usr/doc/$PRGNAM-$VERSION \
   --disable-static \
   --enable-dbus=no \
-  --enable-gdbus=yes \
   --enable-bacon=yes \
   --enable-introspection=no \
   --disable-dependency-tracking \
