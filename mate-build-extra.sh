@@ -49,6 +49,8 @@ for dir in \
   extra/mate-power-manager \
   extra/mate-sensors=applet \
   extra/mate-terminal \
+  deps/gtksourceview \
+  extra/mate-text-editor \
     ; do
   package=$(echo $dir | cut -f2- -d /)
   cd $MSBROOT/$dir || exit 1

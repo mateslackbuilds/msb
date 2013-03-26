@@ -35,7 +35,6 @@ for package in \
   mate-netspeed \
   mate-screensaver \
   mate-system-monitor \
-  mate-text-editor \
   mate-utils \
     ; do
   cd $package || exit 1
