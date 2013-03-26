@@ -1,17 +1,11 @@
 .
+|-- CURRENT.TXT
 |-- KNOWN_ISSUES.TXT
 |-- README.TXT
 |-- TODO.TXT
 |-- TREE.TXT
 |-- base
 |   |-- README
-|   |-- dconf
-|   |   |-- dconf.SlackBuild
-|   |   `-- slack-desc
-|   |-- gtk-engines
-|   |   |-- glib-single-include.patch
-|   |   |-- gtk-engines.SlackBuild
-|   |   `-- slack-desc
 |   |-- libmatekbd
 |   |   |-- doinst.sh
 |   |   |-- libmatekbd.SlackBuild
@@ -26,15 +20,9 @@
 |   |-- libmatewnck
 |   |   |-- libmatewnck.SlackBuild
 |   |   `-- slack-desc
-|   |-- libunique
-|   |   |-- libunique-1.1.6-G_CONST_RETURN.patch
-|   |   |-- libunique-1.1.6-compiler-warnings.patch
-|   |   |-- libunique.SlackBuild
-|   |   `-- slack-desc
 |   |-- mate-backgrounds
 |   |   |-- mate-backgrounds.SlackBuild
 |   |   `-- slack-desc
-|   |-- mate-build-base.sh
 |   |-- mate-common
 |   |   |-- mate-common.SlackBuild
 |   |   `-- slack-desc
@@ -86,9 +74,23 @@
 |   |-- mate-themes
 |   |   |-- mate-themes.SlackBuild
 |   |   `-- slack-desc
-|   |-- mate-window-manager
-|   |   |-- doinst.sh
-|   |   |-- mate-window-manager.SlackBuild
+|   `-- mate-window-manager
+|       |-- doinst.sh
+|       |-- mate-window-manager.SlackBuild
+|       `-- slack-desc
+|-- deps
+|   |-- dconf
+|   |   |-- dconf.SlackBuild
+|   |   `-- slack-desc
+|   |-- gtk-engines
+|   |   |-- glib-single-include.patch
+|   |   |-- gtk-engines.SlackBuild
+|   |   `-- slack-desc
+|   |-- libunique
+|   |   |-- libunique-1.1.6-G_CONST_RETURN.patch
+|   |   |-- libunique-1.1.6-compiler-warnings.patch
+|   |   |-- libunique-1.1.6-gdbus.patch
+|   |   |-- libunique.SlackBuild
 |   |   `-- slack-desc
 |   |-- murrine
 |   |   |-- murrine.SlackBuild
@@ -106,7 +108,6 @@
 |   |   |-- doinst.sh
 |   |   |-- mate-applets.SlackBuild
 |   |   `-- slack-desc
-|   |-- mate-build-extra.sh
 |   |-- mate-calc
 |   |   |-- doinst.sh
 |   |   |-- mate-calc.SlackBuild
@@ -131,6 +132,10 @@
 |   |   |-- doinst.sh
 |   |   |-- mate-icon-theme-faenza.SlackBuild
 |   |   `-- slack-desc
+|   |-- mate-image-viewer
+|   |   |-- doinst.sh
+|   |   |-- mate-image-viewer.SlackBuild
+|   |   `-- slack-desc
 |   |-- mate-keyring
 |   |   |-- README
 |   |   |-- doinst.sh
@@ -148,13 +153,24 @@
 |   |   |-- doinst.sh
 |   |   |-- mate-power-manager.SlackBuild
 |   |   `-- slack-desc
+|   |-- mate-sensors-applet
+|   |   |-- doinst.sh
+|   |   |-- mate-sensors-applet.SlackBuild
+|   |   `-- slack-desc
 |   `-- mate-terminal
 |       |-- doinst.sh
 |       |-- mate-terminal.SlackBuild
 |       `-- slack-desc
+|-- mate-build-base.sh
+|-- mate-build-extra.sh
 `-- testing
     |-- README
     |-- mate-build-testing.sh
+    |-- mate-netspeed
+    |   |-- README
+    |   |-- doinst.sh
+    |   |-- mate-netspeed.SlackBuild
+    |   `-- slack-desc
     |-- mate-screensaver
     |   |-- README
     |   |-- doinst.sh
@@ -176,4 +192,4 @@
         |-- mate-utils.SlackBuild
         `-- slack-desc
 
-45 directories, 131 files
+49 directories, 143 files
