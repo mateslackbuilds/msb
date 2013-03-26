@@ -48,7 +48,7 @@ for dir in \
   extra/mate-media \
   extra/mate-menu-editor \
   extra/mate-power-manager \
-  extra/mate-sensors=applet \
+  extra/mate-sensors-applet \
   extra/mate-terminal \
   deps/gtksourceview \
   extra/mate-text-editor \
