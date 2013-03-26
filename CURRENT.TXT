@@ -1,5 +1,15 @@
 The following is a list of notes on building MATE on Slackware -current:
 
+Tue Mar 26 02:06:35 UTC 2013
+Another note about the addition of dconf to Slackware -current.  If you
+previously built MATE packages with the dconf in the MATE SlackBuilds /deps
+directory, you'll need to rebuild the following packages using the new dconf
+in -current:
+
+base/mate-control-center
+base/mate-panel
+extra/mate-terminal
+
 Sun Mar 24 04:48:35 UTC 2013
 Pat just added dconf to Slackware -current and dconf is included as a
 dependency package in the /base directory.  So, if you are building MATE on
