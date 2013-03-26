@@ -36,6 +36,7 @@ for package in \
   mate-screensaver \
   mate-system-monitor \
   mate-utils \
+  mate-bluetooth \
     ; do
   cd $package || exit 1
   sh ${package}.SlackBuild || ( touch /tmp/${package}.failed ; exit 1 ) || exit 1
