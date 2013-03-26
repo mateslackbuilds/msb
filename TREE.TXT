@@ -86,6 +86,9 @@
 |   |   |-- glib-single-include.patch
 |   |   |-- gtk-engines.SlackBuild
 |   |   `-- slack-desc
+|   |-- gtksourceview
+|   |   |-- gtksourceview.SlackBuild
+|   |   `-- slack-desc
 |   |-- libunique
 |   |   |-- libunique-1.1.6-G_CONST_RETURN.patch
 |   |   |-- libunique-1.1.6-compiler-warnings.patch
@@ -157,9 +160,14 @@
 |   |   |-- doinst.sh
 |   |   |-- mate-sensors-applet.SlackBuild
 |   |   `-- slack-desc
-|   `-- mate-terminal
+|   |-- mate-terminal
+|   |   |-- doinst.sh
+|   |   |-- mate-terminal.SlackBuild
+|   |   `-- slack-desc
+|   `-- mate-text-editor
+|       |-- README
 |       |-- doinst.sh
-|       |-- mate-terminal.SlackBuild
+|       |-- mate-text-editor.SlackBuild
 |       `-- slack-desc
 |-- mate-build-base.sh
 |-- mate-build-extra.sh
@@ -181,15 +189,10 @@
     |   |-- doinst.sh
     |   |-- mate-system-monitor.SlackBuild
     |   `-- slack-desc
-    |-- mate-text-editor
-    |   |-- README
-    |   |-- doinst.sh
-    |   |-- mate-text-editor.SlackBuild
-    |   `-- slack-desc
     `-- mate-utils
         |-- README
         |-- doinst.sh
         |-- mate-utils.SlackBuild
         `-- slack-desc
 
-49 directories, 143 files
+50 directories, 145 files
