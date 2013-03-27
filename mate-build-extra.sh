@@ -42,6 +42,7 @@ for dir in \
   extra/mate-document-viewer \
   extra/mate-file-archiver \
   extra/mate-file-manager-open-terminal \
+  extra/mate-file-manager-image-converter \
   extra/mate-file-manager-sendto \
   extra/mate-icon-theme-faenza \
   extra/mate-image-viewer \
