@@ -1,5 +1,8 @@
 The following is a list of known issues with MATE on Slackware:
 
+Wed Mar 27 12:10:09 UTC 2013
+Adding CPU Frequency Scaling Monitor applet failed due to crashing
+
 Wed Mar 27 04:23:24 UTC 2013
 If you have dual monitor with NVidia card and set it up to use both monitors 
 as separate, you might encountered some freeze lockup. 
