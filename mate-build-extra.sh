@@ -45,6 +45,7 @@ for dir in \
   extra/mate-file-manager-image-converter \
   extra/mate-file-manager-sendto \
   deps/libgksu \
+  deps/libgtop \
   deps/gksu \
   extra/mate-file-manager-gksu \
   extra/mate-icon-theme-faenza \
