@@ -82,12 +82,26 @@
 |   |-- dconf
 |   |   |-- dconf.SlackBuild
 |   |   `-- slack-desc
+|   |-- gksu
+|   |   |-- README
+|   |   |-- gksu.SlackBuild
+|   |   `-- slack-desc
 |   |-- gtk-engines
 |   |   |-- glib-single-include.patch
 |   |   |-- gtk-engines.SlackBuild
 |   |   `-- slack-desc
 |   |-- gtksourceview
 |   |   |-- gtksourceview.SlackBuild
+|   |   `-- slack-desc
+|   |-- libgksu
+|   |   |-- README
+|   |   |-- doinst.sh
+|   |   |-- libgksu-format.patch
+|   |   |-- libgksu.SlackBuild
+|   |   `-- slack-desc
+|   |-- libgtop
+|   |   |-- README
+|   |   |-- libgtop.SlackBuild
 |   |   `-- slack-desc
 |   |-- libunique
 |   |   |-- libunique-1.1.6-G_CONST_RETURN.patch
@@ -127,9 +141,21 @@
 |   |   |-- doinst.sh
 |   |   |-- mate-file-archiver.SlackBuild
 |   |   `-- slack-desc
+|   |-- mate-file-manager-gksu
+|   |   |-- README
+|   |   |-- mate-file-manager-gksu.SlackBuild
+|   |   `-- slack-desc
+|   |-- mate-file-manager-image-converter
+|   |   |-- README
+|   |   |-- mate-file-manager-image-converter.SlackBuild
+|   |   `-- slack-desc
 |   |-- mate-file-manager-open-terminal
 |   |   |-- doinst.sh
 |   |   |-- mate-file-manager-open-terminal.SlackBuild
+|   |   `-- slack-desc
+|   |-- mate-file-manager-sendto
+|   |   |-- doinst.sh
+|   |   |-- mate-file-manager-sendto.SlackBuild
 |   |   `-- slack-desc
 |   |-- mate-icon-theme-faenza
 |   |   |-- doinst.sh
@@ -173,6 +199,10 @@
 |-- mate-build-extra.sh
 `-- testing
     |-- README
+    |-- mate-bluetooth
+    |   |-- README
+    |   |-- mate-bluetooth.SlackBuild
+    |   `-- slack-desc
     |-- mate-build-testing.sh
     |-- mate-netspeed
     |   |-- README
@@ -195,4 +225,4 @@
         |-- mate-utils.SlackBuild
         `-- slack-desc
 
-50 directories, 145 files
+57 directories, 168 files
