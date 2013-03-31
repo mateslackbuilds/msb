@@ -29,25 +29,50 @@
 # This is recommended.
 INST=1
 
+# This is where all the compilation and final results will be placed
 TMP=${TMP:-/tmp}
 
-for package in \
+# This is the original directory where you started this script
+MSBROOT=$(pwd)
+
+# Loop for all packages
+for dir in \
   mate-netspeed \
   mate-screensaver \
   mate-system-monitor \
   mate-utils \
   mate-bluetooth \
-    ; do
-  cd $package || exit 1
-  sh ${package}.SlackBuild || ( touch /tmp/${package}.failed ; exit 1 ) || exit 1
+  ; do
+  # Get the package name
+  package=$(echo $dir | cut -f2- -d /) 
+  
+  # Change to package directory
+  cd $MSBROOT/$dir || exit 1 
+
+  # Get the version
+  version=$(cat ${package}.SlackBuild | grep "VERSION:" | cut -d "-" -f2 | rev | cut -c 2- | rev)
+
+  # Check for duplicate sources
+  sourcefile="$(ls -l $MSBROOT/$dir/${package}-*.tar.?z* | wc -l)"
+  if [ $sourcefile -gt 1 ]; then
+    echo "You have following duplicate sources:"
+    ls $MSBROOT/$dir/${package}-*.tar.?z* | cut -d " " -f1
+    echo "Please delete sources other than ${package}-$version to avoid problems"
+    exit 1
+  fi
+  
+  # The real builds starts here
+  sh ${package}.SlackBuild || exit 1
   if [ "$INST" = "1" ]; then
-    PACKAGE="$(ls -t $TMP/$(ls ${package}-*.tar.?z* | rev | cut -f2- -d - | rev)-*txz | head -n 1)"
-    if [ -f $PACKAGE ]; then
-      upgradepkg --install-new --reinstall $PACKAGE
+    PACKAGE="${package}-$version-*.txz"
+    if [ -f $TMP/$PACKAGE ]; then
+      upgradepkg --install-new --reinstall $TMP/$PACKAGE
     else
       echo "Error:  package to upgrade "$PACKAGE" not found in $TMP"
       exit 1
     fi
   fi
-  cd ..
-done
+  
+  # back to original directory
+  cd $MSBROOT
+done  
