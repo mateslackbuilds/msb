@@ -114,10 +114,10 @@ if [ -d $PKG/usr/man ]; then
   )
 fi
 
-mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM-$VERSION
+mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION/
 cp -a \
   ABOUT-NLS COPYING ChangeLog INSTALL NEWS README TODO \
-  $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM-$VERSION
+  $PKG/usr/doc/$PRGNAM-$VERSION/
 
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
