@@ -10,12 +10,14 @@ How to install:
 1.  Clone the Git repo or download a tarball/zip of the repo. Run the
 'mate-build-base.sh' in the msb root directory which will build and install
 all the base (required) packages.  Note, there are also some dependencies in
-the /deps directory.  There are a total of 24 packages and they
-do not replace any stock Slackware packages (except for dconf). The SlackBuilds 
-will use wget to download the sources.  Or, you can also manually download the 
-sources from: http://pub.mate-desktop.org/releases/1.6/ and the download 
-locations for each dependency and put each source into the corresponding 
-directory within 'base' and 'deps'.
+the /deps directory.  There are a total of 24 packages and they do not replace
+any stock Slackware packages. (If you are building on -current, then dconf is
+already included in Slackware so you do not need the dconf here in the git
+repo -- see CURRENT.TXT).  The SlackBuilds will use wget to download the
+sources.  Or, you can also manually download the sources from:
+http://pub.mate-desktop.org/releases/1.6/ and the download locations for each
+dependency and put each source into the corresponding directory within 'base'
+and 'deps'.
 
 2.  Optionally, build and install any of the extra packages in the /extra
 directory.  If you want to build and install them all, then you can use the
