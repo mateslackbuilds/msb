@@ -60,6 +60,8 @@ for dir in \
   extra/mate-terminal \
   deps/gtksourceview \
   extra/mate-text-editor \
+  extra/mate-netspeed \
+  extra/mate-utils \
   ; do
   # Get the package name
   package=$(echo $dir | cut -f2- -d /) 

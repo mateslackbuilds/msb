@@ -39,10 +39,8 @@ MSBROOT=$(pwd)
 for dir in \
   pam \
   pam_unix2 \
-  mate-netspeed \
   mate-screensaver \
   mate-system-monitor \
-  mate-utils \
   mate-bluetooth \
   ; do
   # Get the package name
