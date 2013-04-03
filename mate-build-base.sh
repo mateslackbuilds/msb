@@ -40,7 +40,6 @@ for dir in \
   base/mate-common \
   deps/rarian \
   base/mate-doc-utils \
-  base/libmatenotify \
   base/libmatekbd \
   base/libmateweather \
   base/mate-icon-theme \
