@@ -23,7 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=mate-control-center
-VERSION=${VERSION:-1.5.5}
+VERSION=${VERSION:-1.6.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
@@ -36,7 +36,7 @@ if [ -z "$ARCH" ]; then
 fi
 
 if [ ! -f $PRGNAM-$VERSION.tar.xz ]; then
-  wget http://pub.mate-desktop.org/releases/1.5/$PRGNAM-$VERSION.tar.xz
+  wget http://pub.mate-desktop.org/releases/1.6/$PRGNAM-$VERSION.tar.xz
 fi
 
 NUMJOBS=${NUMJOBS:-" -j8 "}
