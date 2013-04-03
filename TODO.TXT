@@ -1,5 +1,9 @@
 The following is list of to-do items for MATE on Slackware:
 
+Wed Apr  3 14:26:41 UTC 2013
+Provide dependencies for testing/mate-system-monitor. For now, you can build
+the needed packages from SBo.
+
 Fri Mar 22 16:47:15 UTC 2013
 Determine whether mate-polkit is really needed or whether MATE can rely on
 polkit-gnome which is installed by default in Slackware.  This was discussed
