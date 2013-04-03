@@ -1,2 +1,8 @@
-Requires libgtop, gtkmm, and glibmm.  This SlackBuild unfinished and
-untested.
+Process viewer and system resource monitor for MATE
+This package allows you to graphically view and manipulate the 
+running processes on your system.  It also provides an overview of 
+available resources such as CPU and memory
+
+mate-system-monitor requires libgtop, gtkmm, and glibmm
+
+gtkmm and glibmm are available on SlackBuilds Project (SBo)

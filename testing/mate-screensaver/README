@@ -1,6 +1,5 @@
-mate-screensaver builds and installs fine but does not seem to work in my
-testing -- at least, the lock screen functionality does not seem to work. I
-removed xscreensaver to see if that conflicted but still no locking.  It is
-possible I just didn't give it enough testing so I would welcome testing on
-this package since it probably works but I just couldn't get it going for some
-reason.
+mate-screensaver is a screensaver and screen locker that aims
+to have simple, sane, and secure defaults and be well integrated
+with the MATE desktop.
+
+mate-screensaver requires pam and pam_unix2 in order to lock the desktop
