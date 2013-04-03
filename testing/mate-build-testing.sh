@@ -37,6 +37,8 @@ MSBROOT=$(pwd)
 
 # Loop for all packages
 for dir in \
+  pam \
+  pam_unix2 \
   mate-netspeed \
   mate-screensaver \
   mate-system-monitor \

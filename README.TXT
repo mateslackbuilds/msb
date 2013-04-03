@@ -2,21 +2,20 @@ MATE SlackBuilds
 ================
 
 Here are some SlackBuild scripts to build and install the MATE desktop
-environment on Slackware.  Currently, they build and install MATE 1.5 which is
-the development branch of the upcoming 1.6 release, due at the end of March or
-early April, 2013.
+environment on Slackware.  Currently, they build and install MATE 1.6 which is
+the stable branch released on April, 2013.
 
 How to install:
 
 1.  Clone the Git repo or download a tarball/zip of the repo. Run the
 'mate-build-base.sh' in the msb root directory which will build and install
 all the base (required) packages.  Note, there are also some dependencies in
-the /deps directory.  There are a total of 25 packages and they
-do not replace any stock Slackware packages.  The SlackBuilds will use wget to
-download the sources.  Or, you can also manually download the sources from:
-http://pub.mate-desktop.org/releases/1.5/ and the download locations for each
-dependency and put each source into the corresponding directory within 'base'
-and 'deps'.
+the /deps directory.  There are a total of 24 packages and they
+do not replace any stock Slackware packages (except for dconf). The SlackBuilds 
+will use wget to download the sources.  Or, you can also manually download the 
+sources from: http://pub.mate-desktop.org/releases/1.6/ and the download 
+locations for each dependency and put each source into the corresponding 
+directory within 'base' and 'deps'.
 
 2.  Optionally, build and install any of the extra packages in the /extra
 directory.  If you want to build and install them all, then you can use the
@@ -38,3 +37,5 @@ manager if it is listed.  Same with mate-keyring from /extra - if you
 installed that, you might want to disable the gnome-keyring entries.
 
 5.  Enjoy and let me know of any issues.  Thanks!
+
+6.  Users running Slackware{64}-Current are advised to read CURRENT.TXT

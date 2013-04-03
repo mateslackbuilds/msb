@@ -1,0 +1,19 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.
+# Line up the first '|' above the ':' following the base package name, and
+# the '|' on the right side marks the last column you can put a character in.
+# You must make exactly 11 lines for the formatting to be correct.  It's also
+# customary to leave one space after the ':' except on otherwise blank lines.
+
+         |-----handy-ruler------------------------------------------------------|
+pam_unix2: pam_unix2 (Module for traditional password authentication )
+pam_unix2:
+pam_unix2: pam_unix2 is the standard Unix authentication module.
+pam_unix2: The authentication component performs the task of checking the 
+pam_unix2: users credentials (password).
+pam_unix2:
+pam_unix2: Credentials information is obtained from the /etc/passwd and the 
+pam_unix2: /etc/shadow file as well if shadow is enabled. 
+pam_unix2:
+pam_unix2:
+pam_unix2:

@@ -17,20 +17,6 @@ your $HOME, like $HOME/.config and $HOME/.cache and $HOME/.local.  If you
 switch back and forth between different desktop environments, sometimes those
 settings can get polluted.
 
-Sun Mar 24 02:44:53 UTC 2013
-A couple of users have reported Caja (the file manager) crashing with an error
-message telling the user to run Caja with the --sync option.  Please let me
-know if you run into this.  Before doing so, however, please consider backing
-up or clearing out some of the hidden directories in your $HOME, like
-$HOME/.config and $HOME/.cache.  If you switch back and forth between
-different desktop environments, sometimes those settings can get polluted.
-
-Fri Mar 22 16:45:28 UTC 2013
-Mate-screensaver in /testing doesn't seem to work -- at least, the locking
-feature does not seem to work in my testing.  I tried it with xscreensaver
-disabled and also uninstalled but it never kicked in.  More testing is
-necessary.
-
 Fri Mar 22 16:44:59 UTC 2013
 Help menus and help buttons do not work -- this is a known issue per a MATE
 upstream developer and scheduled to be fixed at some point but not in the next

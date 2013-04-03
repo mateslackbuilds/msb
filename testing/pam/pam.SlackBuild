@@ -1,9 +1,11 @@
 #!/bin/sh
-
-# Slackware build script for mate-netspeed
-
-# Copyright 2013 Chess Griffin <chess.griffin@gmail.com> Raleigh, NC
+ 
+# Copyright 2010  Vincent Batts, vbatts@hashbangbash.com
+# Copyright 2010, 2011  Patrick J. Volkerding, Sebeka, Minnesota, USA
 # All rights reserved.
+#
+# Heavily modified by Willy Sudiarto Raharjo for MSB project
+# Copyright 2013 Willy Sudiarto Raharjo <willysr@slackware-id.org>
 #
 # Redistribution and use of this script, with or without modification, is
 # permitted provided that the following conditions are met:
@@ -11,7 +13,7 @@
 # 1. Redistributions of this script must retain the above copyright
 #    notice, this list of conditions and the following disclaimer.
 #
-#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR "AS IS" AND ANY EXPRESS OR IMPLIED
+#  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
 #  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 #  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO
 #  EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
@@ -22,8 +24,9 @@
 #  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-PRGNAM=mate-netspeed
-VERSION=${VERSION:-1.6.0}
+SRCNAM=Linux-PAM
+PRGNAM=pam
+VERSION=${VERSION:-1.1.6}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
@@ -35,16 +38,11 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-if [ ! -f $PRGNAM-$VERSION.tar.xz ]; then
-  wget http://pub.mate-desktop.org/releases/1.6/$PRGNAM-$VERSION.tar.xz
+if [ ! -f $SRCNAM-$VERSION.tar.bz2 ]; then
+  wget http://www.linux-pam.org/library/Linux-PAM-1.1.6.tar.bz2
 fi
 
 NUMJOBS=${NUMJOBS:-" -j8 "}
-
-CWD=$(pwd)
-TMP=${TMP:-/tmp/msb}
-PKG=$TMP/package-$PRGNAM
-OUTPUT=${OUTPUT:-/tmp}
 
 if [ "$ARCH" = "i486" ]; then
   SLKCFLAGS="-O2 -march=i486 -mtune=i686"
@@ -60,14 +58,18 @@ else
   LIBDIRSUFFIX=""
 fi
 
-set -e
+CWD=$(pwd)
+TMP=${TMP:-/tmp/msb}
+PKG=$TMP/package-$SRCNAM
+OUTPUT=${OUTPUT:-/tmp}
 
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
-rm -rf $PRGNAM-$VERSION
-tar xvf $CWD/$PRGNAM-$VERSION.tar.xz
-cd $PRGNAM-$VERSION
+rm -rf $SRCNAM-$VERSION
+tar xvf $CWD/$SRCNAM-$VERSION.tar.?z* || exit 1
+cd $SRCNAM-$VERSION || exit 1
+
 chown -R root:root .
 find . \
  \( -perm 777 -o -perm 775 -o -perm 711 -o -perm 555 -o -perm 511 \) \
@@ -75,24 +77,39 @@ find . \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
 
+patch -p1 < $CWD/pam_destdir.patch
+
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
-./autogen.sh \
-  --prefix=/usr \
+./configure \
+  --prefix=/ \
   --libdir=/usr/lib${LIBDIRSUFFIX} \
   --sysconfdir=/etc \
+  --includedir=/usr/include/security \
+  --datarootdir=/usr/share \
   --localstatedir=/var \
   --mandir=/usr/man \
   --docdir=/usr/doc/$PRGNAM-$VERSION \
-  --build=$ARCH-slackware-linux
+  --enable-read-both-confs \
+  --disable-prelude \
+  --disable-selinux \
+  --build=$ARCH-slackware-linux || exit 1
 
-make $NUMJOBS || make
-make install DESTDIR=$PKG
+make $NUMJOBS || make || exit 1
+make install DESTDIR=$PKG || exit 1
 
-find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | grep ELF \
-  | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
 
-# Compress and link manpages
+# this is a pam helper, that can only be called from pam
+chown root:shadow $PKG/sbin/unix_chkpwd
+chmod g+s $PKG/sbin/unix_chkpwd
+
+# Strip binaries:
+( cd $PKG
+  find . | xargs file | grep "executable" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+  find . | xargs file | grep "shared object" | grep ELF | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null
+)
+
+# Compress and if needed symlink the man pages:
 if [ -d $PKG/usr/man ]; then
   ( cd $PKG/usr/man
     for manpagedir in $(find . -type d -name "man*") ; do
@@ -109,19 +126,20 @@ fi
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a \
-  AUTHORS COPYING ChangeLog README TODO \
+  AUTHORS COPYING* Copyright NEWS README* \
   $PKG/usr/doc/$PRGNAM-$VERSION
-cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
-find $PKG/usr/doc/$PRGNAM-$VERSION/ -type f -exec chmod 644 {} \;
-chown -R root:root $PKG/usr/doc/$PRGNAM-$VERSION
+rm -f $PKG/usr/doc/$PRGNAM-$VERSION/index.html
+
+# fix some missing symlinks from old pam for compatibility
+cd $PKG/usr/lib${LIBDIRSUFFIX}/security
+ln -s pam_unix.so pam_unix_acct.so
+ln -s pam_unix.so pam_unix_auth.so
+ln -s pam_unix.so pam_unix_passwd.so
+ln -s pam_unix.so pam_unix_session.so
 
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
-cat $CWD/doinst.sh > $PKG/install/doinst.sh
-
-# Remove help files for now - until MATE upstream fixes help documentation
-# buttons and menus.
-find $PKG/usr/share/mate/help/$PRGNAM/* -maxdepth 0 -type d ! -name C -exec rm -rf {} \; || true
 
 cd $PKG
 /sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
+
