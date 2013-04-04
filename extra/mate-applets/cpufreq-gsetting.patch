@@ -1,0 +1,28 @@
+From a48819d511d123db2e45c7f159169910c0cf6dc9 Mon Sep 17 00:00:00 2001
+From: Stefano Karapetsas <stefano@karapetsas.com>
+Date: Thu, 04 Apr 2013 13:43:25 +0000
+Subject: cpufreq: Fix GSettings init
+
+---
+diff --git a/cpufreq/src/cpufreq-prefs.c b/cpufreq/src/cpufreq-prefs.c
+index 38c0ca0..6fdfff4 100644
+--- a/cpufreq/src/cpufreq-prefs.c
++++ b/cpufreq/src/cpufreq-prefs.c
+@@ -238,7 +238,6 @@ static void
+ cpufreq_prefs_setup (CPUFreqPrefs *prefs)
+ {
+ 	g_assert (G_IS_SETTINGS (prefs->priv->settings));
+-	g_assert (prefs->priv->settings != NULL);
+ 
+ 	prefs->priv->cpu = g_settings_get_int (prefs->priv->settings, "cpu");
+ 	prefs->priv->show_mode = g_settings_get_int (prefs->priv->settings, "show-mode");
+@@ -256,6 +255,7 @@ cpufreq_prefs_new (GSettings *settings)
+ 					     "gsettings", settings,
+ 					     NULL));
+ 	
++	prefs->priv->settings = settings;
+ 	cpufreq_prefs_setup (prefs);
+ 
+ 	return prefs;
+--
+cgit 

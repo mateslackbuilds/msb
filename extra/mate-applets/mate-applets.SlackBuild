@@ -3,6 +3,7 @@
 # Slackware build script for mate-applets
 
 # Copyright 2013 Chess Griffin <chess.griffin@gmail.com> Raleigh, NC
+# Copyright 2013 Willy Sudiarto Raharjo <willysr@slackware-id.org>
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -24,7 +25,7 @@
 
 PRGNAM=mate-applets
 VERSION=${VERSION:-1.6.0}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-2}
 TAG=${TAG:-_msb}
 
 if [ -z "$ARCH" ]; then
@@ -74,6 +75,8 @@ find . \
  -exec chmod 755 {} \; -o \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
+
+patch -p1 < $CWD/cpufreq-gsetting.patch
 
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
@@ -130,7 +133,7 @@ cat $CWD/slack-desc > $PKG/install/slack-desc
 cat $CWD/doinst.sh > $PKG/install/doinst.sh
 
 # Remove help files for now - until MATE upstream fixes help documentation
-# buttons and menuso.  Confirmed help button problem w/ upstream.
+# buttons and menus.  Confirmed help button problem w/ upstream.
 for i in {mate-cpufreq-applet,mate-drivemount,mateweather,mate-char-palette,mate-accessx-status,mate-stickynotes_applet,mate-trashapplet,mate-battstat,mate-geyes,mate-invest-applet}; do
   find $PKG/usr/share/mate/help/$i/* -maxdepth 0 -type d ! -name C -exec rm -rf {} \; || true
 done
