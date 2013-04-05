@@ -10,9 +10,6 @@
 |   |   |-- doinst.sh
 |   |   |-- libmatekbd.SlackBuild
 |   |   `-- slack-desc
-|   |-- libmatenotify
-|   |   |-- libmatenotify.SlackBuild
-|   |   `-- slack-desc
 |   |-- libmateweather
 |   |   |-- doinst.sh
 |   |   |-- libmateweather.SlackBuild
@@ -122,6 +119,7 @@
 |   |   |-- libmatekeyring.SlackBuild
 |   |   `-- slack-desc
 |   |-- mate-applets
+|   |   |-- cpufreq-gsetting.patch
 |   |   |-- doinst.sh
 |   |   |-- mate-applets.SlackBuild
 |   |   `-- slack-desc
@@ -178,6 +176,11 @@
 |   |   |-- doinst.sh
 |   |   |-- mate-menu-editor.SlackBuild
 |   |   `-- slack-desc
+|   |-- mate-netspeed
+|   |   |-- README
+|   |   |-- doinst.sh
+|   |   |-- mate-netspeed.SlackBuild
+|   |   `-- slack-desc
 |   |-- mate-power-manager
 |   |   |-- doinst.sh
 |   |   |-- mate-power-manager.SlackBuild
@@ -190,10 +193,15 @@
 |   |   |-- doinst.sh
 |   |   |-- mate-terminal.SlackBuild
 |   |   `-- slack-desc
-|   `-- mate-text-editor
+|   |-- mate-text-editor
+|   |   |-- README
+|   |   |-- doinst.sh
+|   |   |-- mate-text-editor.SlackBuild
+|   |   `-- slack-desc
+|   `-- mate-utils
 |       |-- README
 |       |-- doinst.sh
-|       |-- mate-text-editor.SlackBuild
+|       |-- mate-utils.SlackBuild
 |       `-- slack-desc
 |-- mate-build-base.sh
 |-- mate-build-extra.sh
@@ -205,24 +213,24 @@
     |   `-- slack-desc
     |-- mate-build-testing.sh
     |-- mate-netspeed
-    |   |-- README
-    |   |-- doinst.sh
-    |   |-- mate-netspeed.SlackBuild
-    |   `-- slack-desc
     |-- mate-screensaver
     |   |-- README
     |   |-- doinst.sh
     |   |-- mate-screensaver.SlackBuild
+    |   |-- mate-screensaver.pam
     |   `-- slack-desc
     |-- mate-system-monitor
     |   |-- README
     |   |-- doinst.sh
     |   |-- mate-system-monitor.SlackBuild
     |   `-- slack-desc
-    `-- mate-utils
-        |-- README
-        |-- doinst.sh
-        |-- mate-utils.SlackBuild
+    |-- pam
+    |   |-- pam.SlackBuild
+    |   |-- pam_destdir.patch
+    |   `-- slack-desc
+    `-- pam_unix2
+        |-- pam_unix.patch
+        |-- pam_unix2.SlackBuild
         `-- slack-desc
 
-57 directories, 168 files
+59 directories, 174 files
