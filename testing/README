@@ -1,9 +1,13 @@
-This directory contains packages that are being tested.  The SlackBuilds
-may be unfinished and may not build correctly.  Some of these packages have
-additional dependencies that are not in the repo yet.  Dependencies  will
-be noted in a README and may be added here as time permits.  More packages
-may be added here over time.  The mate-build-testing.sh script is provided
-as a convenience but since all the dependencies might not be in the msb
-repo yet, the script may or may not work.  Essentially, /testing is just
-that -- testing and the user may need to take additional steps to get these
-packages to build and install.
+This directory contains packages that are being tested or need special 
+consideration before they can be merged to base/extra. 
+
+Some of these packages have additional dependencies that are not in 
+the repo yet. You may find the dependencies on SlackBuilds Project (SBo).  
+Dependencies  will be noted in a README on each package and may be added 
+here as time permits.
+
+More packages may be added here over time.  The mate-build-testing.sh script 
+is provided as a convenience but since all the dependencies might not be in 
+the msb repo yet, the script may or may not work.  Essentially, /testing is 
+just that -- testing and the user may need to take additional steps to get 
+these packages to build and install.
