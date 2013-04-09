@@ -24,8 +24,8 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=mate-terminal
-VERSION=${VERSION:-1.6.0}
-BUILD=${BUILD:-2}
+VERSION=${VERSION:-1.6.1}
+BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
 if [ -z "$ARCH" ]; then
@@ -75,10 +75,6 @@ find . \
  -exec chmod 755 {} \; -o \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
-
-# Upstream patch
-# http://git.mate-desktop.org/mate-terminal/commit/?id=14885e3eee9f3b7b6611e50ef92a87a7e36f469a
-patch -p1 < $CWD/proxy-env.patch
 
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
