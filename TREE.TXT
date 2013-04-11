@@ -212,7 +212,6 @@
     |   |-- mate-bluetooth.SlackBuild
     |   `-- slack-desc
     |-- mate-build-testing.sh
-    |-- mate-netspeed
     |-- mate-screensaver
     |   |-- README
     |   |-- doinst.sh
@@ -233,4 +232,4 @@
         |-- pam_unix2.SlackBuild
         `-- slack-desc
 
-59 directories, 174 files
+58 directories, 174 files
