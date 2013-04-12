@@ -119,7 +119,6 @@
 |   |   |-- libmatekeyring.SlackBuild
 |   |   `-- slack-desc
 |   |-- mate-applets
-|   |   |-- cpufreq-gsetting.patch
 |   |   |-- doinst.sh
 |   |   |-- mate-applets.SlackBuild
 |   |   `-- slack-desc
@@ -232,4 +231,4 @@
         |-- pam_unix2.SlackBuild
         `-- slack-desc
 
-58 directories, 174 files
+58 directories, 173 files
