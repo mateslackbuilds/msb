@@ -43,4 +43,5 @@ installed that, you might want to disable the gnome-keyring entries.
 
 5.  Users running Slackware{64}-Current are advised to read CURRENT.TXT
 
-6.  Enjoy and let us know of any issues.  Thanks!
+6.  Enjoy and let us know of any issues.  Email is: mateslackbuilds@gmail.com.
+Thanks!

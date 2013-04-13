@@ -3,7 +3,7 @@ The following is a list of known issues with MATE on Slackware:
 Wed Mar 27 04:23:24 UTC 2013
 If you have dual monitor with NVidia card and set it up to use both monitors
 as separate, you might encounter some freeze lockup.  A temporary workaround
-is to change it into Xinerama in your xorg.conf
+is to change it into TwinView in your xorg.conf
 
 Sun Mar 24 02:47:56 UTC 2013
 If you run into strange panel issues, or missing icons, or theme problems,
