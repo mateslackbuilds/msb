@@ -1,0 +1,7 @@
+This directory contains third-party (i.e. not in MATE upstream) dependencies
+of packages in /base and /extra.  Some of these have been pulled from
+SlackBuilds.org with minor modifications.  If you have already installed any
+of these packages from SlackBuilds.org, then you shouldn't need to install
+them again.  If that's the case, you might want to manually edit the
+mate-build-base.sh and mate-build-extra.sh scripts and remove the lines for
+the applicable dependencies so they aren't built a second time.
