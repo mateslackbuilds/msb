@@ -4,202 +4,256 @@
 |-- README.TXT
 |-- TODO.TXT
 |-- TREE.TXT
+|-- TREE2.TXT
 |-- base
 |   |-- README
 |   |-- libmatekbd
 |   |   |-- doinst.sh
+|   |   |-- libmatekbd-1.6.0.tar.xz
 |   |   |-- libmatekbd.SlackBuild
 |   |   `-- slack-desc
 |   |-- libmateweather
 |   |   |-- doinst.sh
+|   |   |-- libmateweather-1.6.0.tar.xz
 |   |   |-- libmateweather.SlackBuild
 |   |   `-- slack-desc
 |   |-- libmatewnck
+|   |   |-- libmatewnck-1.6.0.tar.xz
 |   |   |-- libmatewnck.SlackBuild
 |   |   `-- slack-desc
 |   |-- mate-backgrounds
+|   |   |-- mate-backgrounds-1.6.0.tar.xz
 |   |   |-- mate-backgrounds.SlackBuild
 |   |   `-- slack-desc
 |   |-- mate-common
+|   |   |-- mate-common-1.6.0.tar.xz
 |   |   |-- mate-common.SlackBuild
 |   |   `-- slack-desc
 |   |-- mate-control-center
 |   |   |-- doinst.sh
+|   |   |-- mate-control-center-1.6.0.tar.xz
 |   |   |-- mate-control-center.SlackBuild
 |   |   `-- slack-desc
 |   |-- mate-desktop
 |   |   |-- doinst.sh
+|   |   |-- mate-desktop-1.6.0.tar.xz
 |   |   |-- mate-desktop.SlackBuild
 |   |   `-- slack-desc
 |   |-- mate-dialogs
 |   |   |-- doinst.sh
+|   |   |-- mate-dialogs-1.6.0.tar.xz
 |   |   |-- mate-dialogs.SlackBuild
 |   |   `-- slack-desc
 |   |-- mate-doc-utils
+|   |   |-- mate-doc-utils-1.6.0.tar.xz
 |   |   |-- mate-doc-utils.SlackBuild
 |   |   `-- slack-desc
 |   |-- mate-file-manager
 |   |   |-- doinst.sh
+|   |   |-- mate-file-manager-1.6.1.tar.xz
 |   |   |-- mate-file-manager.SlackBuild
 |   |   `-- slack-desc
 |   |-- mate-icon-theme
+|   |   |-- mate-icon-theme-1.6.0.tar.xz
 |   |   |-- mate-icon-theme.SlackBuild
 |   |   `-- slack-desc
 |   |-- mate-menus
+|   |   |-- mate-menus-1.6.0.tar.xz
 |   |   |-- mate-menus.SlackBuild
 |   |   `-- slack-desc
 |   |-- mate-notification-daemon
 |   |   |-- doinst.sh
+|   |   |-- mate-notification-daemon-1.6.0.tar.xz
 |   |   |-- mate-notification-daemon.SlackBuild
 |   |   `-- slack-desc
 |   |-- mate-panel
 |   |   |-- doinst.sh
+|   |   |-- mate-panel-1.6.0.tar.xz
 |   |   |-- mate-panel.SlackBuild
 |   |   `-- slack-desc
 |   |-- mate-polkit
+|   |   |-- mate-polkit-1.6.0.tar.xz
 |   |   |-- mate-polkit.SlackBuild
 |   |   `-- slack-desc
 |   |-- mate-session-manager
 |   |   |-- doinst.sh
+|   |   |-- mate-session-manager-1.6.0.tar.xz
 |   |   |-- mate-session-manager.SlackBuild
 |   |   |-- slack-desc
 |   |   `-- xinitrc.mate-session
 |   |-- mate-settings-daemon
 |   |   |-- doinst.sh
+|   |   |-- mate-settings-daemon-1.6.0.tar.xz
 |   |   |-- mate-settings-daemon.SlackBuild
 |   |   `-- slack-desc
 |   |-- mate-themes
+|   |   |-- mate-themes-1.6.0.tar.xz
 |   |   |-- mate-themes.SlackBuild
 |   |   `-- slack-desc
 |   `-- mate-window-manager
 |       |-- doinst.sh
+|       |-- mate-window-manager-1.6.0.tar.xz
+|       |-- mate-window-manager-1.6.1.tar.xz
 |       |-- mate-window-manager.SlackBuild
 |       `-- slack-desc
 |-- deps
+|   |-- README
 |   |-- dconf
+|   |   |-- dconf-0.12.1.tar.xz
 |   |   |-- dconf.SlackBuild
 |   |   `-- slack-desc
 |   |-- gksu
 |   |   |-- README
+|   |   |-- gksu-2.0.2.tar.gz
 |   |   |-- gksu.SlackBuild
 |   |   `-- slack-desc
 |   |-- gtk-engines
 |   |   |-- glib-single-include.patch
+|   |   |-- gtk-engines-2.20.2.tar.gz
 |   |   |-- gtk-engines.SlackBuild
 |   |   `-- slack-desc
 |   |-- gtksourceview
+|   |   |-- gtksourceview-2.10.5.tar.gz
 |   |   |-- gtksourceview.SlackBuild
 |   |   `-- slack-desc
 |   |-- libgksu
 |   |   |-- README
 |   |   |-- doinst.sh
+|   |   |-- libgksu-2.0.12.tar.gz
 |   |   |-- libgksu-format.patch
 |   |   |-- libgksu.SlackBuild
 |   |   `-- slack-desc
 |   |-- libgtop
 |   |   |-- README
+|   |   |-- libgtop-2.28.4.tar.xz
 |   |   |-- libgtop.SlackBuild
 |   |   `-- slack-desc
 |   |-- libunique
 |   |   |-- libunique-1.1.6-G_CONST_RETURN.patch
 |   |   |-- libunique-1.1.6-compiler-warnings.patch
 |   |   |-- libunique-1.1.6-gdbus.patch
+|   |   |-- libunique-1.1.6.tar.bz2
 |   |   |-- libunique.SlackBuild
 |   |   `-- slack-desc
 |   |-- murrine
+|   |   |-- murrine-0.98.2.tar.xz
 |   |   |-- murrine.SlackBuild
 |   |   `-- slack-desc
 |   `-- rarian
+|       |-- rarian-0.8.1.tar.bz2
 |       |-- rarian.SlackBuild
 |       `-- slack-desc
 |-- extra
 |   |-- README
 |   |-- libmatekeyring
 |   |   |-- README
+|   |   |-- libmatekeyring-1.6.0.tar.xz
 |   |   |-- libmatekeyring.SlackBuild
 |   |   `-- slack-desc
 |   |-- mate-applets
 |   |   |-- doinst.sh
+|   |   |-- mate-applets-1.6.0.tar.xz
 |   |   |-- mate-applets.SlackBuild
 |   |   `-- slack-desc
 |   |-- mate-calc
 |   |   |-- doinst.sh
+|   |   |-- mate-calc-1.6.0.tar.xz
 |   |   |-- mate-calc.SlackBuild
 |   |   `-- slack-desc
 |   |-- mate-character-map
 |   |   |-- doinst.sh
+|   |   |-- mate-character-map-1.6.0.tar.xz
 |   |   |-- mate-character-map.SlackBuild
 |   |   `-- slack-desc
 |   |-- mate-document-viewer
 |   |   |-- doinst.sh
+|   |   |-- mate-document-viewer-1.6.0.tar.xz
 |   |   |-- mate-document-viewer.SlackBuild
 |   |   `-- slack-desc
 |   |-- mate-file-archiver
 |   |   |-- doinst.sh
+|   |   |-- mate-file-archiver-1.6.0.tar.xz
 |   |   |-- mate-file-archiver.SlackBuild
 |   |   `-- slack-desc
 |   |-- mate-file-manager-gksu
 |   |   |-- README
+|   |   |-- mate-file-manager-gksu-1.6.0.tar.xz
 |   |   |-- mate-file-manager-gksu.SlackBuild
 |   |   `-- slack-desc
 |   |-- mate-file-manager-image-converter
 |   |   |-- README
+|   |   |-- mate-file-manager-image-converter-1.6.0.tar.xz
 |   |   |-- mate-file-manager-image-converter.SlackBuild
 |   |   `-- slack-desc
 |   |-- mate-file-manager-open-terminal
 |   |   |-- doinst.sh
+|   |   |-- mate-file-manager-open-terminal-1.6.0.tar.xz
 |   |   |-- mate-file-manager-open-terminal.SlackBuild
 |   |   `-- slack-desc
 |   |-- mate-file-manager-sendto
 |   |   |-- doinst.sh
+|   |   |-- mate-file-manager-sendto-1.6.0.tar.xz
 |   |   |-- mate-file-manager-sendto.SlackBuild
 |   |   `-- slack-desc
 |   |-- mate-icon-theme-faenza
 |   |   |-- doinst.sh
+|   |   |-- mate-icon-theme-faenza-1.6.0.tar.xz
 |   |   |-- mate-icon-theme-faenza.SlackBuild
 |   |   `-- slack-desc
 |   |-- mate-image-viewer
 |   |   |-- doinst.sh
+|   |   |-- mate-image-viewer-1.6.0.tar.xz
 |   |   |-- mate-image-viewer.SlackBuild
 |   |   `-- slack-desc
 |   |-- mate-keyring
 |   |   |-- README
 |   |   |-- doinst.sh
+|   |   |-- mate-keyring-1.6.0.tar.xz
 |   |   |-- mate-keyring.SlackBuild
 |   |   `-- slack-desc
 |   |-- mate-media
 |   |   |-- doinst.sh
+|   |   |-- mate-media-1.6.0.tar.xz
 |   |   |-- mate-media.SlackBuild
 |   |   `-- slack-desc
 |   |-- mate-menu-editor
 |   |   |-- doinst.sh
+|   |   |-- mate-menu-editor-1.6.0.tar.xz
 |   |   |-- mate-menu-editor.SlackBuild
 |   |   `-- slack-desc
 |   |-- mate-netspeed
 |   |   |-- README
 |   |   |-- doinst.sh
+|   |   |-- mate-netspeed-1.6.0.tar.xz
 |   |   |-- mate-netspeed.SlackBuild
 |   |   `-- slack-desc
 |   |-- mate-power-manager
 |   |   |-- doinst.sh
+|   |   |-- mate-power-manager-1.6.0.tar.xz
+|   |   |-- mate-power-manager-1.6.1.tar.xz
 |   |   |-- mate-power-manager.SlackBuild
 |   |   `-- slack-desc
 |   |-- mate-sensors-applet
 |   |   |-- doinst.sh
+|   |   |-- mate-sensors-applet-1.6.0.tar.xz
 |   |   |-- mate-sensors-applet.SlackBuild
 |   |   `-- slack-desc
 |   |-- mate-terminal
 |   |   |-- doinst.sh
+|   |   |-- mate-terminal-1.6.0.tar.xz
+|   |   |-- mate-terminal-1.6.1.tar.xz
 |   |   |-- mate-terminal.SlackBuild
 |   |   `-- slack-desc
 |   |-- mate-text-editor
 |   |   |-- README
 |   |   |-- doinst.sh
+|   |   |-- mate-text-editor-1.6.0.tar.xz
 |   |   |-- mate-text-editor.SlackBuild
 |   |   `-- slack-desc
 |   `-- mate-utils
 |       |-- README
 |       |-- doinst.sh
+|       |-- mate-utils-1.6.0.tar.xz
 |       |-- mate-utils.SlackBuild
 |       `-- slack-desc
 |-- mate-build-base.sh
@@ -231,4 +285,4 @@
         |-- pam_unix2.SlackBuild
         `-- slack-desc
 
-58 directories, 173 files
+58 directories, 227 files
