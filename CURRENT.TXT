@@ -8,6 +8,7 @@ in -current:
 
 base/mate-control-center
 base/mate-panel
+base/mate-settings-daemon
 extra/mate-terminal
 
 Sun Mar 24 04:48:35 UTC 2013
