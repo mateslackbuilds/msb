@@ -80,7 +80,7 @@ for dir in \
     exit 1
   fi
   
-  # The real builds starts here
+  # The real build starts here
   sh ${package}.SlackBuild || exit 1
   if [ "$INST" = "1" ]; then
     PACKAGE="${package}-$version-*.txz"
