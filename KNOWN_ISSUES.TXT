@@ -1,5 +1,33 @@
 The following is a list of known issues with MATE on Slackware:
 
+Mon Jun 10 03:09:28 UTC 2013
+If you are encountering problems with Caja (MATE's file manager) opening
+directories when clicking on files in certain programs like Dropbox, Skype,
+and others, the problem is that xdg-open (part of Slackware's xdg-utils
+package) does not recognize the MATE desktop and therefore defaults to opening
+the directories in Firefox.  Fixes for this have been committed to xdg-utils
+upstream development in Git but for now, we must apply a patch to xdg-open and
+add some xdg-mime default handlers.
+
+First, as a root user, back up /usr/bin/xdg-open and then apply the
+xdg-open.patch from msb/testing/xdg-utils:
+
+patch -p0 /usr/bin/xdg-open < /location/of/xdg-open.patch
+
+Then, as your regular user, first back up the following file:
+$HOME/.local/share/applications/defaults.list and then enter the next two
+commands in a terminal to set the default handler:
+
+xdg-mime default caja-folder-handler.desktop inode/directory
+xdg-mime default caja-folder-handler.desktop application/x-directory
+
+You should be all set.  Thanks to Totoro-kun and T3slider for reporting and
+discussing this in the LQ forums and also thanks to Giorgos Keramidas for
+creating the initial patch.  Here is a link to the LQ thread which also has a
+link to Giorgos's blog with the patch:
+
+http://www.linuxquestions.org/questions/showthread.php?p=4968614
+
 Wed Mar 27 04:23:24 UTC 2013
 If you have dual monitor with NVidia card and set it up to use both monitors
 as separate, you might encounter some freeze lockup.  A temporary workaround
