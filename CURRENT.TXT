@@ -1,5 +1,20 @@
 The following is a list of notes on building MATE on Slackware -current:
 
+Mon Jun 24 01:38:36 UTC 2013
+mate-media is reported to be broken on -Current (but not on Slackware 14.0
+despite the same version is being used).
+The fix for this issue is simple, but this would prevent users to add 
+volume control applet on the mate-panel, so it's not yet applied to git master.
+Here's the temporary solution for Slackware-Current users:
+Change this line in mate-media.SlackBuild
+--enable-gstmix \
+into
+--disable-gstmix \
+
+and comment or remove this two lines on line 133 and 134
+find $PKG/usr/share/mate/help/mate-mixer_applet2/* -maxdepth 0 -type d ! -name C -exec rm -rf {} \;
+find $PKG/usr/share/mate/help/mate-volume-control/* -maxdepth 0 -type d ! -name C -exec rm -rf {} \;
+
 Tue Jun 11 00:41:15 UTC 2013
 Pat has rebuilt xdg-utils in Slackware-Current to properly support MATE DE, 
 so xdg-utils patch is no longer needed in Slackware-Current, but running 
