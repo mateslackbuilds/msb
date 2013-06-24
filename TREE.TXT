@@ -212,7 +212,6 @@
     |   |-- mate-bluetooth.SlackBuild
     |   `-- slack-desc
     |-- mate-build-testing.sh
-    |-- mate-netspeed
     |-- mate-screensaver
     |   |-- README
     |   |-- doinst.sh
@@ -235,4 +234,4 @@
     `-- xdg-utils
         `-- xdg-open.patch
 
-60 directories, 175 files
+59 directories, 175 files
