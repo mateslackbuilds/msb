@@ -1,16 +1,16 @@
 The following is a list of notes on building MATE on Slackware -current:
 
 Mon Jun 24 01:38:36 UTC 2013
-mate-media is reported to be broken on -Current (but not on Slackware 14.0
-despite the same version is being used).
-The fix for this issue is to use the precompiled binary packages for 
-Slackware 14.0 which is reported to be working fine on Slackware-Current.
+mate-media is reported to be broken on -current (but not on Slackware 14.0
+despite the same version is being used).  The fix for this issue is to use the
+precompiled binary packages for Slackware 14.0 which is reported to be working
+fine on Slackware -current.
 
 Tue Jun 11 00:41:15 UTC 2013
-Pat has rebuilt xdg-utils in Slackware-Current to properly support MATE DE, 
-so xdg-utils patch is no longer needed in Slackware-Current, but running 
-these two commands as normal user are still needed to set caja as the 
-default handler:
+Pat has rebuilt xdg-utils in Slackware -current to properly support MATE DE,
+so xdg-utils patch is no longer needed in Slackware -current, but running
+these two commands as normal user are still needed to set caja as the default
+handler:
 
 xdg-mime default caja-folder-handler.desktop inode/directory
 xdg-mime default caja-folder-handler.desktop application/x-directory

@@ -41,7 +41,11 @@ mate-power-manager from /extra then you might want to disable the Xfce power
 manager if it is listed.  Same with mate-keyring from /extra - if you
 installed that, you might want to disable the gnome-keyring entries.
 
-5.  Users running Slackware{64}-Current are advised to read CURRENT.TXT
+5.  Users running Slackware{64}-Current are advised to read CURRENT.TXT.  It
+should also be noted that the target system for MATE SlackBuilds is a full
+install of the latest official Slackware release.  It might run on a
+less-than-full install and it might run on -current.  Or, it might not.
+Neither of those are our official target systems.
 
 6.  Enjoy and let us know of any issues.  Email is: mateslackbuilds@gmail.com.
 Thanks!
