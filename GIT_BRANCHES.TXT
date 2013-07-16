@@ -1,0 +1,42 @@
+MATE SlackBuilds
+================
+
+MSB will follow MATE's workflow on versioning and releases as described in
+MATE's wiki: http://wiki.mate-desktop.org/dev-doc.
+
+Currently, there are two branches in the MSB GIT repository:
+
+- master:  The MSB development branch.  It represents the most up-to-date
+  code, but no binary packages are built from this branch.  Building from
+  this branch may or may not work.  This is where the next stable release
+  will come from.  Please use this branch for testing only and not for
+  production environments.
+
+- 1.6:  The MSB stable branch.  This is the supported branch and only
+  receives bug fix updates.  The MSB binary packages are built from this
+  branch.  You might want to use this branch if you enjoy stable releases.
+  Once 'master' has been declaraed the next stable release (e.g. 1.8) then
+  this branch will be obsoleted and no longer updated.
+
+An easy way to find out which branch are you in right now (once you have
+cloned the repo or pulled the latest updates):
+
+# git branch
+
+An asterisk will appear in front of the branch you are currently in.
+Example output of 'git branch':
+
+  1.6
+* master
+
+This output indicates that you are now in the 'master' branch.
+
+To switch to another branch, use 'git checkout <branch_name>'.  Example:
+
+# git checkout 1.6
+# git branch
+
+* 1.6
+  master
+
+You have now switched from the 'master' branch to the '1.6' branch.
