@@ -15,7 +15,7 @@ Currently, there are two branches in the MSB GIT repository:
 - 1.6:  The MSB stable branch.  This is the supported branch and only
   receives bug fix updates.  The MSB binary packages are built from this
   branch.  You might want to use this branch if you enjoy stable releases.
-  Once 'master' has been declaraed the next stable release (e.g. 1.8) then
+  Once 'master' has been declared the next stable release (e.g. 1.8) then
   this branch will be obsoleted and no longer updated.
 
 An easy way to find out which branch are you in right now (once you have
