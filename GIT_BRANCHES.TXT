@@ -21,7 +21,7 @@ Currently, there are two branches in the MSB GIT repository:
 An easy way to find out which branch are you in right now (once you have
 cloned the repo or pulled the latest updates):
 
-# git branch
+$ git branch
 
 An asterisk will appear in front of the branch you are currently in.
 Example output of 'git branch':
@@ -33,8 +33,8 @@ This output indicates that you are now in the 'master' branch.
 
 To switch to another branch, use 'git checkout <branch_name>'.  Example:
 
-# git checkout 1.6
-# git branch
+$ git checkout 1.6
+$ git branch
 
 * 1.6
   master
