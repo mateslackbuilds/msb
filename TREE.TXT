@@ -1,5 +1,6 @@
 .
 |-- CURRENT.TXT
+|-- GIT_BRANCHES.TXT
 |-- KNOWN_ISSUES.TXT
 |-- README.TXT
 |-- TODO.TXT
@@ -234,4 +235,4 @@
     `-- xdg-utils
         `-- xdg-open.patch
 
-59 directories, 175 files
+59 directories, 176 files
