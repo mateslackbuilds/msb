@@ -4,7 +4,7 @@ MATE SlackBuilds
 Here are some SlackBuild scripts to build and install the MATE desktop
 environment on Slackware.  Currently, they build and install MATE 1.7 which is
 the development release towards MATE 1.8. For those wanted to install MATE 1.6 
-which was released on April 2, 2013, please checkout the '1.6' branch (See step 2). 
+which was released on April 2, 2013, please checkout the '1.6' branch (step 2). 
 Please check the main project website at http://mateslackbuilds.github.com for 
 screenshots and more information.  
 There is also a link there to some binary packages for Slackware 14.0.
