@@ -24,7 +24,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=mate-desktop
-VERSION=${VERSION:-1.6.1}
+VERSION=${VERSION:-1.7.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
@@ -37,7 +37,7 @@ if [ -z "$ARCH" ]; then
 fi
 
 if [ ! -f $PRGNAM-$VERSION.tar.xz ]; then
-  wget http://pub.mate-desktop.org/releases/1.6/$PRGNAM-$VERSION.tar.xz
+  wget http://pub.mate-desktop.org/releases/1.7/$PRGNAM-$VERSION.tar.xz
 fi
 
 NUMJOBS=${NUMJOBS:-" -j8 "}
@@ -86,7 +86,6 @@ CXXFLAGS="$SLKCFLAGS" \
   --mandir=/usr/man \
   --docdir=/usr/doc/$PRGNAM-$VERSION \
   --disable-static \
-  --disable-scrollkeeper \
   --build=$ARCH-slackware-linux
 
 make $NUMJOBS || make
@@ -127,10 +126,6 @@ chown -R root:root $PKG/usr/doc/$PRGNAM-$VERSION
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
 cat $CWD/doinst.sh > $PKG/install/doinst.sh
-
-# Remove help files for now - until MATE upstream fixes help documentation
-# buttons and menus.
-find $PKG/usr/share/mate/help/{lgpl,gpl,fdl}* -maxdepth 0 -type d ! -name C -exec rm -rf {} \;
 
 cd $PKG
 /sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
