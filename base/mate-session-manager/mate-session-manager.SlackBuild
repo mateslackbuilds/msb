@@ -86,7 +86,6 @@ CXXFLAGS="$SLKCFLAGS" \
   --mandir=/usr/man \
   --docdir=/usr/doc/$PRGNAM-$VERSION \
   --libexecdir=/usr/lib${LIBDIRSUFFIX} \
-  --enable-splash \
   --build=$ARCH-slackware-linux
 
 make $NUMJOBS || make
