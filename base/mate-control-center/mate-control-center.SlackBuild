@@ -36,9 +36,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-if [ ! -f $PRGNAM-$VERSION.tar.xz ]; then
-  wget http://pub.mate-desktop.org/releases/1.6/$PRGNAM-$VERSION.tar.xz
-fi
+wget -c http://pub.mate-desktop.org/releases/1.6/$PRGNAM-$VERSION.tar.xz
 
 NUMJOBS=${NUMJOBS:-" -j8 "}
 

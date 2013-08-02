@@ -36,10 +36,8 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-if [ ! -f $PRGNAM-$VERSION.tar.xz ]; then
-  wget \
-    http://ftp.acc.umu.se/pub/GNOME/sources/murrine/0.98/murrine-0.98.2.tar.xz
-fi
+wget -c \
+  http://ftp.acc.umu.se/pub/GNOME/sources/murrine/0.98/murrine-0.98.2.tar.xz
 
 NUMJOBS=${NUMJOBS:-" -j8 "}
 

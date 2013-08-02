@@ -36,9 +36,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-if [ ! -f $PRGNAM-$VERSION.tar.bz2 ]; then
-  wget http://rarian.freedesktop.org/Releases/rarian-0.8.1.tar.bz2
-fi
+wget -c http://rarian.freedesktop.org/Releases/rarian-0.8.1.tar.bz2
 
 NUMJOBS=${NUMJOBS:-" -j8 "}
 
