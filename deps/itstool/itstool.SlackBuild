@@ -36,9 +36,7 @@ if [ -z "$ARCH" ]; then
   export ARCH
 fi
 
-if [ ! -f $PRGNAM-$VERSION.tar.bz2 ]; then
-  wget http://files.itstool.org/itstool/$PRGNAM-$VERSION.tar.bz2
-fi
+wget -c http://files.itstool.org/itstool/$PRGNAM-$VERSION.tar.bz2
 
 NUMJOBS=${NUMJOBS:-" -j8 "}
 

@@ -36,9 +36,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-if [ ! -f $PRGNAM-$VERSION.tar.xz ]; then
-  wget ftp://ftp.gnome.org/pub/gnome/sources/yelp-xsl/3.6/$PRGNAM-$VERSION.tar.xz
-fi
+wget -c ftp://ftp.gnome.org/pub/gnome/sources/yelp-xsl/3.6/$PRGNAM-$VERSION.tar.xz
 
 NUMJOBS=${NUMJOBS:-" -j8 "}
 
