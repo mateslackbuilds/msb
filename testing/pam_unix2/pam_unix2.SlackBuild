@@ -35,9 +35,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-if [ ! -f $PRGNAM-$VERSION.tar.bz2 ]; then
-  wget ftp://ftp.archlinux.org/other/pam_unix2/pam_unix2-2.9.1.tar.bz2
-fi
+wget -c ftp://ftp.archlinux.org/other/pam_unix2/pam_unix2-2.9.1.tar.bz2
 
 NUMJOBS=${NUMJOBS:-" -j8 "}
 

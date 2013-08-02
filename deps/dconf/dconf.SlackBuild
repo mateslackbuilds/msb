@@ -36,9 +36,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-if [ ! -f $PRGNAM-$VERSION.tar.xz ]; then
-  wget http://ftp.gnome.org/pub/gnome/sources/dconf/0.12/dconf-0.12.1.tar.xz
-fi
+wget -c http://ftp.gnome.org/pub/gnome/sources/dconf/0.12/dconf-0.12.1.tar.xz
 
 NUMJOBS=${NUMJOBS:-" -j8 "}
 

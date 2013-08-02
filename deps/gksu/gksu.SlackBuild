@@ -35,9 +35,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-if [ ! -f $PRGNAM-$VERSION.tar.gz ]; then
-  wget http://people.debian.org/~kov/gksu/gksu-2.0.2.tar.gz
-fi
+wget -c http://people.debian.org/~kov/gksu/gksu-2.0.2.tar.gz
 
 NUMJOBS=${NUMJOBS:-" -j8 "}
 

@@ -38,9 +38,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-if [ ! -f $SRCNAM-$VERSION.tar.bz2 ]; then
-  wget http://www.linux-pam.org/library/Linux-PAM-1.1.6.tar.bz2
-fi
+wget -c http://www.linux-pam.org/library/Linux-PAM-1.1.6.tar.bz2
 
 NUMJOBS=${NUMJOBS:-" -j8 "}
 

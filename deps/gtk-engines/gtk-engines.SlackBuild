@@ -36,10 +36,8 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-if [ ! -f $PRGNAM-$VERSION.tar.gz ]; then
-  wget \
-    http://ftp.gnome.org/pub/gnome/sources/gtk-engines/2.20/gtk-engines-2.20.2.tar.gz
-fi
+wget -c \
+  http://ftp.gnome.org/pub/gnome/sources/gtk-engines/2.20/gtk-engines-2.20.2.tar.gz
 
 NUMJOBS=${NUMJOBS:-" -j8 "}
 
