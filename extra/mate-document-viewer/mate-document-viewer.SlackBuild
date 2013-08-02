@@ -3,6 +3,7 @@
 # Slackware build script for mate-document-viewer
 
 # Copyright 2013 Chess Griffin <chess.griffin@gmail.com> Raleigh, NC
+# Copyright 2013 Willy Sudiarto Raharjo <willysr@slackware-id.org>
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -23,7 +24,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=mate-document-viewer
-VERSION=${VERSION:-1.6.0}
+VERSION=${VERSION:-1.6.1}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
@@ -77,7 +78,7 @@ find . \
 
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
-./autogen.sh \
+./configure \
   --prefix=/usr \
   --libdir=/usr/lib${LIBDIRSUFFIX} \
   --sysconfdir=/etc \
@@ -86,7 +87,6 @@ CXXFLAGS="$SLKCFLAGS" \
   --docdir=/usr/doc/$PRGNAM-$VERSION \
   --disable-scrollkeeper \
   --disable-static \
-  --disable-schemas-install \
   --build=$ARCH-slackware-linux
 
 make $NUMJOBS || make
@@ -130,8 +130,6 @@ cat $CWD/doinst.sh > $PKG/install/doinst.sh
 # buttons and menus. Confirmed /w upstream.
 find $PKG/usr/share/mate/help/atril/* -maxdepth 0 -type d ! -name C -exec rm -rf {} \;
 rm -rf $PKG/usr/share/doc/mate/atril/*
-rmdir --ignore-fail-on-non-empty $PKG/usr/share/doc/mate/atril
-rmdir --ignore-fail-on-non-empty $PKG/usr/share/doc/mate
 
 cd $PKG
 /sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
