@@ -6,15 +6,9 @@ directories when clicking on files in certain programs like Dropbox, Skype,
 and others, the problem is that xdg-open (part of Slackware's xdg-utils
 package) does not recognize the MATE desktop and therefore defaults to opening
 the directories in Firefox.  Fixes for this have been committed to xdg-utils
-upstream development in Git but for now, we must apply a patch to xdg-open and
-add some xdg-mime default handlers.
+package, but we must set the xdg-mime entries manually.
 
-First, as a root user, back up /usr/bin/xdg-open and then apply the
-xdg-open.patch from msb/testing/xdg-utils:
-
-patch -p0 /usr/bin/xdg-open < /location/of/xdg-open.patch
-
-Then, as your regular user, first back up the following file:
+As your regular user, first back up the following file:
 $HOME/.local/share/applications/defaults.list and then enter the next two
 commands in a terminal to set the default handler:
 

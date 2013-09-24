@@ -53,7 +53,6 @@ for dir in \
   base/mate-menus \
   base/mate-window-manager \
   base/mate-polkit \
-  deps/dconf \
   base/mate-settings-daemon \
   base/mate-control-center \
   base/mate-panel \
