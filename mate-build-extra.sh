@@ -37,6 +37,8 @@ MSBROOT=$(pwd)
 
 # Loop for all packages
 for dir in \
+  extra/libmatekeyring \
+  extra/mate-keyring \
   extra/mate-applets \
   extra/mate-calc \
   extra/mate-character-map \
