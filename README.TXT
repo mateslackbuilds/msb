@@ -25,10 +25,8 @@ How to build and install the MATE packages using these scripts:
 2.  Run the 'mate-build-base.sh' in the msb root directory which will build
 and install all the base (required) packages, including necessary dependencies
 in the /deps directory.  There are a total of 24 packages and they do not
-replace any stock Slackware packages. (If you are building on -current, then
-dconf is already included in Slackware so you do not need it here in the git
-repo -- see CURRENT.TXT).  The SlackBuilds will use wget to download the
-sources.  Or, you can also manually download the sources from:
+replace any stock Slackware packages. The SlackBuilds will use wget to download 
+the sources.  Or, you can also manually download the sources from:
 http://pub.mate-desktop.org/releases/1.6/ and the download locations for each
 dependency and put each source into the corresponding directory within 'base'
 and 'deps'.
@@ -52,11 +50,5 @@ mate-power-manager from /extra then you might want to disable the Xfce power
 manager if it is listed.  Same with mate-keyring from /extra - if you
 installed that, you might want to disable the gnome-keyring entries.
 
-6.  Users running Slackware{64}-Current are advised to read CURRENT.TXT.  It
-should also be noted that the target system for MATE SlackBuilds is a full
-install of the latest official Slackware release.  It might run on a
-less-than-full install and it might run on -current.  Or, it might not.
-Neither of those are our official target systems.
-
-7.  Enjoy and let us know of any issues.  Email is: mateslackbuilds@gmail.com.
+6.  Enjoy and let us know of any issues.  Email is: mateslackbuilds@gmail.com.
 Thanks!
