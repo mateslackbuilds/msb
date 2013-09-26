@@ -12,5 +12,6 @@ can be used to automatically download, build, and install all
 dependencies of mate-system-monitor.
 
 You will need to download sbopkg (http://sbopkg.org/), 
-create/update slackbuilds repo (sbopkg -r), load the 
-mate-system-monitor queue through sbopkg and start processing it.
+create/update slackbuilds repo (sbopkg -r), move the queue file to 
+/var/lib{64}/sbopkg/queue, load the mate-system-monitor queue 
+through sbopkg and start processing it.
