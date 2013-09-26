@@ -127,7 +127,7 @@ find $PKG/usr/share/mate/help/$PRGNAM/* -maxdepth 0 -type d ! -name C -exec rm -
 
 # Add mate-system-monitor queue file for sbopkg
 mkdir -p $PKG/var/lib${LIBDIRSUFFIX}/sbopkg/queues
-cp mate-system-monitor.sqf $PKG/var/lib${LIBDIRSUFFIX}/sbopkg/queues
+cp -a $CWD/mate-system-monitor.sqf $PKG/var/lib${LIBDIRSUFFIX}/sbopkg/queues
 
 cd $PKG
 /sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
