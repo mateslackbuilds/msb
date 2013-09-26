@@ -25,7 +25,7 @@
 
 PRGNAM=mate-system-monitor
 VERSION=${VERSION:-1.6.1}
-BUILD=${BUILD:-2}
+BUILD=${BUILD:-3}
 TAG=${TAG:-_msb}
 
 if [ -z "$ARCH" ]; then
@@ -124,10 +124,6 @@ cat $CWD/doinst.sh > $PKG/install/doinst.sh
 # Remove help files for now - until MATE upstream fixes help documentation
 # buttons and menus.
 find $PKG/usr/share/mate/help/$PRGNAM/* -maxdepth 0 -type d ! -name C -exec rm -rf {} \; || true
-
-# Add mate-system-monitor queue file for sbopkg
-mkdir -p $PKG/var/lib${LIBDIRSUFFIX}/sbopkg/queues
-cp -a $CWD/mate-system-monitor.sqf $PKG/var/lib${LIBDIRSUFFIX}/sbopkg/queues
 
 cd $PKG
 /sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
