@@ -62,6 +62,14 @@ for dir in \
   extra/mate-text-editor \
   extra/mate-netspeed \
   extra/mate-utils \
+  deps/libsigc++ \
+  deps/glibmm \
+  deps/cairomm \
+  deps/pangomm \
+  deps/atkmm \
+  deps/mm-common \
+  deps/gtkmm \
+  extra/mate-system-monitor \
   ; do
   # Get the package name
   package=$(echo $dir | cut -f2- -d /) 

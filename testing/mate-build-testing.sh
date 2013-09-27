@@ -40,7 +40,6 @@ for dir in \
   pam \
   pam_unix2 \
   mate-screensaver \
-  mate-system-monitor \
   mate-bluetooth \
   ; do
   # Get the package name
