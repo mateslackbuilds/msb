@@ -6,9 +6,6 @@ permits.  Working packages will be added to the 'mate-build-extra.sh' script.
 More packages may be added here over time.
 
 Note: gtksourceview in /deps (a dependency of mate-text-editor) has been
-downgraded from a development version in SlackBuilds.org.  If you are running
-Slackware 14.0, the gtksourceview from SBo is fine and you can remove
-gtksourceview from the list of packages to built in the mate-build-extra.sh
-script.  However, if you are running Slackware -current, then the
-gtksourceview from SBo won't build so you can use the one in the /deps
-directory.
+downgraded from a development version in SlackBuilds.org.  If you are running 
+Slackware -current or newer Slackware version than 14.0, then the gtksourceview 
+from SBo won't build so you can use the one in the /deps directory.

@@ -4,7 +4,7 @@ running processes on your system.  It also provides an overview of
 available resources such as CPU and memory
 
 mate-system-monitor requires these packages and they are provided 
-in extra/ as well :
+in deps/ as well :
 - libgtop
 - libsigc++
 - glibmm
