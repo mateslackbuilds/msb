@@ -1,0 +1,12 @@
+       |-----handy-ruler------------------------------------------------------|
+liboobs: liboobs (System Configuration Management)
+liboobs:
+liboobs: Liboobs is a wrapping library to the System Tools Backends, it will 
+liboobs: provide easy to access GObjects to system configuration details, 
+liboobs: like users, groups and network interfaces, it will handle sessions 
+liboobs: with the backend and data consistency too.
+liboobs: 
+liboobs:
+liboobs: Homepage: http://projects.gnome.org/gst/
+liboobs:
+liboobs:
