@@ -41,6 +41,11 @@ for dir in \
   pam_unix2 \
   mate-screensaver \
   mate-bluetooth \
+  perl-xml-twig \
+  perl-net-dbus \
+  system-tools-backends \
+  liboobs \
+  mate-system-tools \
   ; do
   # Get the package name
   package=$(echo $dir | cut -f2- -d /) 
