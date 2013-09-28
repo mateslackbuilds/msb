@@ -1,0 +1,118 @@
+--- Init/Services.pm.orig	2013-09-28 19:12:43.731064063 +0700
++++ Init/Services.pm	2013-09-28 20:04:03.569085970 +0700
+@@ -51,6 +51,8 @@
+      "pld-1.0"          => "redhat-6.2",
+      "vine-3.0"         => "redhat-6.2",
+      "slackware-9.1.0"  => "freebsd-5",
++     "slackware-14.0"   => "freebsd-5",
++     "slackware-14.1"   => "freebsd-5",
+      "gentoo"           => "gentoo",
+      "archlinux"        => "freebsd-5",
+      "freebsd-5"        => "freebsd-5",
+@@ -333,6 +335,8 @@
+      "vine-3.0"       => ["$gst_prefix/etc/rc.d", "$gst_prefix/etc/rc.d/init.d", "../init.d"],
+      "ark"            => ["$gst_prefix/etc/rc.d", "$gst_prefix/etc/rc.d/init.d", "../init.d"],
+      "solaris-2.11"   => ["$gst_prefix/etc",      "$gst_prefix/etc/init.d",      "../init.d"],
++     "slackware-14.0" => ["$gst_prefix/etc/rc.d", "$gst_prefix/etc/init.d",	 "../init.d"],
++     "slackware-14.1" => ["$gst_prefix/etc/rc.d", "$gst_prefix/etc/init.d", 	 "../init.d"]
+      );
+   my $res;
+ 
+--- Network/Hosts.pm.orig	2013-09-28 19:33:35.479961652 +0700
++++ Network/Hosts.pm	2013-09-28 19:36:59.012609330 +0700
+@@ -50,6 +50,8 @@
+     "vine-3.0"        => "redhat-6.2",
+     "ark"             => "redhat-6.2",
+     "slackware-9.1.0" => "suse-9.0",
++    "slackware-14.0"  => "suse-9.0",
++    "slackware-14.1"  => "suse-9.0",
+     "gentoo"          => "gentoo",
+     "freebsd-5"       => "freebsd-5",
+     "solaris-2.11"    => "solaris-2.11",
+--- Network/Ifaces.pm.orig	2013-09-28 19:33:40.688875647 +0700
++++ Network/Ifaces.pm	2013-09-28 19:37:54.336700937 +0700
+@@ -1997,6 +1997,8 @@
+     "vine-3.0"        => "vine-3.0",
+     "ark"             => "vine-3.0",
+     "slackware-9.1.0" => "slackware-9.1.0",
++    "slackware-14.0"  => "slackware-9.1.0",
++    "slackware-14.1"  => "slackware-9.1.0",
+     "gentoo"          => "gentoo",
+     "freebsd-5"       => "freebsd-5",
+     "solaris-2.11"    => "solaris-2.11",
+--- Shares/SMB.pm.orig	2013-09-28 19:39:08.739481143 +0700
++++ Shares/SMB.pm	2013-09-28 19:39:47.280850103 +0700
+@@ -139,6 +139,8 @@
+    "mandrake-9.0"    => "debian",
+    "suse-9.0"        => "debian",
+    "slackware-9.1.0" => "debian",
++   "slackware-14.0"  => "debian",
++   "slackware-14.1"  => "debian",
+    "gentoo"          => "debian",
+    "archlinux"       => "debian",
+    "pld-1.0"         => "pld-1.0",
+--- Time/NTP.pm.orig	2013-09-28 19:40:17.178360976 +0700
++++ Time/NTP.pm	2013-09-28 19:40:42.596945383 +0700
+@@ -37,6 +37,8 @@
+     "debian"          => "redhat-6.2",
+     "suse-9.0"        => "redhat-6.2",
+     "slackware-9.1.0" => "redhat-6.2",
++    "slackware-14.0"  => "redhat-6.2",
++    "slackware-14.1"  => "redhat-6.2",
+     "gentoo"          => "redhat-6.2",
+     "pld-1.0"         => "pld-1.0",
+     "vine-3.0"        => "redhat-6.2",
+--- Time/TimeDate.pm.orig	2013-09-28 19:41:06.297558094 +0700
++++ Time/TimeDate.pm	2013-09-28 20:05:18.313773259 +0700
+@@ -168,6 +168,8 @@
+    "mandrake-9.0"    => "redhat-6.2",
+    "suse-9.0"        => "redhat-6.2",
+    "slackware-9.1.0" => "redhat-6.2",
++   "slackware-14.0"  => "redhat-6.2",
++   "slackware-14.1"  => "redhat-6.2",
+    "gentoo"          => "redhat-6.2",
+    "archlinux"       => "archlinux",
+    "pld-1.0"         => "redhat-6.2",
+--- Users/Users.pm.orig	2013-09-28 19:41:36.448065711 +0700
++++ Users/Users.pm	2013-09-28 19:42:14.399446403 +0700
+@@ -251,6 +251,8 @@
+   'gentoo'	        => $gentoo_logindefs_defaults,
+   'archlinux'       => $gentoo_logindefs_defaults,
+   'slackware-9.1.0' => $gentoo_logindefs_defaults,
++  'slackware-14.0'  => $gentoo_logindefs_defaults,
++  'slackware-14.1'  => $gentoo_logindefs_defaults,
+   'freebsd-5'       => $freebsd_logindefs_defaults,
+   'suse-9.0'        => $gentoo_logindefs_defaults,
+   'solaris-2.11'    => $gentoo_logindefs_defaults,
+--- Utils/Platform.pm.orig	2013-09-28 19:42:39.319040037 +0700
++++ Utils/Platform.pm	2013-09-28 20:05:01.382070411 +0700
+@@ -61,12 +61,14 @@
+   "conectiva-10"    => [ "Conectiva Linux", "10", "" ],
+   "suse-9.0"        => [ "SuSE Linux", "9.0", "" ],
+   "suse-9.1"        => [ "SuSE Linux", "9.1", "" ],
+-  "slackware-9.1.0" => [ "Slackware", "9.1.0", "" ],
+-  "slackware-10.0.0" => [ "Slackware", "10.0.0", "" ],
+-  "slackware-10.1.0" => [ "Slackware", "10.1.0", "" ],
+-  "slackware-10.2.0" => [ "Slackware", "10.2.0", "" ],
+-  "slackware-11.0.0" => [ "Slackware", "11.0.0", "" ],
+-  "slackware-12.0.0" => [ "Slackware", "12.0.0", "" ],
++  "slackware-9.1" => [ "Slackware", "9.1", "" ],
++  "slackware-10.0" => [ "Slackware", "10.0", "" ],
++  "slackware-10.1" => [ "Slackware", "10.1", "" ],
++  "slackware-10.2" => [ "Slackware", "10.2", "" ],
++  "slackware-11.0" => [ "Slackware", "11.0", "" ],
++  "slackware-12.0" => [ "Slackware", "12.0", "" ],
++  "slackware-14.0" => [ "Slackware", "14.0", "" ],
++  "slackware-14.1" => [ "Slackware", "14.1", "" ],
+   "bluewhite64-12.0.0" => [ "Bluewhite64", "12.0.0", "" ],
+   "freebsd-4"       => [ "FreeBSD", "4", "" ],
+   "freebsd-5"       => [ "FreeBSD", "5", "" ],
+@@ -138,6 +140,8 @@
+      "slackware-10.2.0" => "slackware-9.1.0",
+      "slackware-11.0.0" => "slackware-9.1.0",
+      "slackware-12.0.0" => "slackware-9.1.0",
++     "slackware-14.0.0" => "slackware-9.1.0",
++     "slackware-14.1.0" => "slackware-9.1.0",
+      "bluewhite64-12.0.0" => "slackware-9.1.0",
+      "suse-9.1"         => "suse-9.0",
+      "vine-3.1"         => "vine-3.0",
