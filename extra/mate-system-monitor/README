@@ -3,15 +3,13 @@ This package allows you to graphically view and manipulate the
 running processes on your system.  It also provides an overview of 
 available resources such as CPU and memory
 
-mate-system-monitor requires libgtop, gtkmm, and glibmm
-
-gtkmm and glibmm are available on SlackBuilds Project (SBo)
-
-To make it easier, we have provided the queue file for sbopkg that
-can be used to automatically download, build, and install all 
-dependencies of mate-system-monitor.
-
-You will need to download sbopkg (http://sbopkg.org/), 
-create/update slackbuilds repo (sbopkg -r), move the queue file to 
-/var/lib/sbopkg/queue, load the mate-system-monitor queue 
-through sbopkg and start processing it.
+mate-system-monitor requires these packages and they are provided 
+in extra/ as well :
+- libgtop
+- libsigc++
+- glibmm
+- cairomm
+- pangomm
+- atkmm
+- mm-common
+- gtkmm
