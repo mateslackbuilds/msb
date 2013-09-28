@@ -1,0 +1,5 @@
+MATE System Tools package is a fork of GNOME System Tools package 
+and intended to simplify the tasks of configuring a Unix system  
+for workstations. They are not intended for configuring Unix servers.
+
+This requires: liboobs and system-tools-backends 
