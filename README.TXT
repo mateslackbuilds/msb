@@ -3,7 +3,7 @@ MATE SlackBuilds
 
 This project provides SlackBuild scripts to build and install the MATE desktop
 environment on Slackware (http://www.mate-desktop.org).  Please check the main
-project website at http://mateslackbuilds.github.com for screenshots and more
+project website at http://mateslackbuilds.github.io for screenshots and more
 information.  There is also a link to some MATE 1.6 binary packages for
 Slackware 14.0.
 

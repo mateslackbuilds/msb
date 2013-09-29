@@ -4,6 +4,7 @@
 # All rights reserved.
 #
 # Copyright 2013 Chess Griffin <chess.griffin@gmail.com> Raleigh, NC
+# Copyright 2013 Willy Sudiarto Raharjo <willysr@slackware-id.org>
 # All rights reserved.
 #
 # Based on the xfce-build-all.sh script by Patrick J. Volkerding
@@ -39,6 +40,9 @@ MSBROOT=$(pwd)
 for dir in \
   base/mate-common \
   deps/rarian \
+  deps/itstool \
+  deps/yelp-xsl \
+  deps/yelp-tools \
   base/mate-doc-utils \
   base/libmatekbd \
   base/libmateweather \
