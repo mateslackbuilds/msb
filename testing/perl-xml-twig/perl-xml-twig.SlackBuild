@@ -33,8 +33,6 @@ ARCH=noarch
 
 wget -c http://www.cpan.org/authors/id/M/MI/MIROD/$SRCNAM-$VERSION.tar.gz
 
-NUMJOBS=${NUMJOBS:-" -j8 "}
-
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
 PKG=$TMP/package-$PRGNAM
@@ -57,7 +55,7 @@ find . \
 
 perl Makefile.PL -y INSTALLDIRS=vendor
 
-make $NUMJOBS | make
+make
 make install DESTDIR=$PKG
 
 mv $PKG/usr/share/man $PKG/usr/
