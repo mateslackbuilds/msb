@@ -32,8 +32,6 @@ TAG=${TAG:-_msb}
 
 wget -c http://search.cpan.org/CPAN/authors/id/D/DA/DANBERR/$SRCNAM-$VERSION.tar.gz
 
-NUMJOBS=${NUMJOBS:-" -j8 "}
-
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
     i?86) ARCH=i486 ;;
@@ -81,7 +79,7 @@ perl Makefile.PL \
   PREFIX=/usr \
   INSTALLDIRS=vendor \
   INSTALLVENDORMAN3DIR=/usr/man/man3
-make $NUMJOBS | make
+make
 make test
 make install DESTDIR=$PKG
 
