@@ -16,7 +16,7 @@ to build from the stable branch which is MATE version 1.6, released on April
 2, 2013.  Checkout that branch using 'git checkout 1.6' to build from the
 stable MSB branch.
 
-The rest of this README.TXT is specific to building from the '1.6' branch.
+The rest of this README.TXT is specific to building from the 'master' branch.
 
 How to build and install the MATE packages using these scripts:
 
@@ -24,12 +24,12 @@ How to build and install the MATE packages using these scripts:
 
 2.  Run the 'mate-build-base.sh' in the msb root directory which will build
 and install all the base (required) packages, including necessary dependencies
-in the /deps directory.  There are a total of 24 packages and they do not
+in the /deps directory.  There are a total of 27 packages and they do not
 replace any stock Slackware packages. (If you are building on -current, then
-dconf is already included in Slackware so you do not need it here in the git
-repo -- see CURRENT.TXT).  The SlackBuilds will use wget to download the
-sources.  Or, you can also manually download the sources from:
-http://pub.mate-desktop.org/releases/1.6/ and the download locations for each
+dconf and itstool are already included in Slackware so you do not need them
+here in the git repo -- see CURRENT.TXT).  The SlackBuilds will use wget to 
+download the sources.  Or, you can also manually download the sources from:
+http://pub.mate-desktop.org/releases/1.7/ and the download locations for each
 dependency and put each source into the corresponding directory within 'base'
 and 'deps'.
 

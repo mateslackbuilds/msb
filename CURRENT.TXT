@@ -1,5 +1,12 @@
 The following is a list of notes on building MATE on Slackware -current:
 
+Fri Jul 19 15:34:10 UTC 2013
+Current MATE 1.7 development (future MATE 1.8) is replacing mate-doc-utils
+with yelp-tools.  This change requires yelp-tools and yelp-xsl to be added to
+deps/.  Both require itstool, which is already available on Slackware
+-current, so there is no need to build itstool if you are using Slackware
+-current. 
+
 Mon Jun 24 01:38:36 UTC 2013
 mate-media is reported to be broken on -current (but not on Slackware 14.0
 despite the same version is being used).  The fix for this issue is to use the
