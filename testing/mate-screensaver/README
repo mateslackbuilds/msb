@@ -2,4 +2,6 @@ mate-screensaver is a screensaver and screen locker that aims
 to have simple, sane, and secure defaults and be well integrated
 with the MATE desktop.
 
-mate-screensaver requires pam and pam_unix2 in order to lock the desktop
+mate-screensaver works normally without any dependencies (assuming you 
+have install all packages in /deps, /base, and /extra, but it requires 
+pam and pam_unix2 in order to lock the desktop
