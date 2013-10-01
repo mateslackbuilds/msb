@@ -40,12 +40,7 @@ MSBROOT=$(pwd)
 for dir in \
   pam \
   pam_unix2 \
-  mate-screensaver \
-  perl-xml-twig \
-  perl-net-dbus \
-  system-tools-backends \
-  liboobs \
-  mate-system-tools \
+  mate-screensaver \  
   ; do
   # Get the package name
   package=$(echo $dir | cut -f2- -d /) 

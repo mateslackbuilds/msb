@@ -72,6 +72,11 @@ for dir in \
   deps/gtkmm \
   extra/mate-system-monitor \
   extra/mate-bluetooth \
+  perl-xml-twig \
+  perl-net-dbus \
+  system-tools-backends \
+  liboobs \
+  mate-system-tools \
   ; do
   # Get the package name
   package=$(echo $dir | cut -f2- -d /) 
