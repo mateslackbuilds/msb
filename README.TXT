@@ -13,10 +13,10 @@ initial Git repo, you will be using 'master' branch which will build the
 development branch of MATE 1.7.  Building from the development branch is not
 supported and may or may not work at any given moment.  Most users will want
 to build from the stable branch which is MATE version 1.6, released on April
-2, 2013.  Checkout that branch using 'git checkout current-mate-1.6' to build 
+2, 2013.  Checkout that branch using 'git checkout 14.1-mate-1.6' to build 
 from the stable MSB branch.
 
-The rest of this README.TXT is specific to building from 'current-mate-1.6' branch.
+The rest of this README.TXT is specific to building from '14.1-mate-1.6' branch.
 
 How to build and install the MATE packages using these scripts:
 
