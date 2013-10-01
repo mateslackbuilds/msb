@@ -41,7 +41,6 @@ for dir in \
   pam \
   pam_unix2 \
   mate-screensaver \
-  mate-bluetooth \
   perl-xml-twig \
   perl-net-dbus \
   system-tools-backends \
