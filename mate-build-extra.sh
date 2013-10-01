@@ -72,10 +72,10 @@ for dir in \
   deps/gtkmm \
   extra/mate-system-monitor \
   extra/mate-bluetooth \
-  extra/perl-xml-twig \
-  extra/perl-net-dbus \
-  extra/system-tools-backends \
-  extra/liboobs \
+  deps/perl-xml-twig \
+  deps/perl-net-dbus \
+  deps/system-tools-backends \
+  deps/liboobs \
   extra/mate-system-tools \
   ; do
   # Get the package name
