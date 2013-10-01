@@ -71,6 +71,7 @@ for dir in \
   deps/mm-common \
   deps/gtkmm \
   extra/mate-system-monitor \
+  extra/mate-bluetooth \
   ; do
   # Get the package name
   package=$(echo $dir | cut -f2- -d /) 
