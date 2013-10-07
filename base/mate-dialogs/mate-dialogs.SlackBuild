@@ -83,7 +83,6 @@ CXXFLAGS="$SLKCFLAGS" \
   --localstatedir=/var \
   --mandir=/usr/man \
   --docdir=/usr/doc/$PRGNAM-$VERSION \
-  --disable-scrollkeeper \
   --build=$ARCH-slackware-linux
 
 make $NUMJOBS || make
@@ -124,10 +123,6 @@ ln -sf /usr/bin/matedialog $PKG/usr/bin/zenity
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
 cat $CWD/doinst.sh > $PKG/install/doinst.sh
-
-# Remove help files for now - until MATE upstream fixes help documentation
-# buttons and menus. Confirmed w/ upstream.
-find $PKG/usr/share/mate/help/matedialog/* -maxdepth 0 -type d ! -name C -exec rm -rf {} \;
 
 cd $PKG
 /sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
