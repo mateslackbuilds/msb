@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Slackware build script for mate-file-manager
+# Slackware build script for caja
 
 # Copyright 2013 Chess Griffin <chess.griffin@gmail.com> Raleigh, NC
 # Copyright 2013 Willy Sudiarto Raharjo <willysr@slackware-id.org>
@@ -23,8 +23,8 @@
 #  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-PRGNAM=mate-file-manager
-VERSION=${VERSION:-1.6.2}
+PRGNAM=caja
+VERSION=${VERSION:-1.7.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
@@ -36,7 +36,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c http://pub.mate-desktop.org/releases/1.6/$PRGNAM-$VERSION.tar.xz
+wget -c http://pub.mate-desktop.org/releases/1.7/$PRGNAM-$VERSION.tar.xz
 
 NUMJOBS=${NUMJOBS:-" -j8 "}
 

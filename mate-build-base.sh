@@ -50,7 +50,7 @@ for dir in \
   base/mate-dialogs \
   base/mate-desktop \
   deps/libunique \
-  base/mate-file-manager \
+  base/caja \
   base/libmatewnck \
   base/mate-notification-daemon \
   base/mate-backgrounds \
