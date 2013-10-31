@@ -1,0 +1,22 @@
+New Packages in MATE 1.8:
+caja-extensions
+yelp-tools
+yelp-xsl
+
+Renamed Packages in MATE 1.8:
+mate-file-manager -> caja
+mate-window-manager -> marco
+mate-document-viewer -> atril
+mate-image-viewer -> eom
+mate-file-archiver -> engrampa
+mate-menu-editor -> mozo
+mate-text-editor -> pluma
+
+Packages removed in MATE 1.8:
+mate-file-manager-gksu            \
+mate-file-manager-image-converter  \  merged into caja-extensions
+mate-file-manager-open-terminal    /
+mate-file-manager-sendto          /
+mate-keyring
+libmatekeyring
+mate-doc-utils
