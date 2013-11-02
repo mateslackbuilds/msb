@@ -40,7 +40,6 @@ MSBROOT=$(pwd)
 for dir in \
   base/mate-common \
   deps/rarian \
-  deps/itstool \
   deps/yelp-xsl \
   deps/yelp-tools \
   base/mate-doc-utils \
@@ -57,7 +56,6 @@ for dir in \
   base/mate-menus \
   base/mate-window-manager \
   base/mate-polkit \
-  deps/dconf \
   base/mate-settings-daemon \
   base/mate-control-center \
   base/mate-panel \
