@@ -45,13 +45,12 @@ for dir in \
   extra/mate-character-map \
   extra/mate-document-viewer \
   extra/mate-file-archiver \
-  extra/mate-file-manager-open-terminal \
-  extra/mate-file-manager-image-converter \
-  extra/mate-file-manager-sendto \
   deps/libgtop \
   deps/libgksu \
   deps/gksu \
-  extra/mate-file-manager-gksu \
+  deps/gssdp \
+  deps/gupnp \
+  extra/caja-extensions \
   extra/mate-icon-theme-faenza \
   extra/mate-image-viewer \
   extra/mate-media \
