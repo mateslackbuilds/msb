@@ -42,7 +42,6 @@ for dir in \
   deps/rarian \
   deps/yelp-xsl \
   deps/yelp-tools \
-  base/mate-doc-utils \
   base/libmatekbd \
   base/libmateweather \
   base/mate-icon-theme \
