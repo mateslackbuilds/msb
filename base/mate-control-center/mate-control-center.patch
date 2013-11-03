@@ -1,0 +1,231 @@
+--- libwindow-settings/mate-window-manager.h.orig	2013-11-03 07:04:25.843848462 +0700
++++ libwindow-settings/mate-window-manager.h	2013-11-03 07:04:55.886405072 +0700
+@@ -28,7 +28,7 @@
+ 
+ #include <glib-object.h>
+ 
+-#include <libmate/mate-desktop-item.h>
++#include <libmate-desktop/mate-desktop-item.h>
+ 
+ /* Increment if backward-incompatible changes are made, so we get a clean
+  * error. In principle the libtool versioning handles this, but
+--- capplets/common/mate-theme-info.c.orig	2013-11-03 07:08:21.792366747 +0700
++++ capplets/common/mate-theme-info.c	2013-11-03 07:08:27.610280913 +0700
+@@ -35,7 +35,7 @@
+ #include <gdk/gdkx.h>
+ #include <gio/gio.h>
+ #include <string.h>
+-#include <libmate/mate-desktop-item.h>
++#include <libmate-desktop/mate-desktop-item.h>
+ #include "mate-theme-info.h"
+ #include "gtkrc-utils.h"
+ 
+--- capplets/common/mate-theme-test.c.orig	2013-11-03 07:10:33.311426585 +0700
++++ capplets/common/mate-theme-test.c	2013-11-03 07:10:40.133325959 +0700
+@@ -1,7 +1,7 @@
+ #include <config.h>
+ #include <gtk/gtk.h>
+ #include <string.h>
+-#include <libmate/mate-desktop-item.h>
++#include <libmate-desktop/mate-desktop-item.h>
+ #include "mate-theme-info.h"
+ 
+ int
+--- capplets/appearance/appearance.h.orig	2013-11-03 07:12:08.465023127 +0700
++++ capplets/appearance/appearance.h	2013-11-03 07:12:23.062807836 +0700
+@@ -23,7 +23,7 @@
+ #include <glib.h>
+ #include <gtk/gtk.h>
+ #include <gio/gio.h>
+-#include <libmateui/mate-desktop-thumbnail.h>
++#include <libmate-desktop/mate-desktop-thumbnail.h>
+ 
+ #include "mate-theme-info.h"
+ 
+--- capplets/appearance/mate-wp-info.h.orig	2013-11-03 07:14:07.013276658 +0700
++++ capplets/appearance/mate-wp-info.h	2013-11-03 07:14:14.880160897 +0700
+@@ -22,7 +22,7 @@
+ #define _MATE_WP_INFO_H_
+ 
+ #include <glib.h>
+-#include <libmateui/mate-desktop-thumbnail.h>
++#include <libmate-desktop/mate-desktop-thumbnail.h>
+ 
+ typedef struct _MateWPInfo {
+ 	char* uri;
+--- capplets/appearance/mate-wp-item.h.orig	2013-11-03 07:15:24.911130421 +0700
++++ capplets/appearance/mate-wp-item.h	2013-11-03 07:15:31.609031867 +0700
+@@ -22,8 +22,8 @@
+ #include <gio/gio.h>
+ #include <gdk-pixbuf/gdk-pixbuf.h>
+ #include <gtk/gtk.h>
+-#include <libmateui/mate-desktop-thumbnail.h>
+-#include <libmateui/mate-bg.h>
++#include <libmate-desktop/mate-desktop-thumbnail.h>
++#include <libmate-desktop/mate-bg.h>
+ 
+ #include "mate-wp-info.h"
+ 
+--- capplets/appearance/appearance-desktop.c.orig	2013-11-03 07:16:51.752852642 +0700
++++ capplets/appearance/appearance-desktop.c	2013-11-03 07:17:05.028657309 +0700
+@@ -27,8 +27,8 @@
+ #include <glib/gi18n.h>
+ #include <gio/gio.h>
+ #include <string.h>
+-#include <libmateui/mate-desktop-thumbnail.h>
+-#include <libmateui/mate-bg.h>
++#include <libmate-desktop/mate-desktop-thumbnail.h>
++#include <libmate-desktop/mate-bg.h>
+ 
+ enum {
+ 	TARGET_URI_LIST,
+--- capplets/appearance/appearance-themes.c.orig	2013-11-03 07:18:19.896555772 +0700
++++ capplets/appearance/appearance-themes.c	2013-11-03 07:18:25.785469130 +0700
+@@ -30,7 +30,7 @@
+ #include <glib/gi18n.h>
+ #include <libwindow-settings/mate-wm-manager.h>
+ #include <string.h>
+-#include <libmateui/mate-desktop-thumbnail.h>
++#include <libmate-desktop/mate-desktop-thumbnail.h>
+ 
+ #define CUSTOM_THEME_NAME "__custom__"
+ 
+--- capplets/display/xrandr-capplet.c.orig	2013-11-03 07:22:33.093830809 +0700
++++ capplets/display/xrandr-capplet.c	2013-11-03 07:22:57.979464727 +0700
+@@ -27,9 +27,9 @@
+ #include <gtk/gtk.h>
+ #include "scrollarea.h"
+ #define MATE_DESKTOP_USE_UNSTABLE_API
+-#include <libmateui/mate-rr.h>
+-#include <libmateui/mate-rr-config.h>
+-#include <libmateui/mate-rr-labeler.h>
++#include <libmate-desktop/mate-rr.h>
++#include <libmate-desktop/mate-rr-config.h>
++#include <libmate-desktop/mate-rr-labeler.h>
+ #include <gdk/gdkx.h>
+ #include <X11/Xlib.h>
+ #include <glib/gi18n.h>
+--- capplets/about-me/mate-about-me.c.orig	2013-11-03 07:24:37.001008111 +0700
++++ capplets/about-me/mate-about-me.c	2013-11-03 07:24:41.961935138 +0700
+@@ -29,7 +29,7 @@
+ #include <dbus/dbus-glib-bindings.h>
+ 
+ #define MATE_DESKTOP_USE_UNSTABLE_API
+-#include <libmateui/mate-desktop-thumbnail.h>
++#include <libmate-desktop/mate-desktop-thumbnail.h>
+ 
+ #include "e-image-chooser.h"
+ #include "mate-about-me-password.h"
+--- libslab/app-resizer.c.orig	2013-11-03 07:26:58.714923618 +0700
++++ libslab/app-resizer.c	2013-11-03 07:27:10.173755074 +0700
+@@ -19,7 +19,7 @@
+  */
+ 
+ #include <gtk/gtk.h>
+-#include <libmate/mate-desktop-item.h>
++#include <libmate-desktop/mate-desktop-item.h>
+ 
+ #include "app-shell.h"
+ #include "app-resizer.h"
+--- libslab/app-shell.c.orig	2013-11-03 07:28:03.742967160 +0700
++++ libslab/app-shell.c	2013-11-03 07:28:09.973875514 +0700
+@@ -22,7 +22,7 @@
+ #include <config.h>
+ #endif
+ 
+-#include <libmate/mate-desktop-item.h>
++#include <libmate-desktop/mate-desktop-item.h>
+ #include <gio/gio.h>
+ #include <gdk/gdkkeysyms.h>
+ #include <sys/types.h>
+--- libslab/app-shell.h.orig	2013-11-03 07:28:46.420339461 +0700
++++ libslab/app-shell.h	2013-11-03 07:29:40.335546495 +0700
+@@ -26,7 +26,7 @@
+ #include <gio/gio.h>
+ #define MATEMENU_I_KNOW_THIS_IS_UNSTABLE
+ #include <matemenu-tree.h>
+-#include <libmate/mate-desktop-item.h>
++#include <libmate-desktop/mate-desktop-item.h>
+ 
+ #include <libslab/slab-section.h>
+ #include <libslab/tile.h>
+--- libslab/application-tile.h.orig	2013-11-03 07:30:24.104902766 +0700
++++ libslab/application-tile.h	2013-11-03 07:30:29.687820657 +0700
+@@ -23,7 +23,7 @@
+ 
+ #include <libslab/nameplate-tile.h>
+ 
+-#include <libmate/mate-desktop-item.h>
++#include <libmate-desktop/mate-desktop-item.h>
+ 
+ #ifdef __cplusplus
+ extern "C" {
+--- libslab/libslab-utils.h.orig	2013-11-03 07:31:12.736187548 +0700
++++ libslab/libslab-utils.h	2013-11-03 07:31:18.842097749 +0700
+@@ -3,9 +3,9 @@
+ 
+ #include <glib.h>
+ #include <gtk/gtk.h>
+-#include <libmate/mate-desktop-item.h>
++#include <libmate-desktop/mate-desktop-item.h>
+ #define MATE_DESKTOP_USE_UNSTABLE_API 1
+-#include <libmateui/mate-desktop-thumbnail.h>
++#include <libmate-desktop/mate-desktop-thumbnail.h>
+ 
+ #ifdef __cplusplus
+ extern "C" {
+--- libslab/mate-utils.h.orig	2013-11-03 07:32:25.420118618 +0700
++++ libslab/mate-utils.h	2013-11-03 07:32:31.178033942 +0700
+@@ -22,7 +22,7 @@
+ #define __MATE_UTILS_H__
+ 
+ #include <gtk/gtk.h>
+-#include <libmate/mate-desktop-item.h>
++#include <libmate-desktop/mate-desktop-item.h>
+ 
+ #ifdef __cplusplus
+ extern "C" {
+--- libslab/shell-window.h.orig	2013-11-03 07:33:09.101476233 +0700
++++ libslab/shell-window.h	2013-11-03 07:33:14.524396484 +0700
+@@ -23,7 +23,7 @@
+ 
+ #include <glib.h>
+ #include <gtk/gtk.h>
+-#include <libmate/mate-desktop-item.h>
++#include <libmate-desktop/mate-desktop-item.h>
+ 
+ #include <libslab/app-shell.h>
+ 
+--- libslab/slab-mate-util.h.orig	2013-11-03 07:33:44.289958756 +0700
++++ libslab/slab-mate-util.h	2013-11-03 07:33:48.997889522 +0700
+@@ -23,7 +23,7 @@
+ 
+ #include <glib.h>
+ #include <gtk/gtk.h>
+-#include <libmate/mate-desktop-item.h>
++#include <libmate-desktop/mate-desktop-item.h>
+ 
+ #ifdef __cplusplus
+ extern "C" {
+--- libslab/system-tile.h.orig	2013-11-03 07:34:30.880273617 +0700
++++ libslab/system-tile.h	2013-11-03 07:34:35.897199841 +0700
+@@ -23,7 +23,7 @@
+ 
+ #include <libslab/nameplate-tile.h>
+ 
+-#include <libmate/mate-desktop-item.h>
++#include <libmate-desktop/mate-desktop-item.h>
+ 
+ #ifdef __cplusplus
+ extern "C" {
+--- shell/control-center.c.orig	2013-11-03 07:36:12.836774336 +0700
++++ shell/control-center.c	2013-11-03 07:36:20.366663611 +0700
+@@ -23,7 +23,7 @@
+ #include <glib/gi18n.h>
+ #include <gtk/gtk.h>
+ #include <gio/gio.h>
+-#include <libmate/mate-desktop-item.h>
++#include <libmate-desktop/mate-desktop-item.h>
+ #include <unique/unique.h>
+ 
+ #include <libslab/slab.h>
