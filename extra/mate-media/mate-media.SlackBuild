@@ -25,7 +25,7 @@
 
 PRGNAM=mate-media
 VERSION=${VERSION:-1.6.0}
-BUILD=${BUILD:-2}
+BUILD=${BUILD:-3}
 TAG=${TAG:-_msb}
 
 if [ -z "$ARCH" ]; then
@@ -74,6 +74,9 @@ find . \
  \( -perm 666 -o -perm 664 -o -perm 600 -o -perm 444 -o -perm 440 -o -perm 400 \) \
  -exec chmod 644 {} \;
 
+# Upstream patch to make mate-media buildable for Slackware 14.1
+patch -p0 < $CWD/mate-media-build.patch
+
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
 ./autogen.sh \
@@ -85,7 +88,7 @@ CXXFLAGS="$SLKCFLAGS" \
   --docdir=/usr/doc/$PRGNAM-$VERSION \
   --disable-pulseaudio \
   --disable-scrollkeeper \
-  --disable-gstmix \
+  --enable-gstmix \
   --enable-gst-mixer-applet \
   --build=$ARCH-slackware-linux
 
