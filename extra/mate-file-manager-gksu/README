@@ -1,7 +1,0 @@
-mate-file-manager-gksu provides front-end for su command and
-administrative access to specific users
-
-compile time requirement: libgksu from deps
-run time requirement: gksu from deps
-
-Don't forget to logout and log in again to see this extension on caja

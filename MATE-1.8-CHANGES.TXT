@@ -1,4 +1,6 @@
 New Packages in MATE 1.8:
+gssdp
+gupnp
 caja-extensions
 yelp-tools
 yelp-xsl

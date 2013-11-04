@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Slackware build script for mate-file-manager-sendto
+# Slackware build script for gupnp
 
 # Copyright 2013 Willy Sudiarto Raharjo <willysr@slackware-id.org>
 # All rights reserved.
@@ -22,8 +22,8 @@
 #  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-PRGNAM=mate-file-manager-sendto
-VERSION=${VERSION:-1.6.0}
+PRGNAM=gupnp
+VERSION=${VERSION:-0.20.8}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
@@ -35,7 +35,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c http://pub.mate-desktop.org/releases/1.6/$PRGNAM-$VERSION.tar.xz
+wget -c http://ftp.gnome.org/pub/GNOME/sources/gupnp/0.20/$PRGNAM-$VERSION.tar.xz
 
 NUMJOBS=${NUMJOBS:-" -j8 "}
 
@@ -75,16 +75,17 @@ find . \
 
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
-./autogen.sh \
+./configure \
   --prefix=/usr \
   --libdir=/usr/lib${LIBDIRSUFFIX} \
   --sysconfdir=/etc \
   --localstatedir=/var \
   --mandir=/usr/man \
   --docdir=/usr/doc/$PRGNAM-$VERSION \
+  --enable-introspection=yes \
   --build=$ARCH-slackware-linux
 
-make $NUMJOBS || make
+make
 make install DESTDIR=$PKG
 
 find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | grep ELF \
@@ -107,7 +108,7 @@ fi
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a \
-  AUTHORS COPYING ChangeLog NEWS README \
+  AUTHORS COPYING INSTALL NEWS README doc/html/* \
   $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 find $PKG/usr/doc/$PRGNAM-$VERSION/ -type f -exec chmod 644 {} \;
@@ -115,7 +116,6 @@ chown -R root:root $PKG/usr/doc/$PRGNAM-$VERSION
 
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
-cat $CWD/doinst.sh > $PKG/install/doinst.sh
 
 cd $PKG
 /sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}

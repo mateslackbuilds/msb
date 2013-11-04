@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Slackware build script for mate-file-manager-image-converter
+# Slackware build script for gssdp
 
 # Copyright 2013 Willy Sudiarto Raharjo <willysr@slackware-id.org>
 # All rights reserved.
@@ -22,8 +22,8 @@
 #  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-PRGNAM=mate-file-manager-image-converter
-VERSION=${VERSION:-1.6.0}
+PRGNAM=gssdp
+VERSION=${VERSION:-0.14.6}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
@@ -35,7 +35,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c http://pub.mate-desktop.org/releases/1.6/$PRGNAM-$VERSION.tar.xz
+wget -c http://ftp.acc.umu.se/pub/GNOME/sources/gssdp/0.14/$PRGNAM-$VERSION.tar.xz
 
 NUMJOBS=${NUMJOBS:-" -j8 "}
 
@@ -75,13 +75,14 @@ find . \
 
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
-./autogen.sh \
+./configure \
   --prefix=/usr \
   --libdir=/usr/lib${LIBDIRSUFFIX} \
   --sysconfdir=/etc \
   --localstatedir=/var \
   --mandir=/usr/man \
   --docdir=/usr/doc/$PRGNAM-$VERSION \
+  --enable-introspection=yes \
   --build=$ARCH-slackware-linux
 
 make
@@ -107,7 +108,7 @@ fi
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a \
-  AUTHORS COPYING ChangeLog INSTALL NEWS README \
+  AUTHORS COPYING INSTALL NEWS README doc/html/* \
   $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 find $PKG/usr/doc/$PRGNAM-$VERSION/ -type f -exec chmod 644 {} \;
