@@ -88,6 +88,7 @@ CXXFLAGS="$SLKCFLAGS" \
   --docdir=/usr/doc/$PRGNAM-$VERSION \
   --disable-pulseaudio \
   --disable-scrollkeeper \
+  --enable-deprecated \
   --enable-gstmix \
   --enable-gst-mixer-applet \
   --build=$ARCH-slackware-linux
