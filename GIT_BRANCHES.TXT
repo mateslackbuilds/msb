@@ -16,8 +16,8 @@ Currently, there are three branches in the MSB GIT repository:
   This is the previously supported branch and only receives bug fix updates.
   The MSB binary packages for Slackware 14.0 are built from this branch.  
   You might want to use this branch if you enjoy stable releases.
-  Once Slackware 14.1 gets declared the next stable release then
-  this branch will be obsoleted and no longer updated.
+  Since Slackware 14.1 has been declared the next stable release then
+  this branch is obsoleted and no longer updated.
 
 - 14.1-mate-1.6:  The MSB stable branch for Slackware 14.1.  
   This is the supported branch and only receives bug fix updates.  
