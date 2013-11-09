@@ -59,7 +59,7 @@ for dir in \
   extra/mate-sensors-applet \
   extra/mate-terminal \
   deps/gtksourceview \
-  extra/mate-text-editor \
+  extra/pluma \
   extra/mate-netspeed \
   extra/mate-utils \
   deps/libsigc++ \
