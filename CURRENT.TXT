@@ -1,5 +1,16 @@
 The following is a list of notes on building MATE on Slackware -current:
 
+Fri Nov 15 18:59:46 UTC 2013
+The following packages are now available since Slackware 14.1:
+- dconf
+- itstool
+Thus, it's no longer needed in the deps directory anymore.
+if you are using the mate-build-base.sh script, then please edit that
+script and remove this lines:
+
+deps/dconf \
+deps/itstool \
+
 Fri Jul 19 15:34:10 UTC 2013
 Current MATE 1.7 development (future MATE 1.8) is replacing mate-doc-utils
 with yelp-tools.  This change requires yelp-tools and yelp-xsl to be added to
@@ -18,24 +29,3 @@ xdg-mime default caja-folder-handler.desktop application/x-directory
 
 please make a backup of your $HOME/.local/share/applications/defaults.list
 before executing the above commands
-
-Mon May 20 21:01:33 UTC 2013
-Pat just added itstool to Slackware-current. if you are building MATE on
--current with Pat's new itstool installed, you shouldn't need to build the 
-itstool package in the MATE SlackBuild repository.  And if you are using the
-mate-build-base.sh script, then please edit that script and remove this line:
-
-deps/itstool \
-
-And then proceed with running the script.  Please report any issues.  Thanks!
-
-Sun Mar 24 04:48:35 UTC 2013
-Pat just added dconf to Slackware -current and dconf is included as a
-dependency package in the /base directory.  So, if you are building MATE on
--current with Pat's new dconf installed, you shouldn't need to build the dconf
-package in the MATE SlackBuild repository.  And if you are using the
-mate-build-base.sh script, then please edit that script and remove this line:
-
-deps/dconf \
-
-And then proceed with running the script.  Please report any issues.  Thanks!
