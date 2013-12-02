@@ -112,6 +112,11 @@ if [ -d $PKG/usr/man ]; then
   )
 fi
 
+if [ "$ARCH" = "x86_64" ]; then
+  mkdir -p /usr/lib/libgksu
+  ln -sf $PKG/usr/lib${LIBDIRSUFFIX}/libgksu/gksu-run-helper /usr/lib/libgksu/gksu-run-helper
+fi
+
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a \
   ABOUT-NLS AUTHORS COPYING ChangeLog INSTALL \
