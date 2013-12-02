@@ -24,7 +24,7 @@
 
 PRGNAM=libgksu
 VERSION=${VERSION:-2.0.12}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-2}
 TAG=${TAG:-_msb}
 
 if [ -z "$ARCH" ]; then
@@ -74,6 +74,9 @@ find . \
  -exec chmod 644 {} \;
 
 patch -p1 < $CWD/libgksu-format.patch
+patch -p1 < $CWD/libgksu-2.0.0-fbsd.patch
+patch -p1 < $CWD/libgksu-2.0.7-libs.patch
+patch -p1 < $CWD/libgksu-2.0.12-automake-1.11.2.patch
 
 LDFLAGS="-lgtk" \
 CFLAGS="$SLKCFLAGS" \
