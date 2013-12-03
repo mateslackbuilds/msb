@@ -24,7 +24,7 @@
 
 PRGNAM=libgksu
 VERSION=${VERSION:-2.0.12}
-BUILD=${BUILD:-2}
+BUILD=${BUILD:-3}
 TAG=${TAG:-_msb}
 
 if [ -z "$ARCH" ]; then
@@ -114,7 +114,9 @@ fi
 
 if [ "$ARCH" = "x86_64" ]; then
   mkdir -p /usr/lib/libgksu
-  ln -sf $PKG/usr/lib${LIBDIRSUFFIX}/libgksu/gksu-run-helper /usr/lib/libgksu/gksu-run-helper
+  (
+    ln -sf /usr/lib${LIBDIRSUFFIX}/libgksu/gksu-run-helper /usr/lib/libgksu/gksu-run-helper
+  )
 fi
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
