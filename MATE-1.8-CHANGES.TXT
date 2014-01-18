@@ -4,6 +4,7 @@ gupnp
 caja-extensions
 yelp-tools
 yelp-xsl
+pygtksourceview
 
 Renamed Packages in MATE 1.8:
 mate-file-manager -> caja
