@@ -1,9 +1,9 @@
 #!/bin/sh
 
-# Slackware build script for mate-document-viewer
+# Slackware build script for atril
 
 # Copyright 2013 Chess Griffin <chess.griffin@gmail.com> Raleigh, NC
-# Copyright 2013 Willy Sudiarto Raharjo <willysr@slackware-id.org>
+# Copyright 2013-2014 Willy Sudiarto Raharjo <willysr@slackware-id.org>
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -23,8 +23,8 @@
 #  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-PRGNAM=mate-document-viewer
-VERSION=${VERSION:-1.6.1}
+PRGNAM=atril
+VERSION=${VERSION:-1.7.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
@@ -36,7 +36,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c http://pub.mate-desktop.org/releases/1.6/$PRGNAM-$VERSION.tar.xz
+wget -c http://pub.mate-desktop.org/releases/1.7/$PRGNAM-$VERSION.tar.xz
 
 NUMJOBS=${NUMJOBS:-" -j8 "}
 
@@ -83,7 +83,6 @@ CXXFLAGS="$SLKCFLAGS" \
   --localstatedir=/var \
   --mandir=/usr/man \
   --docdir=/usr/doc/$PRGNAM-$VERSION \
-  --disable-scrollkeeper \
   --disable-static \
   --build=$ARCH-slackware-linux
 
@@ -123,11 +122,6 @@ chown -R root:root $PKG/usr/doc/$PRGNAM-$VERSION
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
 cat $CWD/doinst.sh > $PKG/install/doinst.sh
-
-# Remove help files for now - until MATE upstream fixes help documentation
-# buttons and menus. Confirmed /w upstream.
-find $PKG/usr/share/mate/help/atril/* -maxdepth 0 -type d ! -name C -exec rm -rf {} \;
-rm -rf $PKG/usr/share/doc/mate/atril/*
 
 cd $PKG
 /sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
