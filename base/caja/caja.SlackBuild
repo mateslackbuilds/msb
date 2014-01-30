@@ -75,7 +75,7 @@ find -L . \
  -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
 
 # Adding --sync parameter in caja.desktop
-sed -i 's/Exec=caja -n/Exec=caja --sync/' data/caja.desktop.in.in
+sed -i 's/Exec=caja/Exec=caja --sync/' data/caja.desktop.in.in
 
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
