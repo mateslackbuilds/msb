@@ -43,7 +43,7 @@ for dir in \
   extra/mate-applets \
   extra/mate-calc \
   extra/mate-character-map \
-  extra/mate-document-viewer \
+  extra/atril \
   extra/mate-file-archiver \
   deps/libgtop \
   deps/libgksu \
