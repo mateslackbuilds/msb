@@ -23,7 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=caja-extensions
-VERSION=${VERSION:-1.7.1}
+VERSION=${VERSION:-1.7.2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
@@ -86,7 +86,7 @@ CXXFLAGS="$SLKCFLAGS" \
   --enable-image-converter \
   --enable-open-terminal \
   --enable-sendto \
-  --enable-gksu \
+  --disable-gksu \
   --enable-share \
   --build=$ARCH-slackware-linux
 
