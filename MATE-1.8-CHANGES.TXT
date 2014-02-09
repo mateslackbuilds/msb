@@ -24,3 +24,5 @@ mate-keyring
 libmatekeyring
 mate-doc-utils
 libmatewnck
+gksu
+libgksu
