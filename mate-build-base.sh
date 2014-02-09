@@ -52,7 +52,7 @@ for dir in \
   base/mate-notification-daemon \
   base/mate-backgrounds \
   base/mate-menus \
-  base/mate-window-manager \
+  base/marco \
   base/mate-polkit \
   base/mate-settings-daemon \
   base/mate-control-center \
