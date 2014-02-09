@@ -44,7 +44,7 @@ for dir in \
   extra/mate-calc \
   extra/mate-character-map \
   extra/atril \
-  extra/mate-file-archiver \
+  extra/engrampa \
   deps/libgtop \
   deps/libgksu \
   deps/gksu \
