@@ -49,7 +49,6 @@ for dir in \
   base/mate-desktop \
   deps/libunique \
   base/caja \
-  base/libmatewnck \
   base/mate-notification-daemon \
   base/mate-backgrounds \
   base/mate-menus \
