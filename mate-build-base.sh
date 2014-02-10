@@ -48,6 +48,7 @@ for dir in \
   base/mate-dialogs \
   base/mate-desktop \
   deps/libunique \
+  deps/pangox-compat \
   base/caja \
   base/mate-notification-daemon \
   base/mate-backgrounds \
