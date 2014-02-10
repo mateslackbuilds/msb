@@ -50,7 +50,7 @@ for dir in \
   deps/gupnp \
   extra/caja-extensions \
   extra/mate-icon-theme-faenza \
-  extra/mate-image-viewer \
+  extra/eom \
   extra/mate-media \
   extra/mate-menu-editor \
   extra/mate-power-manager \
