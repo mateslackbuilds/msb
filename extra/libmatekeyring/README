@@ -1,3 +1,0 @@
-Both libmatekeyring and mate-keyring build and install fine but I believe they
-are unnecessary since it looks like MATE can hook into gnome-keyring which is
-installed by default in Slackware.  But, I'm leaving them here just in case.
