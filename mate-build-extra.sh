@@ -51,7 +51,7 @@ for dir in \
   extra/mate-icon-theme-faenza \
   extra/eom \
   extra/mate-media \
-  extra/mate-menu-editor \
+  extra/mozo \
   extra/mate-power-manager \
   extra/mate-sensors-applet \
   extra/mate-terminal \
