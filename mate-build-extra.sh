@@ -42,7 +42,6 @@ for dir in \
   extra/mate-keyring \
   extra/mate-applets \
   extra/mate-calc \
-  extra/mate-character-map \
   extra/atril \
   extra/engrampa \
   deps/libgtop \
