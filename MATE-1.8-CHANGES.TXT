@@ -21,9 +21,10 @@ mate-file-manager-gksu            \
 mate-file-manager-image-converter  \  merged into caja-extensions
 mate-file-manager-open-terminal    /
 mate-file-manager-sendto          /
-mate-keyring
-libmatekeyring
-mate-doc-utils
-libmatewnck
-gksu
-libgksu
+mate-keyring (replaced by gnome-keyring)
+libmatekeyring (replaced by libsecret)
+mate-doc-utils (replaced by yelp-tools)
+libmatewnck (replaced by libwnck)
+gksu (no longer working)
+libgksu (no longer working)
+mate-character-map (replaced by gucharmap)
