@@ -6,6 +6,7 @@ yelp-tools
 yelp-xsl
 pygtksourceview
 pangox-compat
+pygobject3
 
 Renamed Packages in MATE 1.8:
 mate-file-manager -> caja

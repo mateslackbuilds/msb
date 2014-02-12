@@ -38,6 +38,7 @@ MSBROOT=$(pwd)
 
 # Loop for all packages
 for dir in \
+  deps/pygobject3 \
   extra/mate-applets \
   extra/mate-calc \
   extra/atril \
