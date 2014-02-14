@@ -1,0 +1,6 @@
+gksu is a Gtk+ frontend to su and sudo
+
+This requires libgksu in deps/ directory
+
+See notes in KNOWN_ISSUES.TXT for more information how to 
+make gksu work in Slackware 14.1
