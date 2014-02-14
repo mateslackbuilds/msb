@@ -44,6 +44,7 @@ for dir in \
   extra/atril \
   extra/engrampa \
   deps/libgtop \
+  deps/libgksu \
   deps/gssdp \
   deps/gupnp \
   extra/caja-extensions \
