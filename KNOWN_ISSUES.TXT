@@ -1,5 +1,31 @@
 The following is a list of known issues with MATE on Slackware:
 
+Fri Feb 14 12:11:22 UTC 2014
+By default, gksu will not work in Slackware 14.1 since shadow has been patched
+to fix security vulnerabilities, but this caused gksu to be broken.
+See this thread on LQ for more information
+http://www.linuxquestions.org/questions/slackware-14/%5Bslackware-14-1%5D-su-c-tty-hijacking-and-some-breakage-4175486942/
+
+The solution for this problem is easy, but since it's not yet applied upstream,
+we provided a simple fix from Mancha to fix this problem.
+
+Download the shadow source from Slackware mirror site such as
+http://slackware.osuosl.org/slackware-14.1/source/a/shadow/
+or
+http://slackware.osuosl.org/slackware64-14.1/source/a/shadow/
+
+and also a patch included in testing/shadow and put it on the same folder.
+Edit the shadow.SlackBuild and add this line
+patch -p1 --verbose < $CWD/shadow-4.1.5.1_CVE-2005-4890_relax.diff || exit 1
+
+before configure line and rebuild shadow package.
+You can upgrade to the modified version by running:
+upgradepkg /tmp/shadow-4.1.5.1-i486-2.tgz
+or
+upgradepkg /tmp/shadow-4.1.5.1-x86_64-2.tgz
+
+After upgrading to the modified version, gksu will work normally.
+
 Fri Feb 14 11:02:15 UTC 2014
 If you are encountering problems with multiple Caja instances during loading
 the MATE desktop, change this line in /usr/share/applications/caja.desktop
@@ -17,15 +43,6 @@ and rebuild caja again.
 
 However, doing this will break gksu module in caja-extensions, so you can not
 run applications using root account from caja's context menu anymore.
-
-Tue Dec  3 12:12:18 UTC 2013
-libgksu doesn't work anymore on Slackware 14.1 (and eventually -Current).
-Possible workaround is to switch to root user using normal "su -" command.
-
-Note:
-We don't think there will be a solution for this problem as gksu and libgksu
-are no longer maintained upstream. We will probably drop this in future
-releases. This will also effect caja-extensions which has gksu modules in it.
 
 Mon Jun 10 03:09:28 UTC 2013
 If you are encountering problems with Caja (MATE's file manager) opening
@@ -66,11 +83,6 @@ please consider backing up or clearing out some of the hidden directories in
 your $HOME, like $HOME/.config and $HOME/.cache and $HOME/.local.  If you
 switch back and forth between different desktop environments, sometimes those
 settings can get polluted.
-
-Fri Mar 22 16:44:59 UTC 2013
-Help menus and help buttons do not work -- this is a known issue per a MATE
-upstream developer and scheduled to be fixed at some point but not in the next
-release (1.6).
 
 Fri Mar 22 16:43:36 UTC 2013
 Working to determine whether mate-polkit is necessary.  According to upstream,
