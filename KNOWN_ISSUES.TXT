@@ -1,5 +1,23 @@
 The following is a list of known issues with MATE on Slackware:
 
+Fri Feb 14 11:02:15 UTC 2014
+If you are encountering problems with multiple Caja instances during loading
+the MATE desktop, change this line in /usr/share/applications/caja.desktop
+Exec=caja
+
+into
+
+Exec=caja --sync
+
+OR
+
+edit the caja.SlackBuild script and uncomment this line
+#sed -i 's/Exec=caja/Exec=caja --sync/' data/caja.desktop.in.in
+and rebuild caja again.
+
+However, doing this will break gksu module in caja-extensions, so you can not
+run applications using root account from caja's context menu anymore.
+
 Tue Dec  3 12:12:18 UTC 2013
 libgksu doesn't work anymore on Slackware 14.1 (and eventually -Current).
 Possible workaround is to switch to root user using normal "su -" command.
