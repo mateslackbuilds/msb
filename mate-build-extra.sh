@@ -75,6 +75,7 @@ for dir in \
   deps/system-tools-backends \
   deps/liboobs \
   extra/mate-system-tools \
+  extra/gnome-main-menu \
   ; do
   # Get the package name
   package=$(echo $dir | cut -f2- -d /) 
