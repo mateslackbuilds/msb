@@ -1,0 +1,56 @@
+MATE 1.6 to 1.8 Upgrade HOWTO  <willysr@slackware-id.org>
+
+This document explains how to upgrade from MATE 1.6 to 1.8 in Slackware 14.1.
+
+----------------------------------------------------------------------------
+
+Before you begin, I would strongly recommend making a backup of your
+system, or, if not the entire system, at least the /etc and your home directory.
+You might find that you need to refer to a few things after the upgrade
+process is complete. Back it up, or take your chances.
+
+OK, now that everything is safely backed up, let's proceed. :-)
+
+To do this, you'll need the MATE 1.8 packages ready in your local system. Grab it
+from official repository at http://www.slackware.org.uk/msb/ or any other mirror sites.
+
+0.  log out from MATE Desktop
+
+1.  Upgrade/Install all new packages from MATE 1.8
+
+    upgradepkg --install-new --reinstall /path/to/base/*.txz
+    upgradepkg --install-new --reinstall /path/to/extra/*.txz
+
+2.  Remove obsolete packages
+    
+    removepkg mate-file-manager-gksu 
+    removepkg mate-file-manager-image-converter
+    removepkg mate-file-manager-open-terminal
+    removepkg mate-file-manager-sendto
+    removepkg mate-keyring
+    removepkg libmatekeyring
+    removepkg mate-doc-utils
+    removepkg libmatewnck
+    removepkg mate-character-map
+
+3.  Remove renamed packages
+    removepkg mate-file-manager
+    removepkg mate-window-manager
+    removepkg mate-document-viewer
+    removepkg mate-image-viewer
+    removepkg mate-file-archiver
+    removepkg mate-menu-editor
+    removepkg mate-text-editor
+
+    You will notice that some of the files are found on other packages and it will not be deleted.
+    That's fine, since these packages gets a new name on MATE 1.8 (see MATE-1.8-CHANGES.TXT).
+
+At this point you should be running MATE 1.8 on Slackware 14.1.  :-)
+
+I wish everyone good luck with this!
+
+---
+Chess Griffin
+Willy Sudiarto Raharjo
+
+
