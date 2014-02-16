@@ -38,8 +38,7 @@ MSBROOT=$(pwd)
 
 # Loop for all packages
 for dir in \
-  pam \
-  pam_unix2 \
+  yelp \
   ; do
   # Get the package name
   package=$(echo $dir | cut -f2- -d /) 
