@@ -34,6 +34,7 @@ from official repository at http://www.slackware.org.uk/msb/ or any other mirror
     removepkg mate-character-map
 
 3.  Remove renamed packages
+
     removepkg mate-file-manager
     removepkg mate-window-manager
     removepkg mate-document-viewer
@@ -44,6 +45,16 @@ from official repository at http://www.slackware.org.uk/msb/ or any other mirror
 
     You will notice that some of the files are found on other packages and it will not be deleted.
     That's fine, since these packages gets a new name on MATE 1.8 (see MATE-1.8-CHANGES.TXT).
+
+4.  Remove PAM-related packages (optional)
+
+    If you happened to install pam/pam_unix2 packages in MATE 1.6 to get mate-screensaver working
+    for desktop locking feature, you will be glad to know that mate-screensaver is now moved to
+    extra and without the need of pam and pam_unix2 libraries anymore.
+    So these two packages can be safely deleted.
+
+    removepkg pam
+    removepkg pam_unix2
 
 At this point you should be running MATE 1.8 on Slackware 14.1.  :-)
 

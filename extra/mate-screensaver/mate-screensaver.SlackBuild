@@ -25,7 +25,7 @@
 
 PRGNAM=mate-screensaver
 VERSION=${VERSION:-1.7.1}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-2}
 TAG=${TAG:-_msb}
 
 if [ -z "$ARCH" ]; then
@@ -115,8 +115,8 @@ cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 find $PKG/usr/doc/$PRGNAM-$VERSION/ -type f -exec chmod 644 {} \;
 chown -R root:root $PKG/usr/doc/$PRGNAM-$VERSION
 
-mkdir -p $PKG/etc/pam.d/
-install -m644 $CWD/mate-screensaver.pam $PKG/etc/pam.d/mate-screensaver
+# use setuid to make this work without PAM
+chmod 4755 $PKG/usr/libexec/mate-screensaver-dialog
 
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc

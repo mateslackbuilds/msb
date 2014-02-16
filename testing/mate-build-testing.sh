@@ -40,7 +40,6 @@ MSBROOT=$(pwd)
 for dir in \
   pam \
   pam_unix2 \
-  mate-screensaver \  
   ; do
   # Get the package name
   package=$(echo $dir | cut -f2- -d /) 
@@ -74,4 +73,4 @@ for dir in \
   
   # back to original directory
   cd $MSBROOT
-done  
+done

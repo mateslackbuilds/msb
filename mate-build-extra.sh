@@ -76,6 +76,7 @@ for dir in \
   deps/liboobs \
   extra/mate-system-tools \
   extra/gnome-main-menu \
+  extra/mate-screensaver \
   ; do
   # Get the package name
   package=$(echo $dir | cut -f2- -d /) 
