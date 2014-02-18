@@ -24,8 +24,8 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=mate-panel
-VERSION=${VERSION:-1.7.2}
-BUILD=${BUILD:-2}
+VERSION=${VERSION:-1.7.90}
+BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
 if [ -z "$ARCH" ]; then
@@ -86,6 +86,7 @@ CXXFLAGS="$SLKCFLAGS" \
   --disable-static \
   --libexecdir=/usr/lib${LIBDIRSUFFIX}/mate-panel \
   --enable-introspection \
+  --without-help-dir \
   --build=$ARCH-slackware-linux
 
 make $NUMJOBS || make
