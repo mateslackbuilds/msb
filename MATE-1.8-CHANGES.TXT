@@ -29,3 +29,7 @@ libmatekeyring (replaced by libsecret)
 mate-doc-utils (replaced by yelp-tools)
 libmatewnck (replaced by libwnck)
 mate-character-map (replaced by gucharmap)
+
+Note:
+To enable side-by-side tiling via command line, run this command
+$ dconf write org/mate/marco/general/side-by-side-tiling true

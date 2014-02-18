@@ -56,6 +56,10 @@ from official repository at http://www.slackware.org.uk/msb/ or any other mirror
     removepkg pam
     removepkg pam_unix2
 
+5.  run xwmconfig and select xinitrc.mate-session
+    This ensures you get the latest copy of xinitrc.mate-session due to changes in mate-session-manager
+    ALWAYS run this command for both new installation or upgrade from MATE 1.6
+
 At this point you should be running MATE 1.8 on Slackware 14.1.  :-)
 
 I wish everyone good luck with this!
