@@ -69,7 +69,6 @@ for dir in \
   deps/mm-common \
   deps/gtkmm \
   extra/mate-system-monitor \
-  extra/mate-bluetooth \
   deps/perl-xml-twig \
   deps/perl-net-dbus \
   deps/system-tools-backends \
