@@ -16,6 +16,9 @@ Help menus and help buttons are disabled since they require yelp which requires
 more dependencies. For those interested to build yelp, you may find the SlackBuild
 in testing/yelp.
 
+You also need to rebuild some packages, since by default, the SlackBuild script is configured
+to remove help files. You can remove the --without-help-dir line to produce help files.
+
 Fri Feb 14 12:11:22 UTC 2014
 By default, gksu will not work in Slackware 14.1 since shadow has been patched
 to fix security vulnerabilities, but this caused gksu to be broken.
