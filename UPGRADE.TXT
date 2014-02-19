@@ -32,6 +32,7 @@ from official repository at http://www.slackware.org.uk/msb/ or any other mirror
     removepkg mate-doc-utils
     removepkg libmatewnck
     removepkg mate-character-map
+    removepkg mate-bluetooth
 
 3.  Remove renamed packages
 
