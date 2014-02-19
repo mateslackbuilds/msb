@@ -47,21 +47,6 @@ After upgrading to the modified version, gksu will work normally.
 
 This patch will goes into Slackware 14.1 and Slackware-Current soon.
 
-Fri Feb 14 11:02:15 UTC 2014
-If you are encountering problems with multiple Caja instances during loading
-the MATE desktop, change this line in /usr/share/applications/caja.desktop
-Exec=caja
-
-into
-
-Exec=caja --sync
-
-OR
-
-edit the caja.SlackBuild script and uncomment this line
-#sed -i 's/Exec=caja/Exec=caja --sync/' data/caja.desktop.in.in
-and rebuild caja again.
-
 Mon Jun 10 03:09:28 UTC 2013
 If you are encountering problems with Caja (MATE's file manager) opening
 directories when clicking on files in certain programs like Dropbox, Skype,
