@@ -39,7 +39,6 @@ MSBROOT=$(pwd)
 # Loop for all packages
 for dir in \
   deps/pygobject3 \
-  extra/mate-applets \
   extra/mate-calc \
   extra/atril \
   extra/engrampa \
@@ -76,6 +75,7 @@ for dir in \
   extra/mate-system-tools \
   extra/gnome-main-menu \
   extra/mate-screensaver \
+  extra/mate-applets \
   ; do
   # Get the package name
   package=$(echo $dir | cut -f2- -d /) 
