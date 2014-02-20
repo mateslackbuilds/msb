@@ -39,27 +39,13 @@ MSBROOT=$(pwd)
 # Loop for all packages
 for dir in \
   deps/pygobject3 \
-  extra/mate-calc \
-  extra/atril \
-  extra/engrampa \
+  deps/gtksourceview \
+  deps/pygtksourceview \
   deps/libgtop \
   deps/libgksu \
   deps/gksu \
   deps/gssdp \
   deps/gupnp \
-  extra/caja-extensions \
-  extra/mate-icon-theme-faenza \
-  extra/eom \
-  extra/mate-media \
-  extra/mozo \
-  extra/mate-power-manager \
-  extra/mate-sensors-applet \
-  extra/mate-terminal \
-  deps/gtksourceview \
-  deps/pygtksourceview \
-  extra/pluma \
-  extra/mate-netspeed \
-  extra/mate-utils \
   deps/libsigc++ \
   deps/glibmm \
   deps/cairomm \
@@ -67,15 +53,29 @@ for dir in \
   deps/atkmm \
   deps/mm-common \
   deps/gtkmm \
-  extra/mate-system-monitor \
   deps/perl-xml-twig \
   deps/perl-net-dbus \
   deps/system-tools-backends \
   deps/liboobs \
+  extra/mate-calc \
+  extra/atril \
+  extra/engrampa \
+  extra/caja-extensions \
+  extra/mate-icon-theme-faenza \
+  extra/eom \
+  extra/mate-media \
+  extra/mozo \
+  extra/mate-applets \
+  extra/mate-sensors-applet \
+  extra/mate-power-manager \
+  extra/mate-terminal \
+  extra/pluma \
+  extra/mate-netspeed \
+  extra/mate-utils \
+  extra/mate-system-monitor \
   extra/mate-system-tools \
   extra/gnome-main-menu \
   extra/mate-screensaver \
-  extra/mate-applets \
   ; do
   # Get the package name
   package=$(echo $dir | cut -f2- -d /) 
