@@ -24,8 +24,8 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=mate-utils
-VERSION=${VERSION:-1.7.0}
-BUILD=${BUILD:-2}
+VERSION=${VERSION:-1.7.90}
+BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
 if [ -z "$ARCH" ]; then
@@ -85,6 +85,7 @@ CXXFLAGS="$SLKCFLAGS" \
   --docdir=/usr/doc/$PRGNAM-$VERSION \
   --disable-maintainer-flags \
   --disable-static \
+  --without-help-dir \
   --build=$ARCH-slackware-linux
 
 make $NUMJOBS || make
@@ -114,8 +115,7 @@ do
 done
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-cp -a \
-  AUTHORS COPYING* ChangeLog NEWS README THANKS \
+cp -a AUTHORS COPYING* ChangeLog NEWS README THANKS \
   $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 find $PKG/usr/doc/$PRGNAM-$VERSION/ -type f -exec chmod 644 {} \;
@@ -124,14 +124,6 @@ chown -R root:root $PKG/usr/doc/$PRGNAM-$VERSION
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
 cat $CWD/doinst.sh > $PKG/install/doinst.sh
-
-# Remove help files for now - until MATE upstream fixes help documentation
-# buttons and menus.
-#find $PKG/usr/share/mate/help/$PRGNAM/* -maxdepth 0 -type d ! -name C -exec rm -rf {} \; || true
-for j in {mate-dictionary,mate-search-tool,mate-system-log,mate-disk-usage-analyzer};
-do
-  find $PKG/usr/share/mate/help/$j/* -maxdepth 0 -type d ! -name C -exec rm -rf {} \; || true
-done
 
 cd $PKG
 /sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
