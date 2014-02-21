@@ -24,7 +24,7 @@ How to build and install the MATE packages using these scripts:
 
 2.  Run the 'mate-build-base.sh' in the msb root directory which will build
 and install all the base (required) packages, including necessary dependencies
-in the /deps directory.  There are a total of 27 packages and they do not
+in the /deps directory.  There are a total of 24 packages and they do not
 replace any stock Slackware packages. (If you are building on -current, then
 dconf and itstool are already included in Slackware so you do not need them
 here in the git repo -- see CURRENT.TXT).  The SlackBuilds will use wget to 
