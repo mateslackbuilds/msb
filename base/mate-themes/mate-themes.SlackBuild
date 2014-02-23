@@ -24,13 +24,13 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=mate-themes
-VERSION=${VERSION:-1.7.90}
+VERSION=${VERSION:-1.8.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
 ARCH=noarch
 
-wget -c http://pub.mate-desktop.org/releases/1.7/$PRGNAM-$VERSION.tar.xz
+wget -c http://pub.mate-desktop.org/releases/1.8/$PRGNAM-$VERSION.tar.xz
 
 NUMJOBS=${NUMJOBS:-" -j8 "}
 
