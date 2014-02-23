@@ -48,7 +48,8 @@ If you run into strange panel issues, or missing icons, or theme problems,
 please consider backing up or clearing out some of the hidden directories in
 your $HOME, like $HOME/.config and $HOME/.cache and $HOME/.local.  If you
 switch back and forth between different desktop environments, sometimes those
-settings can get polluted.
+settings can get polluted. You can also try to remove/rename your .gtkrc-2.0 if
+it does exists on your home directory.
 
 Fri Mar 22 16:43:36 UTC 2013
 Working to determine whether mate-polkit is necessary.  According to upstream,
