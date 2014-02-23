@@ -8,7 +8,7 @@ pygtksourceview
 pangox-compat
 pygobject3
 gnome-main-menu
-mate-screensaver
+mate-screensaver (moved from testing/)
 
 Renamed Packages in MATE 1.8:
 mate-file-manager -> caja
@@ -24,11 +24,11 @@ mate-file-manager-gksu            \
 mate-file-manager-image-converter  \  merged into caja-extensions
 mate-file-manager-open-terminal    /
 mate-file-manager-sendto          /
-mate-keyring (replaced by gnome-keyring)
-libmatekeyring (replaced by libsecret)
+mate-keyring (replaced by gnome-keyring - available on Slackware)
+libmatekeyring (replaced by libsecret - available on Slackware)
 mate-doc-utils (replaced by yelp-tools)
-libmatewnck (replaced by libwnck)
-mate-character-map (replaced by gucharmap)
+libmatewnck (replaced by libwnck - available on Slackware)
+mate-character-map (replaced by gucharmap - available on Slackware)
 mate-bluetooth (in broken state)
 
 Note:

@@ -1,25 +1,13 @@
 The following is a list of notes on building MATE on Slackware -current:
 
-Fri Nov 15 18:59:46 UTC 2013
-The following packages are now available since Slackware 14.1:
-- dconf
-- itstool
-Thus, it's no longer needed in the deps directory anymore.
-if you are using the mate-build-base.sh script, then please edit that
-script and remove this lines:
-
-deps/dconf \
-deps/itstool \
-
-Fri Jul 19 15:34:10 UTC 2013
-Current MATE 1.7 development (future MATE 1.8) is replacing mate-doc-utils
-with yelp-tools.  This change requires yelp-tools and yelp-xsl to be added to
-deps/.  Both require itstool, which is already available on Slackware
--current, so there is no need to build itstool if you are using Slackware
--current. 
+Sun Feb 23 01:56:59 UTC 2014
+MATE 1.8 is replacing mate-doc-utils with yelp-tools. This change requires
+yelp-tools and yelp-xsl to be added to deps/.  Both require itstool, which
+is already available on Slackware since 14.1, so there is no need to build
+itstool if you are using Slackware -current.
 
 Tue Jun 11 00:41:15 UTC 2013
-Pat has rebuilt xdg-utils in Slackware -current to properly support MATE DE,
+Pat has rebuilt xdg-utils in Slackware 14.1 to properly support MATE DE,
 so xdg-utils patch is no longer needed in Slackware -current, but running
 these two commands as normal user are still needed to set caja as the default
 handler:

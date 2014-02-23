@@ -12,19 +12,23 @@ Currently, there are three branches in the MSB GIT repository:
   will come from.  Please use this branch for testing only and not for
   production environments.
 
-- 14.0-mate-1.6:  The MSB stable branch for Slackware 14.0.  
+- 14.0-mate-1.6:  The MSB stable branch for Slackware 14.0.
   This is the previously supported branch and only receives bug fix updates.
-  The MSB binary packages for Slackware 14.0 were built from this branch.  
+  The MSB 1.6 binary packages for Slackware 14.0 were built from this branch.
   Since Slackware 14.1 has been declared as the next stable release then
   this branch is considered obsoleted and no longer updated.
 
-- 14.1-mate-1.6:  The MSB stable branch for Slackware 14.1.  
-  This is the currently supported branch and only receives bug fix updates.  
-  The MSB binary packages for Slackware 14.1 are built from this branch.  
+- 14.1-mate-1.6:  The MSB stable branch for Slackware 14.1.
+  This is the previously supported branch and only receives bug fix updates.
+  The MSB 1.6 binary packages for Slackware 14.1 are built from this branch.
   You might want to use this branch if you enjoy stable releases.
-  Once 'master' has been declared the next stable release (e.g. 1.8) then
-  this branch will be obsoleted and no longer updated.
+  Since MATE 1.8 has been released as the next stable release then
+  this branch is considered obsoleted and no longer updated.
 
+- 14.1-mate-1.8:   The MSB stable branch for Slackware 14.1.
+  This is the currently supported branch and only receives bug fix updates.
+  The MSB 1.8 binary packages for Slackware 14.1 are built from this branch.
+  You might want to use this branch if you enjoy stable releases.
 
 An easy way to find out which branch are you in right now (once you have
 cloned the repo or pulled the latest updates):
@@ -36,17 +40,19 @@ Example output of 'git branch':
 
   14.0-mate-1.6
   14.1-mate-1.6
+  14.1-mate-1.8
 * master
 
 This output indicates that you are now in the 'master' branch.
 
 To switch to another branch, use 'git checkout <branch_name>'.  Example:
 
-$ git checkout 14.1-mate-1.6
+$ git checkout 14.1-mate-1.8
 $ git branch
 
   14.0-mate-1.6
-* 14.1-mate-1.6
+  14.1-mate-1.6
+* 14.1-mate-1.8
   master
 
-You have now switched from the 'master' branch to the '14.1-mate-1.6' branch.
+You have now switched from the 'master' branch to the '14.1-mate-1.8' branch.
