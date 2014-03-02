@@ -7,10 +7,10 @@ is already available on Slackware since 14.1, so there is no need to build
 itstool if you are using Slackware -current.
 
 Tue Jun 11 00:41:15 UTC 2013
-Pat has rebuilt xdg-utils in Slackware 14.1 to properly support MATE DE,
-so xdg-utils patch is no longer needed in Slackware -current, but running
-these two commands as normal user are still needed to set caja as the default
-handler:
+Pat has rebuilt xdg-utils in Slackware 14.1 to properly support MATE DE, so
+xdg-utils patch is no longer needed in Slackware -current, but running
+these two commands as normal user are still needed to set caja as the
+default handler:
 
 xdg-mime default caja-folder-handler.desktop inode/directory
 xdg-mime default caja-folder-handler.desktop application/x-directory

@@ -1,8 +1,9 @@
 The following is a list of known issues with MATE on Slackware:
 
 Mon Feb 17 02:02:11 UTC 2014
-If you start MATE Volume Control in Applications > Sounds & Videos, sometimes, you will
-find this error message "no volume control gstreamer plugins and/or devices found".
+If you start MATE Volume Control in Applications > Sounds & Videos,
+sometimes, you will find this error message "no volume control gstreamer
+plugins and/or devices found".
 
 You can fix this by running these steps:
 - Go to System > Preferences > KDE System Settings > Multimedia
@@ -12,12 +13,13 @@ You can fix this by running these steps:
 MATE Volume Control should be working now
 
 Sat Feb 15 01:01:47 UTC 2014
-Help menus and help buttons are disabled since they require yelp which requires
-more dependencies. For those interested to build yelp, you may find the SlackBuild
-in testing/yelp.
+Help menus and help buttons are disabled since they require yelp which
+requires more dependencies. For those interested to build yelp, you may
+find the SlackBuild in testing/yelp.
 
-You also need to rebuild some packages, since by default, the SlackBuild script is configured
-to remove help files. You can remove the --without-help-dir line to produce help files.
+You also need to rebuild some packages, since by default, the SlackBuild
+script is configured to remove help files. You can remove the
+--without-help-dir line to produce help files.
 
 Mon Jun 10 03:09:28 UTC 2013
 If you are encountering problems with Caja (MATE's file manager) opening
@@ -33,8 +35,8 @@ xdg-mime default caja-folder-handler.desktop application/x-directory
 
 You should be all set.  Thanks to Totoro-kun and T3slider for reporting and
 discussing this in the LQ forums and also thanks to Giorgos Keramidas for
-creating the initial patch.  Here is a link to the LQ thread which also has a
-link to Giorgos's blog with the patch:
+creating the initial patch.  Here is a link to the LQ thread which also has
+a link to Giorgos's blog with the patch:
 
 http://www.linuxquestions.org/questions/showthread.php?p=4968614
 
@@ -45,14 +47,14 @@ is to change it into TwinView in your xorg.conf
 
 Sun Mar 24 02:47:56 UTC 2013
 If you run into strange panel issues, or missing icons, or theme problems,
-please consider backing up or clearing out some of the hidden directories in
-your $HOME, like $HOME/.config and $HOME/.cache and $HOME/.local.  If you
-switch back and forth between different desktop environments, sometimes those
-settings can get polluted. You can also try to remove/rename your .gtkrc-2.0 if
-it does exists on your home directory.
+please consider backing up or clearing out some of the hidden directories
+in your $HOME, like $HOME/.config and $HOME/.cache and $HOME/.local.  If
+you switch back and forth between different desktop environments, sometimes
+those settings can get polluted. You can also try to remove/rename your
+.gtkrc-2.0 if it does exists on your home directory.
 
 Fri Mar 22 16:43:36 UTC 2013
-Working to determine whether mate-polkit is necessary.  According to upstream,
-it is, although it results in duplicative polkit actions when a USB stick is
-inserted, for example.  Disabling polkit-gnome in the "Startup Applications"
-is a workaround until more testing is done.
+Working to determine whether mate-polkit is necessary.  According to
+upstream, it is, although it results in duplicative polkit actions when a
+USB stick is inserted, for example.  Disabling polkit-gnome in the "Startup
+Applications" is a workaround until more testing is done.
