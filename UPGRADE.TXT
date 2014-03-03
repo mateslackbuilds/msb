@@ -1,7 +1,9 @@
-MATE 1.6 to 1.8 Upgrade HOWTO  <willysr@slackware-id.org>
+MATE 1.6 to 1.8 Upgrade HOWTO
+<willysr@slackware-id.org>
+<chess.griffin@gmail.com>
 
-This document explains how to upgrade from MATE 1.6 to 1.8 in Slackware
-14.1.
+This document explains how to upgrade from MATE 1.6 to MATE 1.8 on
+Slackware Linux 14.1.
 
 ----------------------------------------------------------------------------
 
@@ -12,18 +14,20 @@ is complete. Back it up, or take your chances.
 
 OK, now that everything is safely backed up, let's proceed. :-)
 
-To do this, you'll need the MATE 1.8 packages ready in your local system.
-Grab it from official repository at http://www.slackware.org.uk/msb/ or any
-other mirror sites.
+You will need the MATE 1.8 packages available on your local system.  Grab
+them from the official repository at http://www.slackware.org.uk/msb/ or
+any of the mirror sites.  Due to the fact that MATE 1.8 has new, obsoleted,
+and renamed packages, we do not recommend upgrading using slackpkg+ or
+other similar utility.
 
-0.  log out from MATE Desktop
+0.  Log out from the MATE desktop.
 
-1.  Upgrade/Install all new packages from MATE 1.8
+1.  Upgrade and install all new MATE 1.8 packages:
 
     upgradepkg --install-new --reinstall /path/to/base/*.txz
     upgradepkg --install-new --reinstall /path/to/extra/*.txz
 
-2.  Remove obsolete packages
+2.  Remove obsolete packages:
 
     removepkg mate-file-manager-gksu
     removepkg mate-file-manager-image-converter
@@ -36,7 +40,7 @@ other mirror sites.
     removepkg mate-character-map
     removepkg mate-bluetooth
 
-3.  Remove renamed packages
+3.  Remove renamed packages:
 
     removepkg mate-file-manager
     removepkg mate-window-manager
@@ -46,27 +50,34 @@ other mirror sites.
     removepkg mate-menu-editor
     removepkg mate-text-editor
 
-    You will notice that some of the files are found on other packages and
-    it will not be deleted.  That's fine, since these packages gets a new
-    name on MATE 1.8 (see MATE-1.8-CHANGES.TXT).
+    You will notice some messages that that some of the files are found in
+    other packages and are not be deleted.  That's fine, since these files
+    are included in new packages with a new name in MATE 1.8 (see
+    MATE-1.8-CHANGES.TXT).
 
-4.  Remove PAM-related packages (optional)
+4.  Remove PAM-related packages (optional):
 
     If you happened to install pam/pam_unix2 packages in MATE 1.6 to get
     mate-screensaver working for desktop locking feature, you will be glad
-    to know that mate-screensaver is now moved to extra and without the
-    need of pam and pam_unix2 libraries anymore.  So these two packages can
-    be safely deleted.
+    to know that mate-screensaver is now moved to extra/ and no longer
+    needs the pam and pam_unix2 libraries anymore.  So, if you
+    installed them for MATE 1.6, these two packages can be safely deleted:
 
     removepkg pam
     removepkg pam_unix2
 
-5.  run xwmconfig and select xinitrc.mate-session This ensures you get the
+5.  Run xwmconfig and select xinitrc.mate-session. This ensures you get the
     latest copy of xinitrc.mate-session due to changes in mate-session-
     manager.  ALWAYS run this command for both new installations or upgrades
     from MATE 1.6
 
-At this point you should be running MATE 1.8 on Slackware 14.1.  :-)
+At this point you should be running MATE 1.8 on Slackware 14.1.  :-)  If
+you have installed everything from base/ and extra/ (which will include
+packages from the deps/ directory) then you should have a total of 62
+packages:
+
+    $ ls /var/log/packages | grep _msb | wc -l
+      62
 
 We wish everyone good luck with this!
 
