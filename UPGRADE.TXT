@@ -51,17 +51,17 @@ other similar utilities.
     removepkg mate-text-editor
 
     You will notice some messages that that some of the files are found in
-    other packages and are not be deleted.  That's fine, since these files
+    other packages and cannot be deleted.  That's fine, since these files
     are included in new packages with a new name in MATE 1.8 (see
     MATE-1.8-CHANGES.TXT).
 
 4.  Remove PAM-related packages (optional):
 
     If you happened to install pam/pam_unix2 packages in MATE 1.6 to get
-    mate-screensaver working for desktop locking feature, you will be glad
-    to know that mate-screensaver is now moved to /extra and no longer
-    needs the pam and pam_unix2 libraries anymore.  So, if you
-    installed them for MATE 1.6, these two packages can be safely deleted:
+    /testing/mate-screensaver working for the desktop locking feature, you
+    will be glad to know that mate-screensaver is now moved to /extra and
+    no longer needs the pam and pam_unix2 libraries anymore.  So, if you
+    installed pam for MATE 1.6, these two packages can be safely deleted:
 
     removepkg pam
     removepkg pam_unix2
