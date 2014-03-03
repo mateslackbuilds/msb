@@ -5,7 +5,8 @@ This project provides SlackBuild scripts to build and install the MATE
 desktop environment on Slackware (http://www.mate-desktop.org).  Please
 check the main project website at http://mateslackbuilds.github.io for
 screenshots and more information.  There is also a link to MATE 1.8 binary
-packages for Slackware 14.1 and also MATE 1.6 for Slackware 14.0 and 14.1.
+packages for Slackware 14.1 and also MATE 1.6 packages for Slackware 14.0
+and 14.1.
 
 Please read GIT_BRANCHES.TXT to make sure you are on the right branch of
 the MSB repo before attempting to build from the scripts.  After cloning
@@ -13,7 +14,7 @@ the initial Git repo, you will be using 'master' branch which will build
 the development branch for MATE desktop.  Building from the development
 branch is not supported and may or may not work at any given moment.  Most
 users will want to build from the stable branch which is MATE version 1.8,
-released on March 2014.  Checkout that branch using 'git checkout
+released in March 2014.  Checkout that branch using 'git checkout
 14.1-mate-1.8' to build from the stable MSB branch.
 
 The rest of this README.TXT is specific to building from the 'master'
@@ -50,9 +51,9 @@ may want to disable polkit-gnome and see if polkit-mate works by itself.
 Also, if you use mate-power-manager from /extra then you might want to
 disable the Xfce power manager if it is listed.
 
-6.  Users running Slackware{64}-Current are advised to read CURRENT.TXT.  It
-should also be noted that the target system for MATE SlackBuilds is a full
-install of the latest official Slackware release.  It might run on a
+6.  Users running Slackware{64} -current are advised to read CURRENT.TXT.
+It should also be noted that the target system for MATE SlackBuilds is a
+full install of the latest official Slackware release.  It might run on a
 less-than-full install and it might run on -current.  Or, it might not.
 Neither of those are our official target systems.
 

@@ -32,8 +32,9 @@ mate-character-map (replaced by gucharmap - available on Slackware)
 mate-bluetooth (in broken state)
 
 Note:
-To enable side-by-side tiling via command line, run this command
+To enable side-by-side tiling via command line, run this command:
+
 $ dconf write org/mate/marco/general/side-by-side-tiling true
 
 or you can enable it via System > MATE Control Center > Windows > Enable
-side by side tilling
+side by side tiling
