@@ -18,7 +18,7 @@ You will need the MATE 1.8 packages available on your local system.  Grab
 them from the official repository at http://www.slackware.org.uk/msb/ or
 any of the mirror sites.  Due to the fact that MATE 1.8 has new, obsoleted,
 and renamed packages, we do not recommend upgrading using slackpkg+ or
-other similar utility.
+other similar utilities.
 
 0.  Log out from the MATE desktop.
 
@@ -59,7 +59,7 @@ other similar utility.
 
     If you happened to install pam/pam_unix2 packages in MATE 1.6 to get
     mate-screensaver working for desktop locking feature, you will be glad
-    to know that mate-screensaver is now moved to extra/ and no longer
+    to know that mate-screensaver is now moved to /extra and no longer
     needs the pam and pam_unix2 libraries anymore.  So, if you
     installed them for MATE 1.6, these two packages can be safely deleted:
 
@@ -72,14 +72,15 @@ other similar utility.
     from MATE 1.6
 
 At this point you should be running MATE 1.8 on Slackware 14.1.  :-)  If
-you have installed everything from base/ and extra/ (which will include
-packages from the deps/ directory) then you should have a total of 62
+you have installed everything from /base and /extra (which will include
+packages from the /deps directory) then you should have a total of 62
 packages:
 
     $ ls /var/log/packages | grep _msb | wc -l
       62
 
-We wish everyone good luck with this!
+We wish everyone good luck with this!  Please report any issues to
+mateslackbuilds@gmail.com.
 
 ---
 Chess Griffin
