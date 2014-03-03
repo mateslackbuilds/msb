@@ -8,8 +8,8 @@ for screenshots and more information.  There is also a link to MATE 1.8
 binary packages for Slackware 14.1 and also MATE 1.6 packages for Slackware
 14.0 and 14.1.
 
-<b>Please read GIT_BRANCHES.TXT to make sure you are on the right branch of
-the MSB repo before attempting to build from the scripts.</b>
+Please read GIT_BRANCHES.TXT to make sure you are on the right branch of
+the MSB repo before attempting to build from the scripts.
 
 After cloning the initial Git repo, you will be using 'master' branch which
 will build the development branch for MATE desktop.  Building from the
