@@ -2,20 +2,21 @@ MATE SlackBuilds
 ================
 
 This project provides SlackBuild scripts to build and install the MATE
-desktop environment on Slackware (http://www.mate-desktop.org).  Please
-check the main project website at http://mateslackbuilds.github.io for
-screenshots and more information.  There is also a link to MATE 1.8 binary
-packages for Slackware 14.1 and also MATE 1.6 packages for Slackware 14.0
-and 14.1.
+desktop environment (http://www.mate-desktop.org) on Slackware Linux.
+Please check the main project website at http://mateslackbuilds.github.io
+for screenshots and more information.  There is also a link to MATE 1.8
+binary packages for Slackware 14.1 and also MATE 1.6 packages for Slackware
+14.0 and 14.1.
 
-Please read GIT_BRANCHES.TXT to make sure you are on the right branch of
-the MSB repo before attempting to build from the scripts.  After cloning
-the initial Git repo, you will be using 'master' branch which will build
-the development branch for MATE desktop.  Building from the development
-branch is not supported and may or may not work at any given moment.  Most
-users will want to build from the stable branch which is MATE version 1.8,
-released in March 2014.  Checkout that branch using 'git checkout
-14.1-mate-1.8' to build from the stable MSB branch.
+<b>Please read GIT_BRANCHES.TXT to make sure you are on the right branch of
+the MSB repo before attempting to build from the scripts.</b>
+
+After cloning the initial Git repo, you will be using 'master' branch which
+will build the development branch for MATE desktop.  Building from the
+development branch is not supported and may or may not work at any given
+moment.  Most users will want to build from the stable branch which is MATE
+version 1.8, released in March 2014.  Checkout that branch using 'git
+checkout 14.1-mate-1.8' to build from the stable MSB branch.
 
 The rest of this README.TXT is specific to building from the 'master'
 branch.
@@ -61,3 +62,7 @@ Neither of those are our official target systems.
 mateslackbuilds@gmail.com.
 
 Thanks!
+
+---
+Chess Griffin
+Willy Sudiarto Raharjo
