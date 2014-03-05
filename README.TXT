@@ -25,26 +25,29 @@ How to build and install the MATE packages using these scripts:
 
 1.  Clone the Git repo or download a tarball/zip of the repo.
 
-2.  Run the 'mate-build-base.sh' in the msb root directory which will build
-and install all the base (required) packages, including necessary
-dependencies in the /deps directory.  There are a total of 24 packages and
-they do not replace any stock Slackware packages. The SlackBuilds will use
+2.  Run the 'mate-build-deps.sh' in the msb root directory which will build
+and install all the necessary dependencies in the /deps directory. There are
+a total of 26 packages.
+
+3.  Run the 'mate-build-base.sh' in the msb root directory which will build
+and install all the base (required) packages. There are a total of 17 packages
+and they do not replace any stock Slackware packages. The SlackBuilds will use
 wget to download the sources.  Or, you can also manually download the
 sources from: http://pub.mate-desktop.org/releases/1.8 and the download
 locations for each dependency and put each source into the corresponding
 directory within 'base' and 'deps'.
 
-3.  Optionally, build and install any of the extra packages in the /extra
+4.  Optionally, build and install any of the extra packages in the /extra
 directory.  If you want to build and install them all, then you can use the
 'mate-build-extra.sh' script in the msb root directory.  Otherwise, just go
 into the directory of whatever package you want in /extra and run the
 SlackBuild.  As with 'base', each SlackBuild will download the source.
 
-4.  Once the base packages are built and installed, plus any from /extra,
+5.  Once the base packages are built and installed, plus any from /extra,
 you can use 'xwmconfig' to select the mate session.  Or, if you use KDM,
 just log out and select MATE from the KDM session dialog.
 
-5.  Check the 'startup applications' because there might be some duplicate
+6.  Check the 'startup applications' because there might be some duplicate
 or conflicting entries.  For example, there will be an entry for
 polkit-mate and polkit-gnome, the result of which might be duplicate
 attempts at polkit actions when inserting a usb stick, for example.  You
@@ -52,13 +55,13 @@ may want to disable polkit-gnome and see if polkit-mate works by itself.
 Also, if you use mate-power-manager from /extra then you might want to
 disable the Xfce power manager if it is listed.
 
-6.  Users running Slackware{64} -current are advised to read CURRENT.TXT.
+7.  Users running Slackware{64} -current are advised to read CURRENT.TXT.
 It should also be noted that the target system for MATE SlackBuilds is a
 full install of the latest official Slackware release.  It might run on a
 less-than-full install and it might run on -current.  Or, it might not.
 Neither of those are our official target systems.
 
-7.  Enjoy and let us know of any issues.  Email is:
+8.  Enjoy and let us know of any issues.  Email is:
 mateslackbuilds@gmail.com.
 
 Thanks!

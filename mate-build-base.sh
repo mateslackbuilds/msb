@@ -36,19 +36,14 @@ TMP=${TMP:-/tmp}
 # This is the original directory where you started this script
 MSBROOT=$(pwd)
 
-# Loop for all packages
+# Loop for all base packages
 for dir in \
   base/mate-common \
-  deps/rarian \
-  deps/yelp-xsl \
-  deps/yelp-tools \
   base/libmatekbd \
   base/libmateweather \
   base/mate-icon-theme \
   base/mate-dialogs \
   base/mate-desktop \
-  deps/libunique \
-  deps/pangox-compat \
   base/caja \
   base/mate-notification-daemon \
   base/mate-backgrounds \
@@ -59,8 +54,6 @@ for dir in \
   base/mate-control-center \
   base/mate-panel \
   base/mate-session-manager \
-  deps/gtk-engines \
-  deps/murrine \
   base/mate-themes \
   ; do
   # Get the package name

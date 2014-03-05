@@ -3,8 +3,7 @@
 # Copyright 2012  Patrick J. Volkerding, Sebeka, Minnesota, USA
 # All rights reserved.
 #
-# Copyright 2013 Chess Griffin <chess.griffin@gmail.com> Raleigh, NC
-# Copyright 2013-2014 Willy Sudiarto Raharjo <willysr@slackware-id.org>
+# Copyright 2014 Willy Sudiarto Raharjo <willysr@slackware-id.org>
 # All rights reserved.
 #
 # Based on the xfce-build-all.sh script by Patrick J. Volkerding
@@ -36,27 +35,34 @@ TMP=${TMP:-/tmp}
 # This is the original directory where you started this script
 MSBROOT=$(pwd)
 
-# Loop for all extra packages
+# Loop for all dependency packages
 for dir in \
-  extra/mate-calc \
-  extra/atril \
-  extra/engrampa \
-  extra/caja-extensions \
-  extra/mate-icon-theme-faenza \
-  extra/eom \
-  extra/mate-media \
-  extra/mozo \
-  extra/mate-applets \
-  extra/mate-sensors-applet \
-  extra/mate-power-manager \
-  extra/mate-terminal \
-  extra/pluma \
-  extra/mate-netspeed \
-  extra/mate-utils \
-  extra/mate-system-monitor \
-  extra/mate-system-tools \
-  extra/gnome-main-menu \
-  extra/mate-screensaver \
+  deps/rarian \
+  deps/yelp-xsl \
+  deps/yelp-tools \
+  deps/libunique \
+  deps/pangox-compat \
+  deps/gtk-engines \
+  deps/murrine \
+  deps/pygobject3 \
+  deps/gtksourceview \
+  deps/pygtksourceview \
+  deps/libgtop \
+  deps/libgksu \
+  deps/gksu \
+  deps/gssdp \
+  deps/gupnp \
+  deps/libsigc++ \
+  deps/glibmm \
+  deps/cairomm \
+  deps/pangomm \
+  deps/atkmm \
+  deps/mm-common \
+  deps/gtkmm \
+  deps/perl-xml-twig \
+  deps/perl-net-dbus \
+  deps/system-tools-backends \
+  deps/liboobs \
   ; do
   # Get the package name
   package=$(echo $dir | cut -f2- -d /) 
