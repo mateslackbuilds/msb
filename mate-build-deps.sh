@@ -38,6 +38,7 @@ MSBROOT=$(pwd)
 # Loop for all dependency packages
 for dir in \
   deps/libgnomecanvas \
+  deps/zenity \
   deps/rarian \
   deps/yelp-xsl \
   deps/yelp-tools \

@@ -1,0 +1,8 @@
+New Packages in MATE 1.10:
+libgnomecanvas
+zenity
+
+Renamed Packages in MATE 1.10:
+
+Packages removed in MATE 1.10:
+mate-dialogs
