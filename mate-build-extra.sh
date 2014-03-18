@@ -38,7 +38,7 @@ MSBROOT=$(pwd)
 
 # Loop for all extra packages
 for dir in \
-  extra/mate-calc \
+  extra/galculator \
   extra/atril \
   extra/engrampa \
   extra/caja-extensions \
