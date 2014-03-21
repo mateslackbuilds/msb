@@ -5,9 +5,9 @@ This is a list of dependencies for the packages in the /extra directory.
 
 2.  extra/caja-extensions requires deps/gssdp and deps/gupnp
 
-3.  extra/mate-netspeed and extra/mate-utils both require extra/libgtop.
+3.  extra/mate-netspeed and extra/mate-utils both require deps/libgtop.
 
-4.  extra/mate-text-editor requires extra/gtksourceview.
+4.  extra/mate-text-editor requires deps/gtksourceview.
 
 5.  extra/mate-system-monitor requires deps/libsigc++, deps/glibmm,
     deps/cairomm, deps/pangomm, deps/atkmm, deps/mm-common, and deps/gtkmm.
