@@ -7,4 +7,4 @@ Renamed Packages in MATE 1.10:
 
 Packages removed in MATE 1.10:
 mate-calc
-mate-dialogs
+mate-dialogs (replaced by zenity)
