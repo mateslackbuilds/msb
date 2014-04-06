@@ -41,7 +41,7 @@ wget -c http://ftp.gnome.org/pub/gnome/sources/pangox-compat/0.0/$PRGNAM-$VERSIO
 NUMJOBS=${NUMJOBS:-" -j8 "}
 
 CWD=$(pwd)
-TMP=${TMP:-/tmp/SBo}
+TMP=${TMP:-/tmp/msb}
 PKG=${PKG:-${TMP}/package-$PRGNAM}
 OUTPUT=${OUTPUT:-/tmp}
 
