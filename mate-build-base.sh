@@ -72,6 +72,9 @@ for dir in \
   # Get the version
   version=$(cat ${package}.SlackBuild | grep "VERSION:" | cut -d "-" -f2 | rev | cut -c 2- | rev)
 
+  # Get the build
+  build=$(cat ${package}.SlackBuild | grep "BUILD:" | cut -d "-" -f2 | rev | cut -c 2- | rev)
+
   # Check for duplicate sources
   sourcefile="$(ls -l $MSBROOT/$dir/${package}-*.tar.?z* | wc -l)"
   if [ $sourcefile -gt 1 ]; then
@@ -84,7 +87,7 @@ for dir in \
   # The real build starts here
   sh ${package}.SlackBuild || exit 1
   if [ "$INST" = "1" ]; then
-    PACKAGE="${package}-$version-*.txz"
+    PACKAGE="${package}-$version-${build}*.txz"
     if [ -f $TMP/$PACKAGE ]; then
       upgradepkg --install-new --reinstall $TMP/$PACKAGE
     else
