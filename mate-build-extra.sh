@@ -59,10 +59,10 @@ for dir in \
   extra/mate-screensaver \
   ; do
   # Get the package name
-  package=$(echo $dir | cut -f2- -d /) 
-  
+  package=$(echo $dir | cut -f2- -d /)
+
   # Change to package directory
-  cd $MSBROOT/$dir || exit 1 
+  cd $MSBROOT/$dir || exit 1
 
   # Get the version
   version=$(cat ${package}.SlackBuild | grep "VERSION:" | cut -d "-" -f2 | rev | cut -c 2- | rev)
@@ -78,11 +78,11 @@ for dir in \
     echo "Please delete sources other than ${package}-$version to avoid problems"
     exit 1
   fi
-  
+
   # The real build starts here
   sh ${package}.SlackBuild || exit 1
   if [ "$INST" = "1" ]; then
-    PACKAGE="${package}-$version-${build}*.txz"
+    PACKAGE="${package}-$version-*-${build}*.txz"
     if [ -f $TMP/$PACKAGE ]; then
       upgradepkg --install-new --reinstall $TMP/$PACKAGE
     else
@@ -90,7 +90,7 @@ for dir in \
       exit 1
     fi
   fi
-  
+
   # back to original directory
   cd $MSBROOT
 done
