@@ -38,6 +38,7 @@ MSBROOT=$(pwd)
 
 # Loop for all packages
 for dir in \
+  numix-icon-theme \
   yelp \
   ; do
   # Get the package name
