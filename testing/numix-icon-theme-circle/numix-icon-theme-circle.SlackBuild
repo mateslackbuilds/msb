@@ -59,7 +59,7 @@ rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 if [ ! -d $PRGNAM ]; then
-  git clone git@github.com:numixproject/numix-icon-theme-circle.git
+  git clone https://github.com/numixproject/numix-icon-theme-circle.git
 fi
 cd $PRGNAM
 git pull
