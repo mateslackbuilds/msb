@@ -24,7 +24,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=mate-desktop
-VERSION=${VERSION:-1.8.0}
+VERSION=${VERSION:-1.9.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
@@ -36,7 +36,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c http://pub.mate-desktop.org/releases/1.8/$PRGNAM-$VERSION.tar.xz
+wget -c http://pub.mate-desktop.org/releases/1.9/$PRGNAM-$VERSION.tar.xz
 
 NUMJOBS=${NUMJOBS:-" -j8 "}
 
@@ -83,8 +83,6 @@ CXXFLAGS="$SLKCFLAGS" \
   --localstatedir=/var \
   --mandir=/usr/man \
   --docdir=/usr/doc/$PRGNAM-$VERSION \
-  --disable-user-guide \
-  --disable-desktop-docs \
   --disable-static \
   --enable-mpaste \
   --build=$ARCH-slackware-linux
@@ -117,8 +115,7 @@ rm -rf $PKG/usr/share/omf/gpl
 rm -rf $PKG/usr/share/omf/fdl
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-cp -a \
-  AUTHORS COPYING COPYING-DOCS COPYING.LIB ChangeLog HACKING MAINTAINERS NEWS README \
+cp -a AUTHORS COPYING COPYING-DOCS COPYING.LIB ChangeLog HACKING MAINTAINERS NEWS README \
   $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 find $PKG/usr/doc/$PRGNAM-$VERSION/ -type f -exec chmod 644 {} \;
