@@ -30,7 +30,7 @@ and install all the necessary dependencies in the /deps directory. There are
 a total of 28 packages.
 
 3.  Run the 'mate-build-base.sh' in the msb root directory which will build
-and install all the base (required) packages. There are a total of 17 packages
+and install all the base (required) packages. There are a total of 21 packages
 and they do not replace any stock Slackware packages. The SlackBuilds will use
 wget to download the sources.  Or, you can also manually download the
 sources from: http://pub.mate-desktop.org/releases/1.8 and the download
