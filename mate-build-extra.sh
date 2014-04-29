@@ -40,23 +40,18 @@ MSBROOT=$(pwd)
 for dir in \
   extra/galculator \
   extra/atril \
-  extra/engrampa \
   extra/caja-extensions \
-  extra/mate-icon-theme-faenza \
   extra/eom \
-  extra/mate-media \
-  extra/mozo \
   extra/mate-applets \
-  extra/mate-sensors-applet \
-  extra/mate-power-manager \
-  extra/mate-terminal \
-  extra/pluma \
+  extra/mate-icon-theme-faenza \
   extra/mate-netspeed \
+  extra/mate-sensors-applet \
+  extra/mate-terminal \
   extra/mate-utils \
-  extra/mate-system-monitor \
+  extra/mozo \
+  extra/pluma \
   extra/mate-system-tools \
   extra/gnome-main-menu \
-  extra/mate-screensaver \
   ; do
   # Get the package name
   package=$(echo $dir | cut -f2- -d /)

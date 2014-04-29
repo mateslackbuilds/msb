@@ -39,22 +39,26 @@ MSBROOT=$(pwd)
 # Loop for all base packages
 for dir in \
   base/mate-common \
+  base/mate-desktop \
   base/libmatekbd \
   base/libmateweather \
   base/mate-icon-theme \
-  base/mate-dialogs \
-  base/mate-desktop \
   base/caja \
-  base/mate-notification-daemon \
-  base/mate-backgrounds \
-  base/mate-menus \
-  base/marco \
   base/mate-polkit \
+  base/marco \
   base/mate-settings-daemon \
-  base/mate-control-center \
-  base/mate-panel \
   base/mate-session-manager \
+  base/mate-menus \
+  base/mate-panel \
+  base/mate-backgrounds \
   base/mate-themes \
+  base/mate-notification-daemon \
+  base/mate-control-center \
+  base/mate-screensaver \
+  base/engrampa \
+  base/mate-media \
+  base/mate-power-manager \
+  base/mate-system-monitor \
   ; do
   # Get the package name
   package=$(echo $dir | cut -f2- -d /)
