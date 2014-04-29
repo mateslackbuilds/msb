@@ -24,7 +24,7 @@
 
 PRGNAM=pygobject3
 SRCNAM=pygobject
-VERSION=${VERSION:-3.8.3}
+VERSION=${VERSION:-3.10.2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
@@ -36,7 +36,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c http://ftp.gnome.org/pub/GNOME/sources/pygobject/3.8/$SRCNAM-$VERSION.tar.xz
+wget -c http://ftp.gnome.org/pub/GNOME/sources/pygobject/3.10/$SRCNAM-$VERSION.tar.xz
 
 NUMJOBS=${NUMJOBS:-" -j8 "}
 
