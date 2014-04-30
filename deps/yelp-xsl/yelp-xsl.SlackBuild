@@ -24,7 +24,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=yelp-xsl
-VERSION=${VERSION:-3.10.1}
+VERSION=${VERSION:-3.12.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
@@ -36,7 +36,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c ftp://ftp.gnome.org/pub/gnome/sources/yelp-xsl/3.10/$PRGNAM-$VERSION.tar.xz
+wget -c ftp://ftp.gnome.org/pub/gnome/sources/yelp-xsl/3.12/$PRGNAM-$VERSION.tar.xz
 
 NUMJOBS=${NUMJOBS:-" -j8 "}
 
