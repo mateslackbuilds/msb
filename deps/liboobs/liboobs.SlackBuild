@@ -23,7 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=liboobs
-VERSION=${VERSION:-2.32.0}
+VERSION=${VERSION:-3.0.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
@@ -35,7 +35,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c http://ftp.gnome.org/pub/gnome/sources/liboobs/2.32/$PRGNAM-$VERSION.tar.bz2
+wget -c http://ftp.gnome.org/pub/gnome/sources/liboobs/3.0/$PRGNAM-$VERSION.tar.bz2
 
 NUMJOBS=${NUMJOBS:-" -j8 "}
 
