@@ -108,11 +108,6 @@ if [ -d $PKG/usr/man ]; then
   )
 fi
 
-# Stuff is still getting dumped into /usr/share/omf which has to do w/
-# scrollkeeper which is old GNOME stuff and we use --disable-scrollkeeper.  So
-# let's rm it.  Confirmed issue w/ upstream.
-rm -rf $PKG/usr/share/omf/engrampa
-
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a AUTHORS COPYING ChangeLog HACKING MAINTAINERS NEWS README TODO \
   $PKG/usr/doc/$PRGNAM-$VERSION
