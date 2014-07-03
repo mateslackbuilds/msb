@@ -126,10 +126,5 @@ mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
 cat $CWD/doinst.sh > $PKG/install/doinst.sh
 
-# Remove help files for now - until MATE upstream fixes help documentation
-# buttons and menus.
-find $PKG/usr/share/mate/help/mate-applet-fish/* -maxdepth 0 -type d ! -name C -exec rm -rf {} \; || true
-find $PKG/usr/share/mate/help/mate-applet-clock/* -maxdepth 0 -type d ! -name C -exec rm -rf {} \; || true
-
 cd $PKG
 /sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
