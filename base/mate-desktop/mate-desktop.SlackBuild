@@ -108,12 +108,6 @@ if [ -d $PKG/usr/man ]; then
   )
 fi
 
-# Remove unncessary stuff dumped into /usr/share/omf - this is old GNOME -
-# confirmed w/ upstream.
-rm -rf $PKG/usr/share/omf/lgpl
-rm -rf $PKG/usr/share/omf/gpl
-rm -rf $PKG/usr/share/omf/fdl
-
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a AUTHORS COPYING COPYING-DOCS COPYING.LIB ChangeLog HACKING MAINTAINERS NEWS README \
   $PKG/usr/doc/$PRGNAM-$VERSION
