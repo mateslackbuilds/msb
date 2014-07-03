@@ -110,11 +110,6 @@ if [ -d $PKG/usr/man ]; then
   )
 fi
 
-# Remove old GNOME stuff that is getting dumped into /usr/share/omf -
-# confirmed w/ upstream.
-rm -rf $PKG/usr/share/omf/mate-applet-clock
-rm -rf $PKG/usr/share/omf/mate-applet-fish
-
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a AUTHORS COPYING COPYING-DOCS COPYING.LIB ChangeLog HACKING NEWS README \
   $PKG/usr/doc/$PRGNAM-$VERSION
