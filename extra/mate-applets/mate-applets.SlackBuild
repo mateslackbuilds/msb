@@ -108,12 +108,6 @@ if [ -d $PKG/usr/man ]; then
   )
 fi
 
-# For some reaso, stuff is getting dumped into $PKG/usr/share/omf (which is
-# related to scrollkeeper even though we have --disable-scrollkeeper above.
-# Confirmed with MATE developer that this is old and not needed so let's
-# remove it.
-rm -rf $PKG/usr/share/omf/mate-*
-
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a AUTHORS COPYING* ChangeLog NEWS* README $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
