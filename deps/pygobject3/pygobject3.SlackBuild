@@ -24,7 +24,7 @@
 
 PRGNAM=pygobject3
 SRCNAM=pygobject
-VERSION=${VERSION:-3.8.3}
+VERSION=${VERSION:-3.10.2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
@@ -36,7 +36,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c http://ftp.gnome.org/pub/GNOME/sources/pygobject/3.8/$SRCNAM-$VERSION.tar.xz
+wget -c http://ftp.gnome.org/pub/GNOME/sources/pygobject/3.10/$SRCNAM-$VERSION.tar.xz
 
 NUMJOBS=${NUMJOBS:-" -j8 "}
 
@@ -72,7 +72,7 @@ find -L . \
  \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 \
   -o -perm 511 \) -exec chmod 755 {} \; -o \
  \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
- -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
+  -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
 
 CFLAGS="$SLKCFLAGS" \
 ./configure \
