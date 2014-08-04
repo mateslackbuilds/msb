@@ -65,6 +65,7 @@ for dir in \
   deps/perl-net-dbus \
   deps/system-tools-backends \
   deps/liboobs \
+  deps/docutils \
   ; do
   # Get the package name
   package=$(echo $dir | cut -f2- -d /)

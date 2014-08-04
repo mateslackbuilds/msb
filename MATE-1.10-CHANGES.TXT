@@ -2,6 +2,8 @@ New Packages in MATE 1.10:
 libgnomecanvas
 zenity (depends on libgnomecanvas)
 galculator
+docutils
+caja-dropbox
 
 Renamed Packages in MATE 1.10:
 

@@ -41,6 +41,7 @@ for dir in \
   extra/galculator \
   extra/atril \
   extra/caja-extensions \
+  extra/caja-dropbox \
   extra/eom \
   extra/mate-applets \
   extra/mate-icon-theme-faenza \
