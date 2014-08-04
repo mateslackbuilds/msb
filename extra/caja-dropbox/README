@@ -1,1 +1,4 @@
-caja-dropbox is a Dropbox extension for Caja file manager
+caja-dropbox is a Dropbox extension for Caja file manager.
+
+Note: You still need dropbox package from SBo in order
+to have a fully functional dropbox client.
