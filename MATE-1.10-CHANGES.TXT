@@ -4,6 +4,7 @@ zenity (depends on libgnomecanvas)
 galculator
 docutils
 caja-dropbox
+libmatemixer
 
 Renamed Packages in MATE 1.10:
 
