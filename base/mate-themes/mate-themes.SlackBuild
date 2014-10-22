@@ -24,13 +24,14 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=mate-themes
-VERSION=${VERSION:-1.9.0}
+VERSION=${VERSION:-1.9.1}
+GTKVERSION=${GTKVERSION:-gtk3.8}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
 ARCH=noarch
 
-wget -c http://pub.mate-desktop.org/releases/1.9/$PRGNAM-$VERSION.tar.xz
+wget -c http://pub.mate-desktop.org/releases/1.9/$PRGNAM-$GTKVERSION-$VERSION.tar.xz
 
 NUMJOBS=${NUMJOBS:-" -j8 "}
 
@@ -58,15 +59,15 @@ set -e
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
-rm -rf $PRGNAM-$VERSION
-tar xvf $CWD/$PRGNAM-$VERSION.tar.xz
-cd $PRGNAM-$VERSION
+rm -rf $PRGNAM-$GTKVERSION-$VERSION
+tar xvf $CWD/$PRGNAM-$GTKVERSION-$VERSION.tar.xz
+cd $PRGNAM-$GTKVERSION-$VERSION
 chown -R root:root .
 find -L . \
  \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 \
   -o -perm 511 \) -exec chmod 755 {} \; -o \
  \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
- -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
+  -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
 
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
