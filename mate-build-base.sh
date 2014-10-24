@@ -46,6 +46,7 @@ for dir in \
   base/caja \
   base/mate-polkit \
   base/marco \
+  base/libmatemixer \
   base/mate-settings-daemon \
   base/mate-session-manager \
   base/mate-menus \
