@@ -74,7 +74,7 @@ for dir in \
   cd $MSBROOT/$dir || exit 1
 
   # Get the version
-  version=$(cat ${package}.SlackBuild | grep "VERSION:" | cut -d "-" -f2 | rev | cut -c 2- | rev)
+  version=$(cat ${package}.SlackBuild | grep "VERSION:" | head -n1 | cut -d "-" -f2 | rev | cut -c 2- | rev)
 
   # Get the build
   build=$(cat ${package}.SlackBuild | grep "BUILD:" | cut -d "-" -f2 | rev | cut -c 2- | rev)
@@ -91,9 +91,9 @@ for dir in \
   # The real build starts here
   sh ${package}.SlackBuild || exit 1
   if [ "$INST" = "1" ]; then
-    PACKAGE="${package}-$version-*-${build}*.txz"
-    if [ -f $TMP/$PACKAGE ]; then
-      upgradepkg --install-new --reinstall $TMP/$PACKAGE
+    PACKAGE=`ls $TMP/${package}-${version}-*-${build}*.txz`
+    if [ -f "$PACKAGE" ]; then
+      upgradepkg --install-new --reinstall "$PACKAGE"
     else
       echo "Error:  package to upgrade "$PACKAGE" not found in $TMP"
       exit 1
