@@ -62,7 +62,7 @@ fi
 set -e
 
 # check webkitgtk existence
-webkit=`pkg-config --libs webkit-1.0`
+webkit=`pkg-config --exists webkit-1.0`
 if [ $webkit -eq 0 ]; then
   epub="--enable-epub"
 else
