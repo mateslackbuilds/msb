@@ -59,8 +59,6 @@ else
   LIBDIRSUFFIX=""
 fi
 
-set -e
-
 # check webkitgtk existence
 webkit=`pkg-config --exists webkit-1.0`
 if [ $webkit -eq 0 ]; then
@@ -68,6 +66,8 @@ if [ $webkit -eq 0 ]; then
 else
   epub="--disable-epub"
 fi
+
+set -e
 
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
