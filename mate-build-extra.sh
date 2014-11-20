@@ -52,6 +52,7 @@ for dir in \
   extra/mozo \
   extra/pluma \
   extra/mate-system-tools \
+  extra/gnome-main-menu \
   ; do
   # Get the package name
   package=$(echo $dir | cut -f2- -d /)
