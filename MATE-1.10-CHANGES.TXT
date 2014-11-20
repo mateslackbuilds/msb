@@ -11,6 +11,7 @@ Renamed Packages in MATE 1.10:
 Packages removed in MATE 1.10:
 mate-calc (replaced by galculator)
 mate-dialogs (replaced by zenity)
+gnome-main-menu (no longer build)
 
 Packages Moved:
 - engrampa (moved to base)
