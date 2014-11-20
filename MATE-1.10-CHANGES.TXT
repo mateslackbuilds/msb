@@ -11,3 +11,10 @@ Renamed Packages in MATE 1.10:
 Packages removed in MATE 1.10:
 mate-calc (replaced by galculator)
 mate-dialogs (replaced by zenity)
+
+Packages Moved:
+- engrampa (moved to base)
+- mate-media (moved to base)
+- mate-power-manager (moved to base)
+- mate-system-monitor (moved to base)
+- mate-screensaver (moved to base)
