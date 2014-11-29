@@ -116,7 +116,7 @@ find $PKG/usr/doc/$PRGNAM-$VERSION/ -type f -exec chmod 644 {} \;
 chown -R root:root $PKG/usr/doc/$PRGNAM-$VERSION
 
 # Fix icon
-sed -i "s|Icon=gcolor2|Icon=/usr/share/icons/matefaenza/apps/scalable/gcolor2.svg" $PKG/usr/share/applications/mate-color-select.desktop
+sed -i "s|Icon=gcolor2|Icon=/usr/share/icons/matefaenza/apps/scalable/gcolor2.svg|" $PKG/usr/share/applications/mate-color-select.desktop
 
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
