@@ -47,7 +47,6 @@ for dir in \
   extra/mate-icon-theme-faenza \
   extra/mate-netspeed \
   extra/mate-sensors-applet \
-  extra/mate-terminal \
   extra/mate-utils \
   extra/mozo \
   extra/pluma \

@@ -50,6 +50,7 @@ for dir in \
   base/mate-settings-daemon \
   base/mate-session-manager \
   base/mate-menus \
+  base/mate-terminal \
   base/mate-panel \
   base/mate-backgrounds \
   base/mate-themes \

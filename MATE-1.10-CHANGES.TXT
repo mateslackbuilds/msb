@@ -18,3 +18,4 @@ Packages Moved:
 - mate-power-manager (moved to base)
 - mate-system-monitor (moved to base)
 - mate-screensaver (moved to base)
+- mate-terminal (moved to base)
