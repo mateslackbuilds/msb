@@ -55,6 +55,7 @@ for dir in \
   base/mate-backgrounds \
   base/mate-themes \
   base/mate-notification-daemon \
+  base/eom \
   base/mate-control-center \
   base/mate-screensaver \
   base/engrampa \

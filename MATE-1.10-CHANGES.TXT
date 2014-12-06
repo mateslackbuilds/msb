@@ -19,3 +19,4 @@ Packages Moved:
 - mate-system-monitor (moved to base)
 - mate-screensaver (moved to base)
 - mate-terminal (moved to base)
+- eom (moved to base)

@@ -42,7 +42,6 @@ for dir in \
   extra/atril \
   extra/caja-extensions \
   extra/caja-dropbox \
-  extra/eom \
   extra/mate-applets \
   extra/mate-icon-theme-faenza \
   extra/mate-netspeed \
