@@ -1,0 +1,40 @@
+commit 921a0c368f10d7e850364a3a39b82bfff6f738cd
+Author: infirit <infirit@gmail.com>
+Date:   Wed Dec 10 18:13:22 2014 +0100
+
+    Add gsettings gettext type
+
+diff --git a/po/POTFILES.in b/po/POTFILES.in
+index dc4f018..2f109ed 100644
+--- a/po/POTFILES.in
++++ b/po/POTFILES.in
+@@ -24,7 +24,7 @@ cut-n-paste/toolbar-editor/egg-toolbar-editor.c
+ cut-n-paste/zoom-control/ephy-zoom.h
+ data/atril.appdata.xml.in
+ data/atril.desktop.in.in
+-data/org.mate.Atril.gschema.xml.in
++[type: gettext/gsettings]data/org.mate.Atril.gschema.xml.in
+ previewer/ev-previewer.c
+ previewer/ev-previewer-window.c
+ properties/ev-properties-main.c
+commit 1ec64aab9b6eb86e002b9e5bc8883e08c6159035
+Author: infirit <infirit@gmail.com>
+Date:   Wed Dec 10 18:14:05 2014 +0100
+
+    Use the NOMERGE rule for now
+    
+    It causes problems in the gsettings schema.
+
+diff --git a/data/Makefile.am b/data/Makefile.am
+index 5e5473a..fedca7d 100644
+--- a/data/Makefile.am
++++ b/data/Makefile.am
+@@ -50,7 +50,7 @@ endif
+ #
+ # App data file
+ #
+-@INTLTOOL_XML_RULE@
++@INTLTOOL_XML_NOMERGE_RULE@
+ appdatadir = $(datadir)/appdata
+ appdata_in_files = atril.appdata.xml.in
+ appdata_DATA = $(appdata_in_files:.xml.in=.xml)
