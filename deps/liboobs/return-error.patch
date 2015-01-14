@@ -1,0 +1,44 @@
+diff -Nru liboobs-3.0.0/debian/patches/01-return-error-code.patch liboobs-3.0.0/debian/patches/01-return-error-code.patch
+--- liboobs-3.0.0/debian/patches/01-return-error-code.patch	1970-01-01 03:00:00.000000000 +0300
++++ liboobs-3.0.0/debian/patches/01-return-error-code.patch	2014-09-17 12:49:03.000000000 +0400
+@@ -0,0 +1,16 @@
++Index: liboobs-3.0.0/oobs/oobs-object.c
++===================================================================
++--- liboobs-3.0.0.orig/oobs/oobs-object.c
+++++ liboobs-3.0.0/oobs/oobs-object.c
++@@ -400,7 +400,10 @@ run_message (OobsObject  *object,
++       if (dbus_error_has_name (&priv->dbus_error, DBUS_ERROR_ACCESS_DENIED))
++ 	*result = OOBS_RESULT_ACCESS_DENIED;
++       else
++-	g_warning ("There was an unknown error communicating with the backends: %s", priv->dbus_error.message);
+++	{
+++	  *result = OOBS_RESULT_ERROR;
+++	  g_warning ("There was an unknown error communicating with the backends: %s", priv->dbus_error.message);
+++	}
++ 
++       dbus_error_free (&priv->dbus_error);
++       return NULL;
+diff -Nru liboobs-3.0.0/debian/patches/02-proper-warning.patch liboobs-3.0.0/debian/patches/02-proper-warning.patch
+--- liboobs-3.0.0/debian/patches/02-proper-warning.patch	1970-01-01 03:00:00.000000000 +0300
++++ liboobs-3.0.0/debian/patches/02-proper-warning.patch	2014-09-17 12:52:58.000000000 +0400
+@@ -0,0 +1,14 @@
++Index: liboobs-3.0.0/oobs/oobs-object.c
++===================================================================
++--- liboobs-3.0.0.orig/oobs/oobs-object.c
+++++ liboobs-3.0.0/oobs/oobs-object.c
++@@ -434,8 +434,8 @@ async_message_cb (DBusPendingCall *pendi
++ 	{
++ 	  /* FIXME: process error */
++ 	  result = OOBS_RESULT_MALFORMED_DATA;
+++	  g_warning ("There was an unknown error communicating asynchronously with the backends: %s", error.message);
++ 	}
++-      g_warning ("There was an unknown error communicating asynchronously with the backends: %s", error.message);
++ 
++       dbus_error_free (&error);
++     }
+diff -Nru liboobs-3.0.0/debian/patches/series liboobs-3.0.0/debian/patches/series
+--- liboobs-3.0.0/debian/patches/series	2011-10-22 19:23:48.000000000 +0400
++++ liboobs-3.0.0/debian/patches/series	2014-09-17 12:51:50.000000000 +0400
+@@ -0,0 +1,2 @@
++01-return-error-code.patch
++02-proper-warning.patch
