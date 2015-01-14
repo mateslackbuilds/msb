@@ -1,0 +1,34 @@
+--- system-tools-backends-2.10.2/SelfConfig.pm.orig	2015-01-14 21:14:11.499164540 +0700
++++ system-tools-backends-2.10.2/SelfConfig.pm	2015-01-14 21:15:28.974094285 +0700
+@@ -30,7 +30,8 @@
+ my $OBJECT_PATH = "$Utils::Backend::DBUS_PATH/$OBJECT_NAME";
+ 
+ # user is only allowed to change his own GECOS fields, locale, location
+-my $format = [ "uint32", [ "array", "string" ], "string", "string" ];
++my $get_format = [ [ "array", "string" ], "string", "string" ];
++my $set_format = [ "uint32", [ "array", "string" ], "string", "string" ];
+ 
+ sub new
+ {
+@@ -43,8 +44,8 @@
+ }
+ 
+ # UID is filled by dispatcher
+-dbus_method ("get", "uint32", $format);
+-dbus_method ("set", $format, []);
++dbus_method ("get", [ "uint32" ], $get_format);
++dbus_method ("set", $set_format, []);
+ 
+ sub get
+ {
+--- system-tools-backends-2.10.2/Users/Users.pm.orig	2015-01-14 21:15:49.530810417 +0700
++++ system-tools-backends-2.10.2/Users/Users.pm	2015-01-14 21:16:26.373301774 +0700
+@@ -838,7 +838,7 @@
+   foreach $user (@$users)
+   {
+     next if ($uid != $$user[$UID]);
+-    return ($$user[$COMMENT], $$user[$LOCALE]);
++    return ($$user[$COMMENT], $$user[$LOCALE], $$user[$LOCATION]);
+   }
+ 
+   return ([""], "");
