@@ -4,7 +4,7 @@
 # All rights reserved.
 #
 # Copyright 2013 Chess Griffin <chess.griffin@gmail.com> Raleigh, NC
-# Copyright 2013 Willy Sudiarto Raharjo <willysr@slackware-id.org>
+# Copyright 2013-2015 Willy Sudiarto Raharjo <willysr@slackware-id.org>
 # All rights reserved.
 #
 # Based on the xfce-build-all.sh script by Patrick J. Volkerding
@@ -42,12 +42,13 @@ for dir in \
   numix-icon-theme-circle \
   numix-icon-theme-shine \
   yelp \
+  mate-user-guide \
   ; do
   # Get the package name
-  package=$(echo $dir | cut -f2- -d /) 
-  
+  package=$(echo $dir | cut -f2- -d /)
+
   # Change to package directory
-  cd $MSBROOT/$dir || exit 1 
+  cd $MSBROOT/$dir || exit 1
 
   # Get the version
   version=$(cat ${package}.SlackBuild | grep "VERSION:" | cut -d "-" -f2 | rev | cut -c 2- | rev)
@@ -60,7 +61,7 @@ for dir in \
     echo "Please delete sources other than ${package}-$version to avoid problems"
     exit 1
   fi
-  
+
   # The real builds starts here
   sh ${package}.SlackBuild || exit 1
   if [ "$INST" = "1" ]; then
@@ -72,7 +73,7 @@ for dir in \
       exit 1
     fi
   fi
-  
+
   # back to original directory
   cd $MSBROOT
 done
