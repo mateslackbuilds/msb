@@ -38,9 +38,6 @@ MSBROOT=$(pwd)
 
 # Loop for all packages
 for dir in \
-  numix-icon-theme \
-  numix-icon-theme-circle \
-  numix-icon-theme-shine \
   yelp \
   mate-user-guide \
   ; do
