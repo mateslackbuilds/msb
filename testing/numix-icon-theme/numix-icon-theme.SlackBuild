@@ -55,7 +55,7 @@ fi
 
 set -e
 
-rm -rf $PKG 
+rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 if [ ! -d $PRGNAM ]; then
@@ -70,7 +70,7 @@ mkdir -p $PKG/usr/share/icons
 cp -rf Numix $PKG/usr/share/icons
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-cp -a LICENSE README.md $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a license readme.md $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
 mkdir -p $PKG/install
