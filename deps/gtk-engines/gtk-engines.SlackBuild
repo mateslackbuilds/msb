@@ -36,7 +36,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c ftp://ftp.archlinux.org/other/gtk-engines/$PRGNAM-$VERSION.tar.gz
+wget -c https://sources.archlinux.org/other/gtk-engines/$PRGNAM-$VERSION.tar.gz
 
 NUMJOBS=${NUMJOBS:-" -j8 "}
 
