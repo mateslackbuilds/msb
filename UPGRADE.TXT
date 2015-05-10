@@ -43,7 +43,7 @@ packages from the /deps directory) then you should have a total of 67
 packages:
 
     $ ls /var/log/packages | grep _msb | wc -l
-      67
+      66
 
 We wish everyone good luck with this!  Please report any issues to
 mateslackbuilds@gmail.com.
