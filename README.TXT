@@ -15,7 +15,7 @@ After cloning the initial Git repo, you will be using 'master' branch which
 will build the development branch for MATE desktop.  Building from the
 development branch is not supported and may or may not work at any given
 moment.  Most users will want to build from the stable branch which is MATE
-version 1.10, released in April 2015.  Checkout that branch using 'git
+version 1.10, released in May 2015.  Checkout that branch using 'git
 checkout 14.1-mate-1.10' to build from the stable MSB branch.
 
 The rest of this README.TXT is specific to building from the 'master'
@@ -52,8 +52,8 @@ or conflicting entries.  For example, there will be an entry for
 polkit-mate and polkit-gnome, the result of which might be duplicate
 attempts at polkit actions when inserting a usb stick, for example.  You
 may want to disable polkit-gnome and see if polkit-mate works by itself.
-Also, if you use mate-power-manager from /extra then you might want to
-disable the Xfce power manager if it is listed.
+Also, if you use mate-power-manager then you might want to disable the Xfce
+power manager if it is listed.
 
 7.  Users running Slackware{64} -current are advised to read CURRENT.TXT.
 It should also be noted that the target system for MATE SlackBuilds is a
