@@ -25,7 +25,7 @@
 
 PRGNAM=mate-themes
 VERSION=${VERSION:-1.10.0}
-GTKVERSION=${GTKVERSION:-gtk3.8}
+GTKVERSION=${GTKVERSION:-gtk`find /var/log/packages/ -name gtk\+3* | cut -d/ -f5 | cut -d- -f2 | cut -d. -f1-2`}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
