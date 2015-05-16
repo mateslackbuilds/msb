@@ -40,6 +40,7 @@ MSBROOT=$(pwd)
 for dir in \
   yelp \
   mate-user-guide \
+  mate-tweak \
   ; do
   # Get the package name
   package=$(echo $dir | cut -f2- -d /)

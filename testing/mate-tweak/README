@@ -1,0 +1,7 @@
+This is MATE Tweak, a fork of mintDesktop.
+
+MATE Tweak removes the Mint specific configuration options.
+MATE Tweak adds User Interfacing switching.
+MATE Tweak adds live Compiz switching.
+
+This requires python-distutils-extra and wmctrl (available via SBo)
