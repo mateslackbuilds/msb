@@ -5,7 +5,7 @@ galculator
 docutils
 caja-dropbox
 libmatemixer
-mate-user-guide
+mate-user-guide (available on /testing)
 
 Renamed Packages in MATE 1.10:
 
