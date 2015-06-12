@@ -6,6 +6,7 @@ docutils
 caja-dropbox
 libmatemixer
 mate-user-guide (available on /testing)
+mate-tweak (available on /testing)
 
 Renamed Packages in MATE 1.10:
 
