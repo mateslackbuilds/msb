@@ -24,7 +24,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=mate-utils
-VERSION=${VERSION:-1.10.0}
+VERSION=${VERSION:-1.10.1}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
@@ -120,13 +120,6 @@ cp -a AUTHORS COPYING* ChangeLog NEWS README THANKS $PKG/usr/doc/$PRGNAM-$VERSIO
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 find $PKG/usr/doc/$PRGNAM-$VERSION/ -type f -exec chmod 644 {} \;
 chown -R root:root $PKG/usr/doc/$PRGNAM-$VERSION
-
-# Ugly Fix
-for F in org.mate.dictionary.gschema.xml org.mate.disk-usage-analyzer.gschema.xml org.mate.screenshot.gschema.xml
-do
-grep -v  xml:lang $PKG/usr/share/glib-2.0/schemas/$F > /tmp/$F
-mv /tmp/$F $PKG/usr/share/glib-2.0/schemas/
-done
 
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
