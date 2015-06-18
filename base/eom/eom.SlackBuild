@@ -24,7 +24,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=eom
-VERSION=${VERSION:-1.10.1}
+VERSION=${VERSION:-1.10.2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
@@ -117,17 +117,9 @@ cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 find $PKG/usr/doc/$PRGNAM-$VERSION/ -type f -exec chmod 644 {} \;
 chown -R root:root $PKG/usr/doc/$PRGNAM-$VERSION
 
-# Ugly Fix
-grep -v  xml:lang $PKG/usr/share/glib-2.0/schemas/org.mate.eom.gschema.xml > /tmp/org.mate.eom.gschema.xml
-mv /tmp/org.mate.eom.gschema.xml $PKG/usr/share/glib-2.0/schemas/
-
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
 cat $CWD/doinst.sh > $PKG/install/doinst.sh
-
-# Remove help files for now - until MATE upstream fixes help documentation
-# buttons and menus.
-find $PKG/usr/share/mate/help/eom/* -maxdepth 0 -type d ! -name C -exec rm -rf {} \; || true
 
 cd $PKG
 /sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}
