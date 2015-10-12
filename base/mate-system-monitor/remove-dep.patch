@@ -1,0 +1,31 @@
+From ade40b61e66e1db6c0473544d519cc46fc1698a6 Mon Sep 17 00:00:00 2001
+From: raveit65 <chat-to-me@raveit.de>
+Date: Wed, 30 Sep 2015 22:00:02 +0000
+Subject: drop dependency to mate-icon-theme
+
+The dependency is not really needed; depending on GTK+ should be enough
+to guarantee the presence of a spec-compliant icon theme.
+---
+diff --git a/configure.ac b/configure.ac
+index 833cec1..1aa5aa2 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -29,7 +29,6 @@ LT_INIT
+ # Package dependencies
+ GLIB_REQUIRED=2.36.0
+ LIBGTOP_REQUIRED=2.23.1
+-MATE_ICON_THEME_REQUIRED=1.1.0
+ GIOMM_REQUIRED=2.26.0
+ GLIBMM_REQUIRED=2.22
+ LIBXML_REQUIRED=2.0
+@@ -71,7 +70,7 @@ AC_ARG_WITH([gtk],
+   esac
+ 
+ PKG_CHECK_MODULES(GMODULE,gmodule-2.0,[GMODULE_ADD="gmodule-2.0"],[GMODULE_ADD=""])
+-PKG_CHECK_MODULES(PROCMAN,$GMODULE_ADD glib-2.0 >= $GLIB_REQUIRED libgtop-2.0 >= $LIBGTOP_REQUIRED libwnck-$LIBWNCK_API_VERSION >= $LIBWNCK_REQUIRED gtk+-$GTK_API_VERSION >= $GTK_REQUIRED mate-icon-theme >= $MATE_ICON_THEME_REQUIRED gtkmm-$GTKMM_API_VERSION >= $GTKMM_REQUIRED libxml-2.0 >= $LIBXML_REQUIRED librsvg-2.0 >= $RSVG_REQUIRED glibmm-2.4 >= $GLIBMM_REQUIRED giomm-2.4 >= $GIOMM_REQUIRED)
++PKG_CHECK_MODULES(PROCMAN,$GMODULE_ADD glib-2.0 >= $GLIB_REQUIRED libgtop-2.0 >= $LIBGTOP_REQUIRED libwnck-$LIBWNCK_API_VERSION >= $LIBWNCK_REQUIRED gtk+-$GTK_API_VERSION >= $GTK_REQUIRED gtkmm-$GTKMM_API_VERSION >= $GTKMM_REQUIRED libxml-2.0 >= $LIBXML_REQUIRED librsvg-2.0 >= $RSVG_REQUIRED glibmm-2.4 >= $GLIBMM_REQUIRED giomm-2.4 >= $GIOMM_REQUIRED)
+ 
+ have_systemd=no
+ AC_ARG_ENABLE(systemd, AS_HELP_STRING([--disable-systemd], [disable systemd support]),,enable_systemd=no)
+--
+cgit 
