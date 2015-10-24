@@ -1,0 +1,5 @@
+New Packages in MATE 1.12:
+
+Renamed Packages in MATE 1.12:
+
+Packages removed in MATE 1.12:
