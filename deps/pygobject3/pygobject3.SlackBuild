@@ -36,7 +36,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c http://ftp.gnome.org/pub/GNOME/sources/pygobject/3.10/$SRCNAM-$VERSION.tar.xz
+wget -c http://download.gnome.org/sources/$SRCNAM/3.10/$SRCNAM-$VERSION.tar.xz
 
 NUMJOBS=${NUMJOBS:-" -j8 "}
 

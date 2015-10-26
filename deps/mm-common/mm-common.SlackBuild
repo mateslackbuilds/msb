@@ -35,7 +35,7 @@ TAG=${TAG:-_msb}
 
 ARCH=noarch
 
-wget -c http://ftp.gnome.org/pub/GNOME/sources/mm-common/0.9/$PRGNAM-$VERSION.tar.xz
+wget -c http://download.gnome.org/sources/$PRGNAM/0.9/$PRGNAM-$VERSION.tar.xz
 
 NUMJOBS=${NUMJOBS:-" -j8 "}
 
