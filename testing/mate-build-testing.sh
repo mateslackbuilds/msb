@@ -41,6 +41,7 @@ for dir in \
   yelp \
   mate-user-guide \
   mate-tweak \
+  dock-applet \
   ; do
   # Get the package name
   package=$(echo $dir | cut -f2- -d /)

@@ -38,7 +38,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c http://ftp.acc.umu.se/pub/GNOME/sources/gtkmm/2.24/$PRGNAM-$VERSION.tar.xz
+wget -c http://download.gnome.org/sources/$PRGNAM/2.24/$PRGNAM-$VERSION.tar.xz
 
 NUMJOBS=${NUMJOBS:-" -j8 "}
 

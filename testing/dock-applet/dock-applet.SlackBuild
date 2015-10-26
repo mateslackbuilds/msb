@@ -1,9 +1,10 @@
 #!/bin/sh
 
-# Slackware build script for libunique
+# Slackware build script for dock-applet
 
 # Copyright 2013 Chess Griffin <chess.griffin@gmail.com> Raleigh, NC
-# Copyright 2013-2014 Willy Sudiarto Raharjo <willysr@slackware-id.org>
+# Copyright 2014-2015 Willy Sudiarto Raharjo <willysr@slackware-id.org>
+# Copyright 2015 Widya Walesa <walecha99@gmail.com>
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -23,8 +24,8 @@
 #  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-PRGNAM=libunique
-VERSION=${VERSION:-1.1.6}
+PRGNAM=dock-applet
+VERSION=${VERSION:-0.64}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
@@ -36,7 +37,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c http://download.gnome.org/sources/$PRGNAM/1.1/libunique-1.1.6.tar.bz2
+wget -O $PRGNAM-$VERSION.tar.gz -c https://github.com/robint99/dock-applet/archive/V${VERSION}.tar.gz
 
 NUMJOBS=${NUMJOBS:-" -j8 "}
 
@@ -65,8 +66,11 @@ rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 rm -rf $PRGNAM-$VERSION
-tar xvf $CWD/$PRGNAM-$VERSION.tar.bz2
+tar xvf $CWD/$PRGNAM-$VERSION.tar.gz
 cd $PRGNAM-$VERSION
+
+autoreconf -ivsf
+
 chown -R root:root .
 find -L . \
  \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 \
@@ -74,11 +78,6 @@ find -L . \
  \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
   -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
 
-#patch -p1 < $CWD/libunique-1.1.6-compiler-warnings.patch
-patch -p1 < $CWD/libunique-1.1.6-G_CONST_RETURN.patch
-#patch -p1 < $CWD/libunique-1.1.6-gdbus.patch
-
-autoreconf -fi
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
 ./configure \
@@ -88,14 +87,6 @@ CXXFLAGS="$SLKCFLAGS" \
   --localstatedir=/var \
   --mandir=/usr/man \
   --docdir=/usr/doc/$PRGNAM-$VERSION \
-  --disable-static \
-  --enable-dbus=no \
-  --enable-bacon=yes \
-  --enable-introspection=no \
-  --disable-dependency-tracking \
-  --with-x \
-  --enable-debug=no \
-  --disable-maintainer-flags \
   --build=$ARCH-slackware-linux
 
 make $NUMJOBS || make
@@ -120,13 +111,14 @@ if [ -d $PKG/usr/man ]; then
 fi
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-cp -a AUTHORS COPYING ChangeLog INSTALL NEWS README $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a AUTHORS COPYING ChangeLog NEWS* README* $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 find $PKG/usr/doc/$PRGNAM-$VERSION/ -type f -exec chmod 644 {} \;
 chown -R root:root $PKG/usr/doc/$PRGNAM-$VERSION
 
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
+cat $CWD/doinst.sh > $PKG/install/doinst.sh
 
 cd $PKG
 /sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-txz}

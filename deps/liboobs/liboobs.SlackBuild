@@ -35,7 +35,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c http://ftp.gnome.org/pub/gnome/sources/liboobs/3.0/$PRGNAM-$VERSION.tar.bz2
+wget -c http://download.gnome.org/sources/$PRGNAM/3.0/$PRGNAM-$VERSION.tar.bz2
 
 NUMJOBS=${NUMJOBS:-" -j8 "}
 

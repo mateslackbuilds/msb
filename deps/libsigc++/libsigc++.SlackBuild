@@ -39,7 +39,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c http://ftp.gnome.org/pub/GNOME/sources/libsigc++/2.4/$PRGNAM-$VERSION.tar.xz
+wget -c http://download.gnome.org/sources/$PRGNAM/2.4/$PRGNAM-$VERSION.tar.xz
 
 NUMJOBS=${NUMJOBS:-" -j8 "}
 
