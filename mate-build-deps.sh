@@ -49,6 +49,7 @@ for dir in \
   deps/yelp-tools \
   deps/libwnck3 \
   deps/libunique \
+  deps/libunique3 \
   deps/pangox-compat \
   deps/gtk-engines \
   deps/murrine \
