@@ -86,6 +86,8 @@ CXXFLAGS="$SLKCFLAGS" \
   --disable-static \
   --libexecdir=/usr/lib${LIBDIRSUFFIX}/mate-file-manager \
   --disable-update-mimedb \
+  --with-gtk=3.0 \
+  --enable-introspection \
   --build=$ARCH-slackware-linux
 
 make $NUMJOBS || make

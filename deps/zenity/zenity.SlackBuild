@@ -65,7 +65,6 @@ CXXFLAGS="$SLKCFLAGS" \
   --mandir=/usr/man \
   --enable-debug=no \
   --enable-libnotify \
-  --without-help-dir \
   --build=$ARCH-slackware-linux
 
 make $NUMJOBS || make

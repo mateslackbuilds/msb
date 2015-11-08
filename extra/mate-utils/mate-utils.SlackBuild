@@ -85,7 +85,7 @@ CXXFLAGS="$SLKCFLAGS" \
   --docdir=/usr/doc/$PRGNAM-$VERSION \
   --disable-maintainer-flags \
   --disable-static \
-  --without-help-dir \
+  --with-gtk=3.0 \
   --build=$ARCH-slackware-linux
 
 # This is needed in -current, but should be harmless in -stable as well

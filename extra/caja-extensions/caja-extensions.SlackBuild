@@ -88,6 +88,7 @@ CXXFLAGS="$SLKCFLAGS" \
   --enable-sendto \
   --enable-gksu \
   --enable-share \
+  --with-gtk=3.0 \
   --build=$ARCH-slackware-linux
 
 make

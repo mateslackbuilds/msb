@@ -85,6 +85,7 @@ CXXFLAGS="$SLKCFLAGS" \
   --docdir=/usr/doc/$PRGNAM-$VERSION \
   --libexecdir=/usr/bin \
   --disable-static \
+  --with-gtk=3.0 \
   --build=$ARCH-slackware-linux
 
 make $NUMJOBS || make

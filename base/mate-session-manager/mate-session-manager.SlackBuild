@@ -86,6 +86,7 @@ CXXFLAGS="$SLKCFLAGS" \
   --libexecdir=/usr/lib${LIBDIRSUFFIX} \
   --enable-upower \
   --without-systemd \
+  --with-gtk=3.0 \
   --build=$ARCH-slackware-linux
 
 make $NUMJOBS || make

@@ -82,7 +82,6 @@ CXXFLAGS="$SLKCFLAGS" \
   --localstatedir=/var \
   --mandir=/usr/man \
   --docdir=/usr/doc/$PRGNAM-$VERSION \
-  --without-help-dir \
   --enable-static=no \
   --build=$ARCH-slackware-linux
 
