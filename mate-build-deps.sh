@@ -42,7 +42,9 @@ for dir in \
   deps/rarian \
   deps/yelp-xsl \
   deps/yelp-tools \
+  deps/libwnck3 \
   deps/libunique \
+  deps/libunique3 \
   deps/pangox-compat \
   deps/gtk-engines \
   deps/murrine \
