@@ -1,0 +1,12 @@
+      |-----handy-ruler------------------------------------------------------|
+gtkmm3: gtkmm3 (C++ interface for GTK+3)
+gtkmm3:
+gtkmm3: gtkmm is the official C++ interface for the popular GUI library
+gtkmm3: GTK+. Highlights include typesafe callbacks, and a comprehensive set
+gtkmm3: of widgets that are easily extensible via inheritance. You can create
+gtkmm3: user interfaces and there's extensive documentation, including
+gtkmm3: including API reference and a tutorial.
+gtkmm3:
+gtkmm3: Homepage: http://www.gtkmm.org/
+gtkmm3:
+gtkmm3:
