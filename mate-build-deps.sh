@@ -54,6 +54,7 @@ for dir in \
   deps/gtk-engines \
   deps/murrine \
   deps/glade \
+  deps/libpeas \
   deps/gtksourceview3 \
   deps/libgtop \
   deps/libgksu \

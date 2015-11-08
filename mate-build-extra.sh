@@ -42,10 +42,11 @@ CHECKDUPLICATE=0
 
 # Loop for all extra packages
 for dir in \
-  extra/galculator \
+  extra/mate-calc \
   extra/atril \
   extra/caja-extensions \
   extra/caja-dropbox \
+  extra/caja-actions \
   extra/mate-applets \
   extra/mate-icon-theme-faenza \
   extra/mate-sensors-applet \

@@ -1,0 +1,14 @@
+New Packages in MATE 1.18:
+glade
+gtksourceview3
+libunique3
+libpeas
+mate-calc
+caja-actions
+
+Renamed Packages in MATE 1.18:
+
+Packages removed in MATE 1.18:
+gtksourceview
+pygtksourceview
+galculator

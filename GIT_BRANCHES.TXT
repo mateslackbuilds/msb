@@ -7,54 +7,32 @@ MATE's wiki: http://wiki.mate-desktop.org/dev-doc.
 Currently, there are three branches in the MSB GIT repository:
 
 - master:  The MSB development branch.  It represents the most up-to-date
-  code, but no binary packages are built from this branch.  Building from
-  this branch may or may not work.  This is where the next stable release
-  will come from.  Please use this branch for testing only and not for
-  production environments.
+  code, but no regular binary packages are built from this branch.
+  Building from this branch may or may not work due to the nature of changes.
+  This is where the next stable release will come from.
+  Please use this branch for testing only and not for production environments.
 
-- 14.0-mate-1.6:  The MSB stable branch for Slackware 14.0.  This is the
-  previously supported branch and only receives bug fix updates.  The MSB
+- 14.0-mate-1.6:  The MSB stable branch for Slackware 14.0. The MSB
   1.6 binary packages for Slackware 14.0 were built from this branch.
   Since Slackware 14.1 has been declared as the next stable release then
   this branch is considered obsoleted and no longer updated.
 
-- 14.1-mate-1.6:  The MSB stable branch for Slackware 14.1.
-  This is the previously supported branch and only receives bug fix
-  updates.  The MSB 1.6 binary packages for Slackware 14.1 are built from
-  this branch.  You might want to use this branch if you enjoy stable
-  releases.  Since MATE 1.8 has been released as the next stable release
+- 14.1-mate-1.6
+  14.1-mate-1.8
+  14.1-mate-1.10
+  14.1-mate-1.12:  The MSB stable branch for Slackware 14.1.
+  The MSB 1.6 binary packages for Slackware 14.1 are built from
+  this branch. Since Slackware 14.2 has been released as the next stable release
   then this branch is considered obsoleted and no longer updated.
-
-- 14.1-mate-1.8:   The MSB stable branch for Slackware 14.1.
-  This is the previously supported branch and only receives bug fix
-  updates.  The MSB 1.8 binary packages for Slackware 14.1 are built from
-  this branch.  You might want to use this branch if you enjoy stable
-  releases.  Since MATE 1.10 has been released as the next stable release
-  then this branch is considered obsoleted and no longer updated.
-
-- 14.1-mate-1.10:   The MSB stable branch for Slackware 14.1.
-  This is the previously supported branch and only receives bug fix updates.
-  The MSB 1.10 binary packages for Slackware 14.1 are built from this branch.
-  You might want to use this branch if you enjoy stable releases.
-  Since MATE 1.12 has been released as the next stable release
-  then this branch is considered obsoleted and no longer updated.
-
-- 14.1-mate-1.12:   The MSB stable branch for Slackware 14.1.
-  This is the previously supported branch and only receives bug fix updates.
-  The MSB 1.12 binary packages for Slackware 14.1 are built from this branch.
-  Since MATE 1.12 has been released as the next stable release and
-  Slackware 14.2 gets closer, this branch is considered obsoleted and no
-  longer updated.
 
 - 14.2-mate-1.14:   The MSB stable branch for Slackware 14.2.
-  This is the previously supported branch and only receives bug fix updates.
   The MSB 1.14 binary packages for Slackware 14.2 are built from this branch.
   Since MATE 1.16 has been released as the next stable release then this branch
   is considered obsoleted and no longer updated.
 
 - 14.2-mate-1.16:   The MSB stable branch for Slackware 14.2.
   This is the currently supported branch and only receives bug fix updates.
-  The MSB 1.14 binary packages for Slackware 14.2 are built from this branch.
+  The MSB 1.16 binary packages for Slackware 14.2 are built from this branch.
   You might want to use this branch if you enjoy stable releases.
 
 An easy way to find out which branch are you in right now (once you have
