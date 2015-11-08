@@ -50,6 +50,7 @@ for dir in \
   deps/murrine \
   deps/pygobject3 \
   deps/gtksourceview \
+  deps/gtksourceview3 \
   deps/pygtksourceview \
   deps/libgtop \
   deps/libgksu \
