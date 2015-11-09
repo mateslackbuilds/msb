@@ -52,10 +52,8 @@ for dir in \
   deps/pangox-compat \
   deps/gtk-engines \
   deps/murrine \
-  deps/gtksourceview \
   deps/glade \
   deps/gtksourceview3 \
-  deps/pygtksourceview \
   deps/libgtop \
   deps/libgksu \
   deps/gksu \

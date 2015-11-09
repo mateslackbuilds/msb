@@ -152,7 +152,7 @@ index 0000000..14d54a9
 + * uniquebackend-gdbus.c: GDBus implementation of UniqueBackend
 + *
 + * Copyright (C) 2007  Emmanuele Bassi  <ebassi@o-hand.com>
-+ * Copyright © 2010 Christian Persch
++ * Copyright ï¿½ 2010 Christian Persch
 + *
 + * This library is free software; you can redistribute it and/or
 + * modify it under the terms of the GNU Lesser General Public
