@@ -1,5 +1,13 @@
 New Packages in MATE 1.12:
-
-Renamed Packages in MATE 1.12:
+glade
+gtkmm3
+gtksourceview3
+libunique3
+libwnck3
+vte3
 
 Packages removed in MATE 1.12:
+gtksourceview (replaced by gtksourceview3)
+libunique (replaced by libunique3)
+pygobject3 (Added to Slackware)
+gtkmm (replaced by gtkmm3)
