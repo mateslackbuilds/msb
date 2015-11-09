@@ -43,12 +43,10 @@ for dir in \
   deps/yelp-xsl \
   deps/yelp-tools \
   deps/libwnck3 \
-  deps/libunique \
   deps/libunique3 \
   deps/pangox-compat \
   deps/gtk-engines \
   deps/murrine \
-  deps/gtksourceview \
   deps/glade \
   deps/gtksourceview3 \
   deps/pygtksourceview \
