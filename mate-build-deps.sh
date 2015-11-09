@@ -59,6 +59,7 @@ for dir in \
   deps/gupnp \
   deps/docutils \
   deps/libgxps \
+  deps/vte3 \
   ; do
   # Get the package name
   package=$(echo $dir | cut -f2- -d /)

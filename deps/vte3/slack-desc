@@ -1,0 +1,12 @@
+    |-----handy-ruler------------------------------------------------------|
+vte3: vte3 (terminal emulator widget)
+vte3:
+vte3: VTE3 is a terminal emulator widget for use with GTK+3.  This package
+vte3: contains the VTE library and development files and a sample
+vte3: implementation (vte).
+vte3:
+vte3: VTE is used by XFce.
+vte3:
+vte3: homepage: http://www.gnome.org
+vte3:
+vte3:
