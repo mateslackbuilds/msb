@@ -61,7 +61,6 @@ for dir in \
   deps/pangomm \
   deps/atkmm \
   deps/mm-common \
-  deps/gtkmm \
   deps/gtkmm3 \
   deps/perl-xml-twig \
   deps/perl-net-dbus \
