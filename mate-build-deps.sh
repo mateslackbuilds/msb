@@ -70,6 +70,7 @@ for dir in \
   deps/system-tools-backends \
   deps/liboobs \
   deps/docutils \
+  deps/vte3 \
   ; do
   # Get the package name
   package=$(echo $dir | cut -f2- -d /)
