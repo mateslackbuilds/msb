@@ -49,7 +49,6 @@ for dir in \
   deps/murrine \
   deps/glade \
   deps/gtksourceview3 \
-  deps/pygtksourceview \
   deps/libgtop \
   deps/libgksu \
   deps/gksu \

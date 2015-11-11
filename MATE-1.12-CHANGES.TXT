@@ -11,3 +11,4 @@ gtksourceview (replaced by gtksourceview3)
 libunique (replaced by libunique3)
 pygobject3 (Added to Slackware)
 gtkmm (replaced by gtkmm3)
+pygtksourceview

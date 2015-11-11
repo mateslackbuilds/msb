@@ -10,6 +10,6 @@ This is a list of dependencies for the packages in the /extra directory.
 4.  extra/mate-system-tools requires deps/perl-xml-twig,
     deps/perl-net-dbus, deps/system-tools-backends, and deps/liboobs.
 
-5.  extra/pluma requires both deps/gtksourceview3 and deps/pygtksourceview
+5.  extra/pluma requires deps/gtksourceview3
 
 6.  extra/caja-dropbox requires deps/doc-utils
