@@ -1,5 +1,11 @@
 The following is a list of known issues with MATE on Slackware:
 
+Fri Nov 13 23:32:14 UTC 2015
+In GTK+3 build, some themes in System > Preferences > Look and Feel > Appearance
+will show a "?" instead of the thumbnail. Same things happened when you tried to
+customize a spesific theme.
+It has been tracked here: https://github.com/mate-desktop/mate-control-center/issues/206
+
 Mon Feb 17 02:02:11 UTC 2014
 If you start MATE Volume Control in Applications > Sounds & Videos,
 sometimes, you will find this error message "no volume control gstreamer
