@@ -13,3 +13,4 @@ pygobject3 (Added to Slackware)
 gtkmm (replaced by gtkmm3)
 pygtksourceview
 gnome-main-menu (not compatible with GTK+3)
+mate-system-tools (not compatible with GTK+3)
