@@ -41,6 +41,7 @@ for dir in \
   yelp \
   mate-user-guide \
   mate-tweak \
+  caja-actions \
   ; do
   # Get the package name
   package=$(echo $dir | cut -f2- -d /)
