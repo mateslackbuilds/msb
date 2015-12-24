@@ -41,7 +41,7 @@ fi
 
 wget -c http://download.gnome.org/sources/$PRGNAM/2.6/$PRGNAM-$VERSION.tar.xz
 
-NUMJOBS=${NUMJOBS:-" -j8 "}
+
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
@@ -90,7 +90,7 @@ CXXFLAGS="$SLKCFLAGS" \
   --enable-static=no \
   --build=$ARCH-slackware-linux
 
-make libdocdir=/usr/doc/$PRGNAM-$VERSION $NUMJOBS
+make libdocdir=/usr/doc/$PRGNAM-$VERSION 
 make install-strip libdocdir=/usr/doc/$PRGNAM-$VERSION DESTDIR=$PKG
 
 cp -a $DOCS $PKG/usr/doc/$PRGNAM-$VERSION

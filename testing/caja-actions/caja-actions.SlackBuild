@@ -37,7 +37,7 @@ fi
 
 wget -c https://github.com/raveit65/caja-actions/archive/v1.8.1.tar.gz
 
-NUMJOBS=${NUMJOBS:-" -j8 "}
+
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}

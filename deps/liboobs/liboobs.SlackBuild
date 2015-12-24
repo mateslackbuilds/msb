@@ -37,7 +37,7 @@ fi
 
 wget -c http://download.gnome.org/sources/$PRGNAM/3.0/$PRGNAM-$VERSION.tar.bz2
 
-NUMJOBS=${NUMJOBS:-" -j8 "}
+
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
@@ -89,7 +89,7 @@ CXXFLAGS="$SLKCFLAGS" \
   --disable-static \
   --build=$ARCH-slackware-linux
 
-make $NUMJOBS || make
+make
 make install DESTDIR=$PKG
 
 find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | grep ELF \

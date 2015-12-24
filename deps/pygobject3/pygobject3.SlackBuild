@@ -38,7 +38,7 @@ fi
 
 wget -c http://download.gnome.org/sources/$SRCNAM/3.10/$SRCNAM-$VERSION.tar.xz
 
-NUMJOBS=${NUMJOBS:-" -j8 "}
+
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
@@ -83,7 +83,7 @@ CFLAGS="$SLKCFLAGS" \
   --with-python=/usr/bin/python2.7 \
   --build=$ARCH-slackware-linux
 
-make $NUMJOBS || make
+make
 make install DESTDIR=$PKG
 
 find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | grep ELF \

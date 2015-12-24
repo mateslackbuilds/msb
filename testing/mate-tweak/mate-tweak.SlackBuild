@@ -39,7 +39,7 @@ fi
 
 wget -c https://bitbucket.org/ubuntu-mate/mate-tweak/get/$VERSION.tar.bz2
 
-NUMJOBS=${NUMJOBS:-" -j8 "}
+
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}

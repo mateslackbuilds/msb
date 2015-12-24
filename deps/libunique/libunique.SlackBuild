@@ -38,7 +38,7 @@ fi
 
 wget -c http://download.gnome.org/sources/$PRGNAM/1.1/libunique-1.1.6.tar.bz2
 
-NUMJOBS=${NUMJOBS:-" -j8 "}
+
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
@@ -98,7 +98,7 @@ CXXFLAGS="$SLKCFLAGS" \
   --disable-maintainer-flags \
   --build=$ARCH-slackware-linux
 
-make $NUMJOBS || make
+make
 make install DESTDIR=$PKG
 
 find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | grep ELF \

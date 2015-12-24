@@ -40,7 +40,7 @@ fi
 
 wget -c https://github.com/galculator/galculator/archive/v$VERSION.tar.gz
 
-NUMJOBS=${NUMJOBS:-" -j8 "}
+
 
 
 CWD=$(pwd)

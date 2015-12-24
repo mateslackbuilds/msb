@@ -19,7 +19,7 @@ fi
 
 wget -c http://download.gnome.org/sources/$PRGNAM/3.18/$PRGNAM-$VERSION.tar.xz
 
-NUMJOBS=${NUMJOBS:-" -j8 "}
+
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
@@ -68,7 +68,7 @@ CXXFLAGS="$SLKCFLAGS" \
   --without-help-dir \
   --build=$ARCH-slackware-linux
 
-make $NUMJOBS || make
+make
 make install-strip DESTDIR=$PKG
 
 find $PKG/usr/man -type f -exec gzip -9 {} \;

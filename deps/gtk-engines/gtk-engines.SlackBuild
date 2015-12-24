@@ -38,7 +38,7 @@ fi
 
 wget -c https://sources.archlinux.org/other/gtk-engines/$PRGNAM-$VERSION.tar.gz
 
-NUMJOBS=${NUMJOBS:-" -j8 "}
+
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
@@ -87,7 +87,7 @@ CXXFLAGS="$SLKCFLAGS" \
   --disable-deprecated \
   --build=$ARCH-slackware-linux
 
-make $NUMJOBS || make
+make
 make install DESTDIR=$PKG
 
 find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | grep ELF \
