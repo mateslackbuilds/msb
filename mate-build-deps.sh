@@ -53,11 +53,6 @@ for dir in \
   deps/gksu \
   deps/gssdp \
   deps/gupnp \
-  deps/libsigc++ \
-  deps/glibmm \
-  deps/cairomm \
-  deps/pangomm \
-  deps/atkmm \
   deps/mm-common \
   deps/gtkmm \
   deps/perl-xml-twig \
