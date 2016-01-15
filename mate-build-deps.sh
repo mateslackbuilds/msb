@@ -53,8 +53,6 @@ for dir in \
   deps/gksu \
   deps/gssdp \
   deps/gupnp \
-  deps/mm-common \
-  deps/gtkmm \
   deps/perl-xml-twig \
   deps/perl-net-dbus \
   deps/system-tools-backends \
