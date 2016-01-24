@@ -3,6 +3,7 @@ New Packages in MATE 1.12:
 Renamed Packages in MATE 1.12:
 
 Packages removed in MATE 1.12:
+libgnomecanvas (no longer needed)
 atkmm (included in 14.2)
 cairomm (included in 14.2)
 glibmm (included in 14.2)
