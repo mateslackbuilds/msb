@@ -56,13 +56,17 @@ may want to disable polkit-gnome and see if polkit-mate works by itself.
 Also, if you use mate-power-manager then you might want to disable the Xfce
 power manager if it is listed.
 
-7.  Users running Slackware{64} -current are advised to read CURRENT.TXT.
+7. Check the 'preferred applications' in System > Preferences > Personal 
+menu to make sure you use the correct application. eg. caja for File Manager
+instead of audacious.
+
+8.  Users running Slackware{64} -current are advised to read CURRENT.TXT.
 It should also be noted that the target system for MATE SlackBuilds is a
 full install of the latest official Slackware release.  It might run on a
 less-than-full install and it might run on -current.  Or, it might not.
 Neither of those are our official target systems.
 
-8.  Enjoy and let us know of any issues.  Email is:
+9.  Enjoy and let us know of any issues.  Email is:
 mateslackbuilds@gmail.com.
 
 Thanks!
