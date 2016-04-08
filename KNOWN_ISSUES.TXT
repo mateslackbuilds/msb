@@ -1,25 +1,10 @@
 The following is a list of known issues with MATE on Slackware:
 
-Mon Feb 17 02:02:11 UTC 2014
-If you start MATE Volume Control in Applications > Sounds & Videos,
-sometimes, you will find this error message "no volume control gstreamer
-plugins and/or devices found".
-
-You can fix this by running these steps:
-- Go to System > Preferences > KDE System Settings > Multimedia
-- Go to tab Phonon
-- Click on Test button (make sure it gives you proper sound)
-
-MATE Volume Control should be working now
-
-Sat Feb 15 01:01:47 UTC 2014
-Help menus and help buttons are disabled since they require yelp which
-requires more dependencies. For those interested to build yelp, you may
+Sat Apr  9 02:20:05 UTC 2016
+Help menus and help buttons are now enabled but they will not be usable
+unless you have yelp (this requires webkit2gtk not provided here, but
+available in SBo). For those interested to build yelp, you may
 find the SlackBuild in testing/yelp.
-
-You also need to rebuild some packages, since by default, the SlackBuild
-script is configured to remove help files. You can remove the
---without-help-dir line to produce help files.
 
 Mon Jun 10 03:09:28 UTC 2013
 If you are encountering problems with Caja (MATE's file manager) opening

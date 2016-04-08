@@ -1,8 +1,8 @@
 #!/bin/sh
-
-# Slackware build script for system-tools-backends
-
-# Copyright 2013-2015 Willy Sudiarto Raharjo <willysr@slackware-id.org>
+#
+# Slackware build script for libwnck3.
+#
+# Copyright 2015 Edinaldo P. Silva, Rio de Janeiro, Brazil.
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -22,9 +22,12 @@
 #  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-PRGNAM=system-tools-backends
-VERSION=${VERSION:-2.10.2}
-BUILD=${BUILD:-2}
+# Modified by Willy Sudiarto Raharjo for MSB Project
+
+PRGNAM=libwnck3
+SRCNAM=libwnck
+VERSION=${VERSION:-3.14.1}
+BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
 if [ -z "$ARCH" ]; then
@@ -35,9 +38,9 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c http://download.gnome.org/sources/$PRGNAM/2.10/$PRGNAM-$VERSION.tar.bz2
+wget -c http://ftp.gnome.org/pub/gnome/sources/libwnck/3.14/$SRCNAM-$VERSION.tar.xz
 
-
+NUMJOBS=${NUMJOBS:-" -j8 "}
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
@@ -60,11 +63,14 @@ fi
 
 set -e
 
+SRCNAM="libwnck"
+
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 rm -rf $PRGNAM-$VERSION
-tar xvf $CWD/$PRGNAM-$VERSION.tar.bz2
+tar xvf $CWD/${SRCNAM}-${VERSION}.tar.xz
+mv ${SRCNAM}-${VERSION} $PRGNAM-$VERSION
 cd $PRGNAM-$VERSION
 chown -R root:root .
 find -L . \
@@ -72,13 +78,6 @@ find -L . \
   -o -perm 511 \) -exec chmod 755 {} \; -o \
  \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
   -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
-
-# Added support to Slackware 14.0 and 14.1
-patch -p0 < $CWD/services.patch
-
-# Patch user module
-# https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=761806
-patch -p1 < $CWD/fix-user-module.patch
 
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
@@ -89,35 +88,23 @@ CXXFLAGS="$SLKCFLAGS" \
   --localstatedir=/var \
   --mandir=/usr/man \
   --docdir=/usr/doc/$PRGNAM-$VERSION \
-  --disable-static \
+  --enable-introspection=yes \
   --build=$ARCH-slackware-linux
 
-make
+make $NUMJOBS || make
 make install DESTDIR=$PKG
+
+mv $PKG/usr/bin/wnckprop $PKG/usr/bin/wnckprop3
+mv $PKG/usr/bin/wnck-urgency-monitor $PKG/usr/bin/wnck3-urgency-monitor
 
 find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | grep ELF \
   | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
 
-# Compress and link manpages
-if [ -d $PKG/usr/man ]; then
-  ( cd $PKG/usr/man
-    for manpagedir in $(find . -type d -name "man*") ; do
-      ( cd $manpagedir
-        for eachpage in $( find . -type l -maxdepth 1) ; do
-          ln -s $( readlink $eachpage ).gz $eachpage.gz
-          rm $eachpage
-        done
-        gzip -9 *.?
-      )
-    done
-  )
-fi
+DOCS="AUTHORS ChangeLog COPYING HACKING INSTALL MAINTAINERS NEWS README"
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-cp -a AUTHORS COPYING* ChangeLog INSTALL NEWS README $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a $DOCS $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
-find $PKG/usr/doc/$PRGNAM-$VERSION/ -type f -exec chmod 644 {} \;
-chown -R root:root $PKG/usr/doc/$PRGNAM-$VERSION
 
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc

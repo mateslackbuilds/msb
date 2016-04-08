@@ -1,7 +1,0 @@
-The System Tools Backends are a set of cross-platform modules for 
-Linux, FreeBSD and other Unix systems. 
-
-The backends provide an common DBus interface to all platforms to 
-modify/read the system configuration in a distro independent fashion
-
-This requires: perl-net-dbus

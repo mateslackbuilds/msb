@@ -42,6 +42,7 @@ for dir in \
   deps/rarian \
   deps/yelp-xsl \
   deps/yelp-tools \
+  deps/libwnck3 \
   deps/libunique \
   deps/pangox-compat \
   deps/gtk-engines \
@@ -53,10 +54,6 @@ for dir in \
   deps/gksu \
   deps/gssdp \
   deps/gupnp \
-  deps/perl-xml-twig \
-  deps/perl-net-dbus \
-  deps/system-tools-backends \
-  deps/liboobs \
   deps/docutils \
   ; do
   # Get the package name

@@ -1,13 +1,9 @@
 The following is a list of notes on building MATE on Slackware -current:
 
-Thu May 14 16:26:41 UTC 2015
-Since current is now using newer GTK+3 version than what we have in 14.1
-and MATE developers support different GTK+3 version, you can simply run this
-command to build mate-themes designed to be compatible for specific GTK+3:
-GTKVERSION=gtk3.14 sh mate-themes.SlackBuild
-You can replace 3.14 with any GTK+3 version you are using on your machine.
-
-Thanks to Ryan P.C. McQuen for the reminder.
+Sat Apr  9 02:17:03 UTC 2016
+MATE developers have reorganized mate-themes tarballs upstream to provide
+sources matching your GTK+3 libraries. You can simply change the VERSION
+and download link if you use a different GTK+3 library.
 
 Tue Jun 11 00:41:15 UTC 2013
 Pat has rebuilt xdg-utils in Slackware 14.1 to properly support MATE DE, so

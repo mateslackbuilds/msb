@@ -45,13 +45,10 @@ for dir in \
   extra/caja-dropbox \
   extra/mate-applets \
   extra/mate-icon-theme-faenza \
-  extra/mate-netspeed \
   extra/mate-sensors-applet \
   extra/mate-utils \
   extra/mozo \
   extra/pluma \
-  extra/mate-system-tools \
-  extra/gnome-main-menu \
   ; do
   # Get the package name
   package=$(echo $dir | cut -f2- -d /)
