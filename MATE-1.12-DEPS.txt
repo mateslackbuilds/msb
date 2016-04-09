@@ -6,11 +6,9 @@ This is a list of dependencies for the packages in the /extra directory.
 
 3.  extra/mate-netspeed and extra/mate-utils both require deps/libgtop.
 
-4.  extra/mate-text-editor requires deps/gtksourceview.
-
-5.  extra/mate-system-tools requires deps/perl-xml-twig,
+4.  extra/mate-system-tools requires deps/perl-xml-twig,
     deps/perl-net-dbus, deps/system-tools-backends, and deps/liboobs.
 
-6.  extra/pluma requires both deps/gtksourceview and deps/pygtksourceview
+5.  extra/pluma requires both deps/gtksourceview and deps/pygtksourceview
 
-7.  extra/caja-dropbox requires deps/doc-utils
+6.  extra/caja-dropbox requires deps/doc-utils
