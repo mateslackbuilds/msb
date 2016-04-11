@@ -1,13 +1,14 @@
-New Packages in MATE 1.12:
+New Packages in MATE 1.14:
+libwnck3
 
-Renamed Packages in MATE 1.12:
+Renamed Packages in MATE 1.14:
 
-Packages removed in MATE 1.12:
-libgnomecanvas (no longer needed)
-atkmm (included in 14.2)
-cairomm (included in 14.2)
-glibmm (included in 14.2)
-libsigc++ (included in 14.2)
-pangomm (included in 14.2)
-gtkmm (included in 14.2 named gtkmm2)
-mm-common (no longer needed)
+Packages removed in MATE 1.14:
+mate-netspeed (merged into mate-applets)
+perl-xml-twig (dep of mate-system-tools)
+perl-net-dbus (dep of mate-system-tools)
+system-tools-backends (dep of mate-system-tools)
+liboobs (dep of mate-system-tools)
+mate-system-tools
+gnome-main-menu
+
