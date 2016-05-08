@@ -42,6 +42,7 @@ for dir in \
   mate-user-guide \
   mate-tweak \
   caja-actions \
+  mate-user-share \
   ; do
   # Get the package name
   package=$(echo $dir | cut -f2- -d /)
