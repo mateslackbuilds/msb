@@ -1,0 +1,12 @@
+                    |-----handy-ruler------------------------------------------------------|
+mate-indicator-applet: mate-indicator-applet (Display Applet)
+mate-indicator-applet:
+mate-indicator-applet: A small applet to display information from various applications
+mate-indicator-applet: consistently in the panel.
+mate-indicator-applet:
+mate-indicator-applet: MATE Indicator Applet is a fork of Indicator Applet for GNOME.
+mate-indicator-applet: 
+mate-indicator-applet: Project URL: http://www.mate-desktop.org/
+mate-indicator-applet:
+mate-indicator-applet:
+mate-indicator-applet:

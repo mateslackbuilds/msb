@@ -1,0 +1,6 @@
+A small applet to display information from various applications
+consistently in the panel.
+
+MATE Indicator Applet is a fork of Indicator Applet for GNOME.
+
+This requires libindicator
