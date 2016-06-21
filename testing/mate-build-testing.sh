@@ -43,6 +43,8 @@ for dir in \
   mate-tweak \
   caja-actions \
   mate-user-share \
+  libindicator \
+  mate-indicator-applet \
   ; do
   # Get the package name
   package=$(echo $dir | cut -f2- -d /)
