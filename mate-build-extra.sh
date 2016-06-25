@@ -37,6 +37,9 @@ OUTPUT=${OUTPUT:-/tmp}
 # This is the original directory where you started this script
 MSBROOT=$(pwd)
 
+# Check for duplicate sources (default: OFF)
+CHECKDUPLICATE=0
+
 # Loop for all extra packages
 for dir in \
   extra/galculator \
@@ -62,13 +65,15 @@ for dir in \
   # Get the build
   build=$(cat ${package}.SlackBuild | grep "BUILD:" | cut -d "-" -f2 | rev | cut -c 2- | rev)
 
-  # Check for duplicate sources
-  sourcefile="$(ls -l $MSBROOT/$dir/${package}-*.tar.?z* 2>/dev/null | wc -l)"
-  if [ $sourcefile -gt 1 ]; then
-    echo "You have following duplicate sources:"
-    ls $MSBROOT/$dir/${package}-*.tar.?z* | cut -d " " -f1
-    echo "Please delete sources other than ${package}-$version to avoid problems"
-    exit 1
+  if [ $CHECKDUPLICATE -eq 1 ]; then
+    # Check for duplicate sources
+    sourcefile="$(ls -l $MSBROOT/$dir/${package}-*.tar.?z* 2>/dev/null | wc -l)"
+    if [ $sourcefile -gt 1 ]; then
+      echo "You have following duplicate sources:"
+      ls $MSBROOT/$dir/${package}-*.tar.?z* | cut -d " " -f1
+      echo "Please delete sources other than ${package}-$version to avoid problems"
+      exit 1
+    fi
   fi
 
   # The real build starts here
