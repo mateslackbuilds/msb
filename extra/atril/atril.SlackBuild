@@ -61,7 +61,7 @@ fi
 
 # check webkitgtk existence
 webkit=`pkg-config --exists webkit-1.0`
-if [ $webkit -eq 0 ]; then
+if [ "$?" -eq 0 ]; then
   epub="--enable-epub"
 else
   epub="--disable-epub"
