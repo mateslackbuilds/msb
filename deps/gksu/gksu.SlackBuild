@@ -35,7 +35,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c http://people.debian.org/~kov/gksu/$PRGNAM-$VERSION.tar.gz
+wget -c https://people.debian.org/~kov/gksu/$PRGNAM-$VERSION.tar.gz
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
