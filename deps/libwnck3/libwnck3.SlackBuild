@@ -26,7 +26,7 @@
 
 PRGNAM=libwnck3
 SRCNAM=libwnck
-VERSION=${VERSION:-3.14.1}
+VERSION=${VERSION:-3.20.1}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
@@ -38,7 +38,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c http://ftp.gnome.org/pub/gnome/sources/libwnck/3.14/$SRCNAM-$VERSION.tar.xz
+wget -c http://ftp.gnome.org/pub/gnome/sources/libwnck/3.20/$SRCNAM-$VERSION.tar.xz
 
 NUMJOBS=${NUMJOBS:-" -j8 "}
 
