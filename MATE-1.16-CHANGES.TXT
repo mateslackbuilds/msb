@@ -1,0 +1,7 @@
+New Packages in MATE 1.16:
+libgxps
+
+Renamed Packages in MATE 1.16:
+
+Packages removed in MATE 1.16:
+

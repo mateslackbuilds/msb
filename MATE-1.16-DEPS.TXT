@@ -4,8 +4,10 @@ This is a list of dependencies for the packages in the /extra directory.
 
 2.  extra/caja-extensions requires deps/gssdp and deps/gupnp
 
-3.  extra/mate-utils requires deps/libgtop.
+3.  extra/mate-utils requires deps/libgtop
 
 4.  extra/pluma requires both deps/gtksourceview and deps/pygtksourceview
 
 5.  extra/caja-dropbox requires deps/doc-utils
+
+6.  extra/atril requires deps/libgxps
