@@ -42,6 +42,8 @@ CHECKDUPLICATE=0
 # Loop for all dependency packages
 for dir in \
   deps/zenity \
+  deps/vala \
+  deps/vte3 \
   deps/rarian \
   deps/yelp-xsl \
   deps/yelp-tools \
@@ -59,7 +61,6 @@ for dir in \
   deps/gupnp \
   deps/docutils \
   deps/libgxps \
-  deps/vte3 \
   ; do
   # Get the package name
   package=$(echo $dir | cut -f2- -d /)
