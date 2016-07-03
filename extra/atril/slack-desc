@@ -1,10 +1,10 @@
      |-----handy-ruler------------------------------------------------------|
 atril: atril (document viewer for the MATE desktop)
 atril:
-atril: atril is a document viewer capable of
-atril: displaying multiple and single page document formats like PDF and
-atril: Postscript. Atril is a fork of Evince.
+atril: atril is a document viewer capable of displaying multiple and single
+atril: page document formats like PDF, XPS, ePUB, DVI, and Postscript.
 atril:
+atril: Atril is a fork of Evince.
 atril:
 atril:
 atril:
