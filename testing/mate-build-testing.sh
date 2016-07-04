@@ -44,7 +44,6 @@ for dir in \
   yelp \
   mate-user-guide \
   mate-tweak \
-  caja-actions \
   mate-user-share \
   libindicator \
   mate-indicator-applet \
