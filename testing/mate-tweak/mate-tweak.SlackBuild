@@ -24,8 +24,8 @@
 
 PRGNAM=mate-tweak
 SRCNAM=ubuntu-mate-mate-tweak
-VERSION=${VERSION:-3.5.10}
-SRCVER=${SRCVER:-22374775981c}
+VERSION=${VERSION:-16.10.3}
+SRCVER=${SRCVER:-86e381c3fe54}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
@@ -38,8 +38,6 @@ if [ -z "$ARCH" ]; then
 fi
 
 wget -c https://bitbucket.org/ubuntu-mate/mate-tweak/get/$VERSION.tar.bz2
-
-
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
