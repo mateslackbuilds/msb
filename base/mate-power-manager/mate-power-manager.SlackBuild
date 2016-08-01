@@ -24,7 +24,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=mate-power-manager
-VERSION=${VERSION:-1.15.0}
+VERSION=${VERSION:-1.15.1}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
@@ -107,12 +107,10 @@ fi
 
 # Remove old GNOME unnecessary stuff from /usr/share/omf.  Confirmed w/
 # upstream.
-rm -rf $PKG/usr/share/omf/mate-power-manager
+#rm -rf $PKG/usr/share/omf/mate-power-manager
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-cp -a \
-  AUTHORS COPYING ChangeLog HACKING NEWS README TODO \
-  $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a AUTHORS COPYING ChangeLog NEWS README $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 find $PKG/usr/doc/$PRGNAM-$VERSION/ -type f -exec chmod 644 {} \;
 chown -R root:root $PKG/usr/doc/$PRGNAM-$VERSION
