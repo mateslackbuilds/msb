@@ -1,0 +1,25 @@
+--- libmateweather-1.15.0/libmateweather/weather-metar.c	2015-10-06 21:36:53.000000000 +0700
++++ weather-metar.c	2016-08-27 22:43:19.601741148 +0700
+@@ -522,7 +522,7 @@
+ 	    metar = g_strdup (p);
+ 	success = metar_parse (metar, info);
+ 	g_free (metar);
+-    } else if (!strstr (msg->response_body->data, "National Weather Service")) {
++    } else if (!strstr (msg->response_body->data, "AVIATION WEATHER CENTER")) {
+ 	/* The response doesn't even seem to have come from NWS...
+ 	 * most likely it is a wifi hotspot login page. Call that a
+ 	 * network error.
+@@ -550,10 +550,11 @@
+     }
+ 
+     msg = soup_form_request_new (
+-	"GET", "http://weather.noaa.gov/mgetmetar.php",
+-	"cccc", loc->code,
++	"GET", "http://aviationweather.gov/metar/data",
++	"ids", loc->code,
+ 	NULL);
+     soup_session_queue_message (info->session, msg, metar_finish, info);
+ 
+     info->requests_pending++;
+ }
++
