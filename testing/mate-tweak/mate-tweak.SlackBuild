@@ -24,8 +24,8 @@
 
 PRGNAM=mate-tweak
 SRCNAM=ubuntu-mate-mate-tweak
-VERSION=${VERSION:-16.10.3}
-SRCVER=${SRCVER:-86e381c3fe54}
+VERSION=${VERSION:-16.10.5}
+SRCVER=${SRCVER:-197ee3a56604}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
