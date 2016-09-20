@@ -47,6 +47,12 @@ Currently, there are three branches in the MSB GIT repository:
   longer updated.
 
 - 14.2-mate-1.14:   The MSB stable branch for Slackware 14.2.
+  This is the previously supported branch and only receives bug fix updates.
+  The MSB 1.14 binary packages for Slackware 14.2 are built from this branch.
+  Since MATE 1.16 has been released as the next stable release then this branch
+  is considered obsoleted and no longer updated.
+
+- 14.2-mate-1.16:   The MSB stable branch for Slackware 14.2.
   This is the currently supported branch and only receives bug fix updates.
   The MSB 1.14 binary packages for Slackware 14.2 are built from this branch.
   You might want to use this branch if you enjoy stable releases.
@@ -65,13 +71,14 @@ Example output of 'git branch':
   14.1-mate-1.10
   14.1-mate-1.12
   14.2-mate-1.14
+  14.2-mate-1.16
 * master
 
 This output indicates that you are now in the 'master' branch.
 
 To switch to another branch, use 'git checkout <branch_name>'.  Example:
 
-$ git checkout 14.2-mate-1.14
+$ git checkout 14.2-mate-1.16
 $ git branch
 
   14.0-mate-1.6
@@ -79,8 +86,9 @@ $ git branch
   14.1-mate-1.8
   14.1-mate-1.10
   14.1-mate-1.12
-* 14.2-mate-1.14
+  14.2-mate-1.14
+  14.2-mate-1.16
   master
 
-You have now switched from the 'master' branch to the '14.2-mate-1.14'
+You have now switched from the 'master' branch to the '14.2-mate-1.16'
 branch.

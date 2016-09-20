@@ -1,15 +1,10 @@
-MATE 1.12 to 1.14 Upgrade HOWTO
+MATE 1.14 to 1.16 Upgrade HOWTO
 <mateslackbuilds@gmail.com>
 
-This document explains how to upgrade from MATE 1.12 on Slackware 14.1 to
-MATE 1.14 on Slackware Linux 14.2.
+This document explains how to upgrade from MATE 1.14 on MATE 1.16 on
+Slackware Linux 14.2.
 
 ----------------------------------------------------------------------------
-
-NOTE:
-This procedure assumes you are upgrading from Slackware 14.1 to Slackware 14.2.
-If you install Slackware 14.2 using a clean installation procedure, simply
-use installpkg to install all packages in deps, base, and extra directory.
 
 Before you begin, we strongly recommend making a backup of your system, or,
 if not the entire system, at least the /etc and your home directory.  You
@@ -18,36 +13,28 @@ is complete. Back it up, or take your chances.
 
 OK, now that everything is safely backed up, let's proceed. :-)
 
-You will need the MATE 1.14 packages available on your local system.  Grab
+You will need the MATE 1.16 packages available on your local system.  Grab
 them from the official repository at http://www.slackware.uk/msb/ or
-any of the mirror sites.  Please note that MATE 1.14 has new and obsoleted
-packages.
+any of the mirror sites.  Please note that MATE 1.16 has new packages.
 
-0.  Reboot after upgrading your Slackware 14.1 -> Slackware 14.2
-
-1.  Upgrade and install all new MATE 1.14 packages:
+1.  Upgrade and install all new MATE 1.16 packages:
 
     upgradepkg --install-new --reinstall /path/to/deps/*.txz
     upgradepkg --install-new --reinstall /path/to/base/*.txz
     upgradepkg --install-new --reinstall /path/to/extra/*.txz
 
-2.  Remove obsolete packages:
-
-    removepkg mate-netspeed perl-xml-twig perl-net-dbus system-tools-backends
-    removepkg liboobs mate-system-tools gnome-main-menu
-
-3.  Run xwmconfig and select xinitrc.mate-session. This ensures you get the
+2.  Run xwmconfig and select xinitrc.mate-session. This ensures you get the
     latest copy of xinitrc.mate-session due to changes in mate-session-
     manager.  ALWAYS run this command for both new installations or upgrades
     from MATE 1.14
 
-At this point you should be running MATE 1.14 on Slackware 14.2.  :-)  If
+At this point you should be running MATE 1.16 on Slackware 14.2.  :-)  If
 you have installed everything from /base and /extra (which will include
-packages from the /deps directory) then you should have a total of 51
+packages from the /deps directory) then you should have a total of 54
 packages:
 
     $ ls /var/log/packages | grep _msb | wc -l
-      51
+      54
 
 We wish everyone good luck with this!  Please report any issues to
 mateslackbuilds@gmail.com.
