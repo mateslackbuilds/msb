@@ -34,7 +34,7 @@ of using "sudo".
 and install all the base (required) packages. There are a total of 24 packages
 and they do not replace any stock Slackware packages. The SlackBuilds will use
 wget to download the sources.  Or, you can also manually download the
-sources from: http://pub.mate-desktop.org/releases/1.14 and the download
+sources from: http://pub.mate-desktop.org/releases/1.16 and the download
 locations for each dependency and put each source into the corresponding
 directory within 'base' and 'deps'.
 
