@@ -25,7 +25,7 @@
 # Modified by Willy Sudiarto Raharjo for MSB Project
 
 PRGNAM=vala
-VERSION=${VERSION:-0.30.2}
+VERSION=${VERSION:-0.34.4}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
@@ -37,7 +37,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c http://ftp.gnome.org/pub/GNOME/sources/vala/0.30/$PRGNAM-$VERSION.tar.xz
+wget -c http://ftp.gnome.org/pub/GNOME/sources/vala/0.34/$PRGNAM-$VERSION.tar.xz
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
@@ -72,6 +72,9 @@ find -L . \
   -o -perm 511 \) -exec chmod 755 {} \; -o \
  \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
   -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
+
+# Patch to support older GTK+3
+patch -p1 < $CWD/patch_support-gtk318.diff
 
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
