@@ -6,7 +6,7 @@ unless you have yelp (this requires webkit2gtk not provided here, but
 available in SBo). For those interested to build yelp, you may
 find the SlackBuild in testing/yelp.
 
-Mon Jun 10 03:09:28 UTC 2013
+Mon Jun 10 03:09:28 UTC 2013 (FIXED)
 If you are encountering problems with Caja (MATE's file manager) opening
 directories when clicking on files in certain programs like Dropbox, Skype,
 and others, please execute the following steps to fix it:
@@ -24,6 +24,11 @@ creating the initial patch.  Here is a link to the LQ thread which also has
 a link to Giorgos's blog with the patch:
 
 http://www.linuxquestions.org/questions/showthread.php?p=4968614
+
+UPDATE: Mon Mar 13 01:27:06 UTC 2017
+mate-desktop has been updated to provide default application for some categories.
+This will only work with new user. Existing user will not be affected and manual
+intervention will still be needed.
 
 Wed Mar 27 04:23:24 UTC 2013
 If you have dual monitor with NVidia card and set it up to use both monitors
