@@ -29,7 +29,7 @@ any of the mirror sites.  Please note that MATE 1.18 has new packages.
 3.  Run xwmconfig and select xinitrc.mate-session. This ensures you get the
     latest copy of xinitrc.mate-session due to changes in mate-session-
     manager.  ALWAYS run this command for both new installations or upgrades
-    from MATE 1.14
+    from MATE 1.16
 
 At this point you should be running MATE 1.18 on Slackware 14.2.  :-)  If
 you have installed everything from /base and /extra (which will include
