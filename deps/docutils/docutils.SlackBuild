@@ -35,9 +35,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c http://downloads.sourceforge.net/docutils/$PRGNAM-$VERSION.tar.gz
-
-
+wget -c https://sourceforge.net/projects/docutils/files/$PRGNAM/0.12/$PRGNAM-$VERSION.tar.gz
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
