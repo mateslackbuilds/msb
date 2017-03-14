@@ -16,3 +16,8 @@ xdg-mime default caja-folder-handler.desktop application/x-directory
 
 please make a backup of your $HOME/.local/share/applications/defaults.list
 before executing the above commands
+
+UPDATE:
+mate-desktop 1.18.0 provides a list of default applications for new users,
+so they no longer have to execute the two commands above. However, existing
+users will still have to apply it manually.

@@ -11,3 +11,5 @@ This is a list of dependencies for the packages in the /extra directory.
 5.  extra/caja-dropbox requires deps/doc-utils
 
 6.  extra/atril requires deps/libgxps
+
+7.  extra/pluma requires deps/libpeas
