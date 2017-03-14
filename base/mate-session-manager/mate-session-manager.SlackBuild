@@ -82,7 +82,6 @@ CXXFLAGS="$SLKCFLAGS" \
   --mandir=/usr/man \
   --docdir=/usr/doc/$PRGNAM-$VERSION \
   --libexecdir=/usr/lib${LIBDIRSUFFIX} \
-  --enable-upower \
   --without-systemd \
   --build=$ARCH-slackware-linux
 
