@@ -4,7 +4,7 @@
 # Based on the rarian SlackBuild script at SlackBuilds.org
 
 # Copyright 2013 Chess Griffin <chess.griffin@gmail.com> Raleigh, NC
-# Copyright 2015 Willy Sudiarto Raharjo <willysr@slackware-id.org>
+# Copyright 2015-2017 Willy Sudiarto Raharjo <willysr@slackware-id.org>
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -37,9 +37,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c http://rarian.freedesktop.org/Releases/rarian-0.8.1.tar.bz2
-
-
+wget -c https://rarian.freedesktop.org/Releases/rarian-0.8.1.tar.bz2
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
