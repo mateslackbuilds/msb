@@ -38,7 +38,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c http://ftp.gnome.org/pub/gnome/sources/libwnck/3.20/$SRCNAM-$VERSION.tar.xz
+wget -c https://download.gnome.org/sources/$SRCNAM/3.20/$SRCNAM-$VERSION.tar.xz
 
 NUMJOBS=${NUMJOBS:-" -j8 "}
 
