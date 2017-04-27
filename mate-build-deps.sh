@@ -3,7 +3,7 @@
 # Copyright 2012  Patrick J. Volkerding, Sebeka, Minnesota, USA
 # All rights reserved.
 #
-# Copyright 2014 Willy Sudiarto Raharjo <willysr@slackware-id.org>
+# Copyright 2014-2017 Willy Sudiarto Raharjo <willysr@slackware-id.org>
 # All rights reserved.
 #
 # Based on the xfce-build-all.sh script by Patrick J. Volkerding
@@ -43,7 +43,6 @@ CHECKDUPLICATE=0
 for dir in \
   deps/zenity \
   deps/vala \
-  deps/vte3 \
   deps/rarian \
   deps/yelp-xsl \
   deps/yelp-tools \
