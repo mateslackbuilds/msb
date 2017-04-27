@@ -36,7 +36,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c http://download.gnome.org/sources/$PRGNAM/1.1/libunique-1.1.6.tar.bz2
+wget -c https://download.gnome.org/sources/$PRGNAM/1.1/libunique-1.1.6.tar.bz2
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
