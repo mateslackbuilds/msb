@@ -24,13 +24,13 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=mate-themes
-VERSION=${VERSION:-3.18.6}
+VERSION=${VERSION:-3.22.10}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
 ARCH=noarch
 
-wget -c http://pub.mate-desktop.org/releases/themes/3.18/$PRGNAM-$VERSION.tar.xz
+wget -c http://pub.mate-desktop.org/releases/themes/3.22/$PRGNAM-$VERSION.tar.xz
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
