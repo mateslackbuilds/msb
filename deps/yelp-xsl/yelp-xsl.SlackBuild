@@ -36,9 +36,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c http://download.gnome.org/sources/$PRGNAM/3.20/$PRGNAM-$VERSION.tar.xz
-
-
+wget -c https://download.gnome.org/sources/$PRGNAM/3.20/$PRGNAM-$VERSION.tar.xz
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
