@@ -23,9 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=mate-tweak
-SRCNAM=ubuntu-mate-mate-tweak
-VERSION=${VERSION:-17.10.4}
-SRCVER=${SRCVER:-7e72bba6f222}
+VERSION=${VERSION:-17.10.9}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
@@ -37,7 +35,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c https://bitbucket.org/ubuntu-mate/mate-tweak/get/$VERSION.tar.bz2
+wget -c https://github.com/ubuntu-mate/mate-tweak/archive/$VERSION/mate-tweak-$VERSION.tar.gz
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
@@ -63,9 +61,9 @@ set -e
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
-rm -rf $SRCNAM-$SRCVER
-tar xvf $CWD/$SRCNAM-$VERSION.tar.bz2 || tar xvf $CWD/$VERSION.tar.bz2
-cd $SRCNAM-$SRCVER
+rm -rf $PRGNAM-$VERSION
+tar xvf $CWD/$PRGNAM-$VERSION.tar.gz
+cd $PRGNAM-$VERSION
 chown -R root:root .
 find -L . \
  \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 \
