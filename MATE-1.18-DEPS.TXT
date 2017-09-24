@@ -8,8 +8,6 @@ This is a list of dependencies for the packages in the /extra directory.
 
 4.  extra/pluma requires deps/gtksourceview3 and deps/libpeas
 
-5.  extra/caja-dropbox requires deps/doc-utils
+5.  extra/atril requires deps/libgxps
 
-6.  extra/atril requires deps/libgxps
-
-7.  extra/pluma requires deps/libpeas
+6.  extra/pluma requires deps/libpeas

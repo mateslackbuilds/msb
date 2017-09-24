@@ -60,7 +60,6 @@ for dir in \
   deps/gksu \
   deps/gssdp \
   deps/gupnp \
-  deps/docutils \
   deps/libgxps \
   ; do
   # Get the package name
