@@ -27,14 +27,14 @@ How to build and install the MATE packages using these scripts:
 
 2.  Run the 'mate-build-deps.sh' in the msb root directory which will build
 and install all the necessary dependencies in the /deps directory. There are
-a total of 22 packages. Please use "su" or "su -" to build as root instead
+a total of 21 packages. Please use "su" or "su -" to build as root instead
 of using "sudo".
 
 3.  Run the 'mate-build-base.sh' in the msb root directory which will build
 and install all the base (required) packages. There are a total of 24 packages
 and they do not replace any stock Slackware packages. The SlackBuilds will use
 wget to download the sources.  Or, you can also manually download the
-sources from: http://pub.mate-desktop.org/releases/1.18 and the download
+sources from: http://pub.mate-desktop.org/releases/1.18 (and 1.19) and the download
 locations for each dependency and put each source into the corresponding
 directory within 'base' and 'deps'.
 
