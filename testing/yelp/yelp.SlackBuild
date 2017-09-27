@@ -35,7 +35,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c ftp://ftp.gnome.org/pub/gnome/sources/yelp/3.26/$PRGNAM-$VERSION.tar.xz
+wget -c https://download.gnome.org/core/3.26/3.26.0/sources/$PRGNAM-$VERSION.tar.xz
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
