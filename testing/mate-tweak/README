@@ -4,5 +4,5 @@ MATE Tweak removes the Mint specific configuration options.
 MATE Tweak adds User Interfacing switching.
 MATE Tweak adds live Compiz switching.
 
-This requires setproctitle, pygobject3-python3 and both python-distutils-extra
+This requires setproctitle, and both python-distutils-extra
 and psutil with python3 support enabled (available via SBo)
