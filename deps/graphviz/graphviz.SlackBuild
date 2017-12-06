@@ -39,7 +39,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c http://graphviz.org/pub/graphviz/stable/SOURCES/$PRGNAM-$VERSION.tar.gz
+wget -c http://204.178.9.49/pub/graphviz/stable/SOURCES/$PRGNAM-$VERSION.tar.gz
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
