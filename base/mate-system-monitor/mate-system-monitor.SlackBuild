@@ -25,7 +25,7 @@
 
 PRGNAM=mate-system-monitor
 VERSION=${VERSION:-1.19.0}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-2}
 TAG=${TAG:-_msb}
 
 if [ -z "$ARCH" ]; then
@@ -107,6 +107,10 @@ fi
 
 # Remove old GNOME stuff
 rm -rf $PKG/usr/share/omf/mate-system-monitor
+
+# We add Slackware logo
+mkdir -p $PKG/usr/share/pixmaps/mate-system-monitor/distribution/
+cp $CWD/side.png $PKG/usr/share/pixmaps/mate-system-monitor/distribution/
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
 cp -a AUTHORS COPYING ChangeLog NEWS README TODO $PKG/usr/doc/$PRGNAM-$VERSION
