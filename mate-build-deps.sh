@@ -3,7 +3,7 @@
 # Copyright 2012  Patrick J. Volkerding, Sebeka, Minnesota, USA
 # All rights reserved.
 #
-# Copyright 2014-2017 Willy Sudiarto Raharjo <willysr@slackware-id.org>
+# Copyright 2014-2018 Willy Sudiarto Raharjo <willysr@slackware-id.org>
 # All rights reserved.
 #
 # Based on the xfce-build-all.sh script by Patrick J. Volkerding

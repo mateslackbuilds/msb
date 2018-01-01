@@ -4,7 +4,7 @@
 # All rights reserved.
 #
 # Copyright 2013 Chess Griffin <chess.griffin@gmail.com> Raleigh, NC
-# Copyright 2013 Willy Sudiarto Raharjo <willysr@slackware-id.org>
+# Copyright 2013-2018 Willy Sudiarto Raharjo <willysr@slackware-id.org>
 # All rights reserved.
 #
 # Based on the xfce-build-all.sh script by Patrick J. Volkerding
