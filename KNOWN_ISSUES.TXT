@@ -1,5 +1,35 @@
 The following is a list of known issues with MATE on Slackware:
 
+Sat Apr  9 02:20:05 UTC 2016
+Help menus and help buttons are now enabled but they will not be usable
+unless you have yelp (this requires webkit2gtk not provided here, but
+available in SBo). For those interested to build yelp, you may
+find the SlackBuild in testing/yelp.
+
+Mon Jun 10 03:09:28 UTC 2013 (FIXED)
+If you are encountering problems with Caja (MATE's file manager) opening
+directories when clicking on files in certain programs like Dropbox, Skype,
+and others, please execute the following steps to fix it:
+
+As your regular user, back up the following file:
+$HOME/.local/share/applications/defaults.list and then enter the next two
+commands in a terminal to set the default handler:
+
+xdg-mime default caja-folder-handler.desktop inode/directory
+xdg-mime default caja-folder-handler.desktop application/x-directory
+
+You should be all set.  Thanks to Totoro-kun and T3slider for reporting and
+discussing this in the LQ forums and also thanks to Giorgos Keramidas for
+creating the initial patch.  Here is a link to the LQ thread which also has
+a link to Giorgos's blog with the patch:
+
+http://www.linuxquestions.org/questions/showthread.php?p=4968614
+
+UPDATE: Mon Mar 13 01:27:06 UTC 2017
+mate-desktop has been updated to provide default application for some categories.
+This will only work with new user. Existing user will not be affected and manual
+intervention will still be needed.
+
 Wed Mar 27 04:23:24 UTC 2013
 If you have dual monitor with NVidia card and set it up to use both monitors
 as separate, you might encounter some freeze lockup.  A temporary workaround
@@ -7,18 +37,14 @@ is to change it into TwinView in your xorg.conf
 
 Sun Mar 24 02:47:56 UTC 2013
 If you run into strange panel issues, or missing icons, or theme problems,
-please consider backing up or clearing out some of the hidden directories in
-your $HOME, like $HOME/.config and $HOME/.cache and $HOME/.local.  If you
-switch back and forth between different desktop environments, sometimes those
-settings can get polluted.
-
-Fri Mar 22 16:44:59 UTC 2013
-Help menus and help buttons do not work -- this is a known issue per a MATE
-upstream developer and scheduled to be fixed at some point but not in the next
-release (1.6).
+please consider backing up or clearing out some of the hidden directories
+in your $HOME, like $HOME/.config and $HOME/.cache and $HOME/.local.  If
+you switch back and forth between different desktop environments, sometimes
+those settings can get polluted. You can also try to remove/rename your
+.gtkrc-2.0 if it does exists on your home directory.
 
 Fri Mar 22 16:43:36 UTC 2013
-Working to determine whether mate-polkit is necessary.  According to upstream,
-it is, although it results in duplicative polkit actions when a USB stick is
-inserted, for example.  Disabling polkit-gnome in the "Startup Applications"
-is a workaround until more testing is done.
+Working to determine whether mate-polkit is necessary.  According to
+upstream, it is, although it results in duplicative polkit actions when a
+USB stick is inserted, for example.  Disabling polkit-gnome in the "Startup
+Applications" is a workaround until more testing is done.

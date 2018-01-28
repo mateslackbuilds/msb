@@ -4,6 +4,7 @@
 # All rights reserved.
 #
 # Copyright 2013 Chess Griffin <chess.griffin@gmail.com> Raleigh, NC
+# Copyright 2013-2018 Willy Sudiarto Raharjo <willysr@slackware-id.org>
 # All rights reserved.
 #
 # Based on the xfce-build-all.sh script by Patrick J. Volkerding
@@ -30,69 +31,64 @@
 INST=1
 
 # This is where all the compilation and final results will be placed
-TMP=${TMP:-/tmp}
+TMP=${TMP:-/tmp/msb}
+OUTPUT=${OUTPUT:-/tmp}
 
 # This is the original directory where you started this script
 MSBROOT=$(pwd)
 
-# Loop for all packages
+# Check for duplicate sources (default: OFF)
+CHECKDUPLICATE=0
+
+# Loop for all extra packages
 for dir in \
-  extra/libmatekeyring \
-  extra/mate-keyring \
-  extra/mate-applets \
   extra/mate-calc \
-  extra/mate-character-map \
-  extra/mate-document-viewer \
-  extra/mate-file-archiver \
-  extra/mate-file-manager-open-terminal \
-  extra/mate-file-manager-image-converter \
-  extra/mate-file-manager-sendto \
-  deps/libgtop \
-  deps/libgksu \
-  deps/gksu \
-  extra/mate-file-manager-gksu \
+  extra/atril \
+  extra/caja-extensions \
+  extra/caja-dropbox \
+  extra/caja-actions \
+  extra/mate-applets \
   extra/mate-icon-theme-faenza \
-  extra/mate-image-viewer \
-  extra/mate-media \
-  extra/mate-menu-editor \
-  extra/mate-power-manager \
   extra/mate-sensors-applet \
-  extra/mate-terminal \
-  deps/gtksourceview \
-  extra/mate-text-editor \
-  extra/mate-netspeed \
   extra/mate-utils \
+  extra/mozo \
+  extra/pluma \
   ; do
   # Get the package name
-  package=$(echo $dir | cut -f2- -d /) 
-  
+  package=$(echo $dir | cut -f2- -d /)
+
   # Change to package directory
-  cd $MSBROOT/$dir || exit 1 
+  cd $MSBROOT/$dir || exit 1
 
   # Get the version
-  version=$(cat ${package}.SlackBuild | grep "VERSION:" | cut -d "-" -f2 | rev | cut -c 2- | rev)
+  version=$(cat ${package}.SlackBuild | grep "VERSION:" | head -n1 | cut -d "-" -f2 | rev | cut -c 2- | rev)
 
-  # Check for duplicate sources
-  sourcefile="$(ls -l $MSBROOT/$dir/${package}-*.tar.?z* | wc -l)"
-  if [ $sourcefile -gt 1 ]; then
-    echo "You have following duplicate sources:"
-    ls $MSBROOT/$dir/${package}-*.tar.?z* | cut -d " " -f1
-    echo "Please delete sources other than ${package}-$version to avoid problems"
-    exit 1
-  fi
-  
-  # The real builds starts here
-  sh ${package}.SlackBuild || exit 1
-  if [ "$INST" = "1" ]; then
-    PACKAGE="${package}-$version-*.txz"
-    if [ -f $TMP/$PACKAGE ]; then
-      upgradepkg --install-new --reinstall $TMP/$PACKAGE
-    else
-      echo "Error:  package to upgrade "$PACKAGE" not found in $TMP"
+  # Get the build
+  build=$(cat ${package}.SlackBuild | grep "BUILD:" | cut -d "-" -f2 | rev | cut -c 2- | rev)
+
+  if [ $CHECKDUPLICATE -eq 1 ]; then
+    # Check for duplicate sources
+    sourcefile="$(ls -l $MSBROOT/$dir/${package}-*.tar.?z* 2>/dev/null | wc -l)"
+    if [ $sourcefile -gt 1 ]; then
+      echo "You have following duplicate sources:"
+      ls $MSBROOT/$dir/${package}-*.tar.?z* | cut -d " " -f1
+      echo "Please delete sources other than ${package}-$version to avoid problems"
       exit 1
     fi
   fi
-  
+
+  # The real build starts here
+  TMP=$TMP OUTPUT=$OUTPUT sh ${package}.SlackBuild || exit 1
+  if [ "$INST" = "1" ]; then
+    PACKAGE=$(ls $OUTPUT/${package}-${version}-*-${build}*msb.txz 2>/dev/null)
+    if [ -f "$PACKAGE" ]; then
+      upgradepkg --install-new --reinstall "$PACKAGE"
+    else
+      echo "Error:  package to upgrade "$PACKAGE" not found in $OUTPUT"
+      exit 1
+    fi
+  fi
+
   # back to original directory
   cd $MSBROOT
 done

@@ -1,5 +1,0 @@
-mate-netspeed is an applet for the MATE panel that shows how 
-much traffic occurs on a network device (ethernet card, 
-wireless LAN card, or dial-up)
-
-mate-netspeed requires libgtop

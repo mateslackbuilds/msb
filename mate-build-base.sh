@@ -4,6 +4,7 @@
 # All rights reserved.
 #
 # Copyright 2013 Chess Griffin <chess.griffin@gmail.com> Raleigh, NC
+# Copyright 2013-2018 Willy Sudiarto Raharjo <willysr@slackware-id.org>
 # All rights reserved.
 #
 # Based on the xfce-build-all.sh script by Patrick J. Volkerding
@@ -30,68 +31,77 @@
 INST=1
 
 # This is where all the compilation and final results will be placed
-TMP=${TMP:-/tmp}
+TMP=${TMP:-/tmp/msb}
+OUTPUT=${OUTPUT:-/tmp}
 
 # This is the original directory where you started this script
 MSBROOT=$(pwd)
 
-# Loop for all packages
+# Check for duplicate sources (default: OFF)
+CHECKDUPLICATE=0
+
+# Loop for all base packages
 for dir in \
   base/mate-common \
-  deps/rarian \
-  base/mate-doc-utils \
+  base/mate-desktop \
   base/libmatekbd \
   base/libmateweather \
   base/mate-icon-theme \
-  base/mate-dialogs \
-  base/mate-desktop \
-  deps/libunique \
-  base/mate-file-manager \
-  base/libmatewnck \
-  base/mate-notification-daemon \
-  base/mate-backgrounds \
-  base/mate-menus \
-  base/mate-window-manager \
+  base/caja \
   base/mate-polkit \
-  deps/dconf \
+  base/marco \
+  base/libmatemixer \
   base/mate-settings-daemon \
-  base/mate-control-center \
-  base/mate-panel \
   base/mate-session-manager \
-  deps/gtk-engines \
-  deps/murrine \
+  base/mate-menus \
+  base/mate-terminal \
+  base/mate-panel \
+  base/mate-backgrounds \
   base/mate-themes \
+  base/mate-notification-daemon \
+  base/eom \
+  base/mate-control-center \
+  base/mate-screensaver \
+  base/engrampa \
+  base/mate-media \
+  base/mate-power-manager \
+  base/mate-system-monitor \
   ; do
   # Get the package name
-  package=$(echo $dir | cut -f2- -d /) 
-  
+  package=$(echo $dir | cut -f2- -d /)
+
   # Change to package directory
-  cd $MSBROOT/$dir || exit 1 
+  cd $MSBROOT/$dir || exit 1
 
   # Get the version
-  version=$(cat ${package}.SlackBuild | grep "VERSION:" | cut -d "-" -f2 | rev | cut -c 2- | rev)
+  version=$(cat ${package}.SlackBuild | grep "VERSION:" | head -n1 | cut -d "-" -f2 | rev | cut -c 2- | rev)
 
-  # Check for duplicate sources
-  sourcefile="$(ls -l $MSBROOT/$dir/${package}-*.tar.?z* | wc -l)"
-  if [ $sourcefile -gt 1 ]; then
-    echo "You have following duplicate sources:"
-    ls $MSBROOT/$dir/${package}-*.tar.?z* | cut -d " " -f1
-    echo "Please delete sources other than ${package}-$version to avoid problems"
-    exit 1
-  fi
-  
-  # The real builds starts here
-  sh ${package}.SlackBuild || exit 1
-  if [ "$INST" = "1" ]; then
-    PACKAGE="${package}-$version-*.txz"
-    if [ -f $TMP/$PACKAGE ]; then
-      upgradepkg --install-new --reinstall $TMP/$PACKAGE
-    else
-      echo "Error:  package to upgrade "$PACKAGE" not found in $TMP"
+  # Get the build
+  build=$(cat ${package}.SlackBuild | grep "BUILD:" | cut -d "-" -f2 | rev | cut -c 2- | rev)
+
+  if [ $CHECKDUPLICATE -eq 1 ]; then
+    # Check for duplicate sources
+    sourcefile="$(ls -l $MSBROOT/$dir/${package}-*.tar.?z* 2>/dev/null | wc -l)"
+    if [ $sourcefile -gt 1 ]; then
+      echo "You have following duplicate sources:"
+      ls $MSBROOT/$dir/${package}-*.tar.?z* | cut -d " " -f1
+      echo "Please delete sources other than ${package}-$version to avoid problems"
       exit 1
     fi
   fi
-  
+
+  # The real build starts here
+  TMP=$TMP OUTPUT=$OUTPUT sh ${package}.SlackBuild || exit 1
+  if [ "$INST" = "1" ]; then
+    PACKAGE=$(ls $OUTPUT/${package}-${version}-*-${build}*msb.txz 2>/dev/null)
+    if [ -f "$PACKAGE" ]; then
+      upgradepkg --install-new --reinstall "$PACKAGE"
+    else
+      echo "Error:  package to upgrade "$PACKAGE" not found in $OUTPUT"
+      exit 1
+    fi
+  fi
+
   # back to original directory
   cd $MSBROOT
 done

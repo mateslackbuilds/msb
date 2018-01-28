@@ -1,4 +1,0 @@
-This package contains tools for managing and manipulating Bluetooth
-devices using the MATE desktop.
-
-mate-bluetooth requires deps/libunique in order to compile

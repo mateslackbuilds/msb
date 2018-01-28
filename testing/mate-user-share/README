@@ -1,0 +1,5 @@
+mate-user-share is a small package that binds together various free
+software projects to bring easy to use user-level file sharing to the
+masses.
+
+This can optionally uses mod_dnssd available from SBo for mDNS support

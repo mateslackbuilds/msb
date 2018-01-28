@@ -1,1 +1,3 @@
 libgksu is a library that provides a Gtk+ frontend to su and sudo
+
+This requires libgtop in deps/ directory

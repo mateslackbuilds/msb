@@ -13,8 +13,10 @@ sysmodmap=/etc/X11/xinit/.Xmodmap
 [ -f $usermodmap ] && xmodmap $usermodmap
 
 if [ -z "$DESKTOP_SESSION" -a -x /usr/bin/ck-launch-session ]; then
+  export DESKTOP_SESSION="mate"
   exec ck-launch-session dbus-launch --exit-with-session mate-session
 else
+  export DESKTOP_SESSION="mate"
   exec mate-session
 fi
 

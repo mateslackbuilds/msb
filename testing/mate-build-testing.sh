@@ -4,6 +4,7 @@
 # All rights reserved.
 #
 # Copyright 2013 Chess Griffin <chess.griffin@gmail.com> Raleigh, NC
+# Copyright 2013-2018 Willy Sudiarto Raharjo <willysr@slackware-id.org>
 # All rights reserved.
 #
 # Based on the xfce-build-all.sh script by Patrick J. Volkerding
@@ -35,44 +36,53 @@ TMP=${TMP:-/tmp}
 # This is the original directory where you started this script
 MSBROOT=$(pwd)
 
+# Check for duplicate sources (default: OFF)
+CHECKDUPLICATE=0
+
 # Loop for all packages
 for dir in \
-  pam \
-  pam_unix2 \
-  mate-screensaver \
-  mate-system-monitor \
-  mate-bluetooth \
+  yelp \
+  mate-user-guide \
+  mate-tweak \
+  mate-user-share \
+  libindicator \
+  mate-indicator-applet \
   ; do
   # Get the package name
-  package=$(echo $dir | cut -f2- -d /) 
-  
+  package=$(echo $dir | cut -f2- -d /)
+
   # Change to package directory
-  cd $MSBROOT/$dir || exit 1 
+  cd $MSBROOT/$dir || exit 1
 
   # Get the version
-  version=$(cat ${package}.SlackBuild | grep "VERSION:" | cut -d "-" -f2 | rev | cut -c 2- | rev)
+  version=$(cat ${package}.SlackBuild | grep "VERSION:" | head -n1 | cut -d "-" -f2 | rev | cut -c 2- | rev)
 
-  # Check for duplicate sources
-  sourcefile="$(ls -l $MSBROOT/$dir/${package}-*.tar.?z* | wc -l)"
-  if [ $sourcefile -gt 1 ]; then
-    echo "You have following duplicate sources:"
-    ls $MSBROOT/$dir/${package}-*.tar.?z* | cut -d " " -f1
-    echo "Please delete sources other than ${package}-$version to avoid problems"
-    exit 1
+  # Get the build
+  build=$(cat ${package}.SlackBuild | grep "BUILD:" | cut -d "-" -f2 | rev | cut -c 2- | rev)
+
+  if [ $CHECKDUPLICATE -eq 1 ]; then
+    # Check for duplicate sources
+    sourcefile="$(ls -l $MSBROOT/$dir/${package}-*.tar.?z* | wc -l)"
+    if [ $sourcefile -gt 1 ]; then
+      echo "You have following duplicate sources:"
+      ls $MSBROOT/$dir/${package}-*.tar.?z* | cut -d " " -f1
+      echo "Please delete sources other than ${package}-$version to avoid problems"
+      exit 1
+    fi
   fi
-  
-  # The real builds starts here
+
+  # The real build starts here
   sh ${package}.SlackBuild || exit 1
   if [ "$INST" = "1" ]; then
-    PACKAGE="${package}-$version-*.txz"
-    if [ -f $TMP/$PACKAGE ]; then
-      upgradepkg --install-new --reinstall $TMP/$PACKAGE
+    PACKAGE=`ls $TMP/${package}-${version}-*-${build}*msb.txz`
+    if [ -f "$PACKAGE" ]; then
+      upgradepkg --install-new --reinstall "$PACKAGE"
     else
       echo "Error:  package to upgrade "$PACKAGE" not found in $TMP"
       exit 1
     fi
   fi
-  
+
   # back to original directory
   cd $MSBROOT
-done  
+done

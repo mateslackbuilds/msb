@@ -1,22 +1,23 @@
 The following is a list of notes on building MATE on Slackware -current:
 
-Tue Mar 26 02:06:35 UTC 2013
-Another note about the addition of dconf to Slackware -current.  If you
-previously built MATE packages with the dconf in the MATE SlackBuilds /deps
-directory, you'll need to rebuild the following packages using the new dconf
-in -current:
+Sat Apr  9 02:17:03 UTC 2016
+MATE developers have reorganized mate-themes tarballs upstream to provide
+sources matching your GTK+3 libraries. You can simply change the VERSION
+and download link if you use a different GTK+3 library.
 
-base/mate-control-center
-base/mate-panel
-extra/mate-terminal
+Tue Jun 11 00:41:15 UTC 2013
+Pat has rebuilt xdg-utils in Slackware 14.1 to properly support MATE DE, so
+xdg-utils patch is no longer needed in Slackware -current, but running
+these two commands as normal user are still needed to set caja as the
+default handler:
 
-Sun Mar 24 04:48:35 UTC 2013
-Pat just added dconf to Slackware -current and dconf is included as a
-dependency package in the /base directory.  So, if you are building MATE on
--current with Pat's new dconf installed, you shouldn't need to build the dconf
-package in the MATE SlackBuild repository.  And if you are using the
-mate-build-base.sh script, then please edit that script and remove line 52:
+xdg-mime default caja-folder-handler.desktop inode/directory
+xdg-mime default caja-folder-handler.desktop application/x-directory
 
-dconf \
+please make a backup of your $HOME/.local/share/applications/defaults.list
+before executing the above commands
 
-And then proceed with running the script.  Please report any issues.  Thanks!
+UPDATE:
+mate-desktop 1.18.0 provides a list of default applications for new users,
+so they no longer have to execute the two commands above. However, existing
+users will still have to apply it manually.
