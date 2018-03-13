@@ -24,7 +24,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=yelp-xsl
-VERSION=${VERSION:-3.20.1}
+VERSION=${VERSION:-3.28.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
@@ -36,7 +36,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c https://download.gnome.org/sources/$PRGNAM/3.20/$PRGNAM-$VERSION.tar.xz
+wget -c http://ftp.gnome.org/pub/gnome/sources/$PRGNAM/3.28/$PRGNAM-$VERSION.tar.xz
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
