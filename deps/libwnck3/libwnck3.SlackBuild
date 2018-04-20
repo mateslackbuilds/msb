@@ -27,7 +27,7 @@
 PRGNAM=libwnck3
 SRCNAM=libwnck
 VERSION=${VERSION:-3.24.1}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-2}
 TAG=${TAG:-_msb}
 
 if [ -z "$ARCH" ]; then
@@ -93,6 +93,9 @@ CXXFLAGS="$SLKCFLAGS" \
 
 make $NUMJOBS || make
 make install DESTDIR=$PKG
+
+# Don't ship .la files:
+rm -f $PKG/{,usr/}lib${LIBDIRSUFFIX}/*.la
 
 mv $PKG/usr/bin/wnckprop $PKG/usr/bin/wnckprop3
 mv $PKG/usr/bin/wnck-urgency-monitor $PKG/usr/bin/wnck3-urgency-monitor
