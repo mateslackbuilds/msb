@@ -25,8 +25,8 @@
 # Modified by Willy Sudiarto Raharjo for MSB Project
 
 PRGNAM=vala
-VERSION=${VERSION:-0.40.4}
-BUILD=${BUILD:-2}
+VERSION=${VERSION:-0.40.6}
+BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
 if [ -z "$ARCH" ]; then
