@@ -40,8 +40,6 @@ fi
 
 wget -c https://download.gnome.org/sources/$SRCNAM/3.24/$SRCNAM-$VERSION.tar.xz
 
-NUMJOBS=${NUMJOBS:-" -j8 "}
-
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
 PKG=$TMP/package-$PRGNAM
@@ -94,7 +92,7 @@ CXXFLAGS="$SLKCFLAGS" \
   --enable-introspection=yes \
   --build=$ARCH-slackware-linux
 
-make $NUMJOBS || make
+make
 make install DESTDIR=$PKG
 
 # Don't ship .la files:
