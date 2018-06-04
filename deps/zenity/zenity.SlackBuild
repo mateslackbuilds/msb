@@ -23,6 +23,7 @@ CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
 PKG=$TMP/package-$PRGNAM
 OUTPUT=${OUTPUT:-/tmp}
+NUMJOBS=${NUMJOBS:-" "}
 
 if [ "$ARCH" = "i586" ]; then
   SLKCFLAGS="-O2 -march=i586 -mtune=i686"
@@ -68,7 +69,7 @@ CXXFLAGS="$SLKCFLAGS" \
   --enable-libnotify \
   --build=$ARCH-slackware-linux
 
-make
+make $NUMJOBS
 make install-strip DESTDIR=$PKG
 
 find $PKG/usr/man -type f -exec gzip -9 {} \;
