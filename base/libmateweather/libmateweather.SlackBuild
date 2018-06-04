@@ -42,6 +42,7 @@ CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
 PKG=$TMP/package-$PRGNAM
 OUTPUT=${OUTPUT:-/tmp}
+NUMJOBS=${NUMJOBS:-" "}
 
 if [ "$ARCH" = "i586" ]; then
   SLKCFLAGS="-O2 -march=i586 -mtune=i686"
@@ -88,7 +89,7 @@ CXXFLAGS="$SLKCFLAGS" \
   --enable-locations-compression \
   --build=$ARCH-slackware-linux
 
-make
+make $NUMJOBS
 make install DESTDIR=$PKG
 
 # Don't ship .la files:

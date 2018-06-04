@@ -42,6 +42,7 @@ CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
 PKG=${PKG:-${TMP}/package-$PRGNAM}
 OUTPUT=${OUTPUT:-/tmp}
+NUMJOBS=${NUMJOBS:-" "}
 
 if [ "$ARCH" = "i586" ]; then
   SLKCFLAGS="-O2 -march=i586 -mtune=i686"
@@ -88,7 +89,7 @@ CFLAGS="$SLKCFLAGS" \
   --host=$ARCH-slackware-linux \
   --target=$ARCH-slackware-linux
 
-make
+make $NUMJOBS
 
 # Check the host value that is passed to the compile to the one in this script:
 host="$ARCH-slackware-linux-gnu"
