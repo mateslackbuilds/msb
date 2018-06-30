@@ -40,29 +40,44 @@ MSBROOT=$(pwd)
 # Check for duplicate sources (default: OFF)
 CHECKDUPLICATE=0
 
+# Check md5 sums of the downloaded sources
+CHECKMD5SUM=0
 
 # Check for duplicate sources
 function checkdups()
 {
-    sourcefile="$(ls -l $MSBROOT/$dir/${package}-*.tar.?z* 2>/dev/null | wc -l)"
-    if [ $sourcefile -gt 1 ]; then
-      echo "You have following duplicate sources:"
-      ls $MSBROOT/$dir/${package}-*.tar.?z* | cut -d " " -f1
-      echo "Please delete sources other than ${package}-$version to avoid problems"
-      exit 1
-    fi
+  sourcefile="$(ls -l $MSBROOT/$dir/${package}-*.tar.?z* 2>/dev/null | wc -l)"
+  if [ $sourcefile -gt 1 ]; then
+    echo "You have following duplicate sources:"
+    ls $MSBROOT/$dir/${package}-*.tar.?z* | cut -d " " -f1
+    echo "Please delete sources other than ${package}-$version to avoid problems"
+    exit 1
+  fi
 }
 
 # Install package
 function install_package()
 {
-    PACKAGE=$(ls $OUTPUT/${package}-${version}-*-${build}*msb.txz 2>/dev/null)
-    if [ -f "$PACKAGE" ]; then
-      upgradepkg --install-new --reinstall "$PACKAGE"
-    else
-      echo "Error:  package to upgrade "$PACKAGE" not found in $OUTPUT"
-      exit 1
-    fi
+  PACKAGE=$(ls $OUTPUT/${package}-${version}-*-${build}*msb.txz 2>/dev/null)
+  if [ -f "$PACKAGE" ]; then
+    upgradepkg --install-new --reinstall "$PACKAGE"
+  else
+    echo "Error:  package to upgrade "$PACKAGE" not found in $OUTPUT"
+    exit 1
+  fi
+}
+
+# Check MD5Sum
+function check_md5sum()
+{
+  WGET_DOWNLOAD=$(echo $DOWNLOAD | rev | cut -d/ -f1 | rev)
+  NMD5SUM=$(md5sum $MSBROOT/$dir/$WGET_DOWNLOAD | awk '{print $1}')
+  if [ "$NMD5SUM" == "$MD5SUM" ]; then
+    echo "$WGET_DOWNLOAD md5 - OK!"
+  else
+    echo "$WGET_DOWNLOAD - md5sum ERROR!"
+    exit 1
+  fi
 }
 
 # Loop for all base packages
@@ -111,6 +126,11 @@ for dir in \
   # Download sources
   source "$MSBROOT/$dir/${package}.info" || exit 1
   wget -c $DOWNLOAD || exit 1
+
+  # Check md5sum of the downloaded source
+  if [ $CHECKMD5SUM -eq 1 ]; then
+    check_md5sum
+  fi
 
   # The real build starts here
   TMP=$TMP OUTPUT=$OUTPUT sh ${package}.SlackBuild || exit 1

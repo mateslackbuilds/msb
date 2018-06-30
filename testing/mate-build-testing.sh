@@ -40,6 +40,9 @@ MSBROOT=$(pwd)
 # Check for duplicate sources (default: OFF)
 CHECKDUPLICATE=0
 
+# Check md5 sums of the downloaded sources
+CHECKMD5SUM=0
+
 
 # Check for duplicate sources
 function checkdups()
@@ -64,6 +67,20 @@ function install_package()
       exit 1
     fi
 }
+
+# Check MD5Sum
+function check_md5sum()
+{
+  WGET_DOWNLOAD=$(echo $DOWNLOAD | rev | cut -d/ -f1 | rev)
+  NMD5SUM=$(md5sum $MSBROOT/$dir/$WGET_DOWNLOAD | awk '{print $1}')
+  if [ "$NMD5SUM" == "$MD5SUM" ]; then
+    echo "$WGET_DOWNLOAD md5 - OK!"
+  else
+    echo "$WGET_DOWNLOAD - md5sum ERROR!"
+    exit 1
+  fi
+}
+
 
 # Loop for all packages
 for dir in \
@@ -93,6 +110,11 @@ for dir in \
   # Download sources
   source "$MSBROOT/$dir/${package}.info" || exit 1
   wget -c $DOWNLOAD || exit 1
+
+  # Check md5sum of the downloaded source
+  if [ $CHECKMD5SUM -eq 1 ]; then
+    check_md5sum
+  fi
 
   # The real build starts here
   TMP=$TMP OUTPUT=$OUTPUT sh ${package}.SlackBuild || exit 1
