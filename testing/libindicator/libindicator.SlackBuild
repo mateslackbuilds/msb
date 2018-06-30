@@ -35,8 +35,6 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c https://launchpad.net/$PRGNAM/12.10/$VERSION/+download/$PRGNAM-$VERSION.tar.gz
-
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
 PKG=$TMP/package-$PRGNAM

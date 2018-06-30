@@ -35,8 +35,6 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c https://download.gnome.org/core/3.26/3.26.0/sources/$PRGNAM-$VERSION.tar.xz
-
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
 PKG=$TMP/package-$PRGNAM

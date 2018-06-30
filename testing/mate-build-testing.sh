@@ -31,13 +31,56 @@
 INST=1
 
 # This is where all the compilation and final results will be placed
-TMP=${TMP:-/tmp}
+TMP=${TMP:-/tmp/msb}
+OUTPUT=${OUTPUT:-/tmp}
 
 # This is the original directory where you started this script
 MSBROOT=$(pwd)
 
 # Check for duplicate sources (default: OFF)
 CHECKDUPLICATE=0
+
+# Check md5 sums of the downloaded sources
+CHECKMD5SUM=0
+
+
+# Check for duplicate sources
+function checkdups()
+{
+    sourcefile="$(ls -l $MSBROOT/$dir/${package}-*.tar.?z* 2>/dev/null | wc -l)"
+    if [ $sourcefile -gt 1 ]; then
+      echo "You have following duplicate sources:"
+      ls $MSBROOT/$dir/${package}-*.tar.?z* | cut -d " " -f1
+      echo "Please delete sources other than ${package}-$version to avoid problems"
+      exit 1
+    fi
+}
+
+# Install package
+function install_package()
+{
+    PACKAGE=$(ls $OUTPUT/${package}-${version}-*-${build}*msb.txz 2>/dev/null)
+    if [ -f "$PACKAGE" ]; then
+      upgradepkg --install-new --reinstall "$PACKAGE"
+    else
+      echo "Error:  package to upgrade "$PACKAGE" not found in $OUTPUT"
+      exit 1
+    fi
+}
+
+# Check MD5Sum
+function check_md5sum()
+{
+  WGET_DOWNLOAD=$(echo $DOWNLOAD | rev | cut -d/ -f1 | rev)
+  NMD5SUM=$(md5sum $MSBROOT/$dir/$WGET_DOWNLOAD | awk '{print $1}')
+  if [ "$NMD5SUM" == "$MD5SUM" ]; then
+    echo "$WGET_DOWNLOAD md5 - OK!"
+  else
+    echo "$WGET_DOWNLOAD - md5sum ERROR!"
+    exit 1
+  fi
+}
+
 
 # Loop for all packages
 for dir in \
@@ -55,32 +98,30 @@ for dir in \
   cd $MSBROOT/$dir || exit 1
 
   # Get the version
-  version=$(cat ${package}.SlackBuild | grep "VERSION:" | head -n1 | cut -d "-" -f2 | rev | cut -c 2- | rev)
+  version=$(grep "VERSION:" ${package}.SlackBuild | head -n1 | cut -d "-" -f2 | rev | cut -c 2- | rev)
 
   # Get the build
-  build=$(cat ${package}.SlackBuild | grep "BUILD:" | cut -d "-" -f2 | rev | cut -c 2- | rev)
+  build=$(grep "BUILD:" ${package}.SlackBuild | cut -d "-" -f2 | rev | cut -c 2- | rev)
 
   if [ $CHECKDUPLICATE -eq 1 ]; then
-    # Check for duplicate sources
-    sourcefile="$(ls -l $MSBROOT/$dir/${package}-*.tar.?z* | wc -l)"
-    if [ $sourcefile -gt 1 ]; then
-      echo "You have following duplicate sources:"
-      ls $MSBROOT/$dir/${package}-*.tar.?z* | cut -d " " -f1
-      echo "Please delete sources other than ${package}-$version to avoid problems"
-      exit 1
-    fi
+    checkdups
+  fi
+
+  # Download sources
+  source "$MSBROOT/$dir/${package}.info" || exit 1
+  wget -c $DOWNLOAD || exit 1
+
+  # Check md5sum of the downloaded source
+  if [ $CHECKMD5SUM -eq 1 ]; then
+    check_md5sum
   fi
 
   # The real build starts here
-  sh ${package}.SlackBuild || exit 1
+  TMP=$TMP OUTPUT=$OUTPUT sh ${package}.SlackBuild || exit 1
+
+  # Should we install the package?
   if [ "$INST" = "1" ]; then
-    PACKAGE=`ls $TMP/${package}-${version}-*-${build}*msb.txz`
-    if [ -f "$PACKAGE" ]; then
-      upgradepkg --install-new --reinstall "$PACKAGE"
-    else
-      echo "Error:  package to upgrade "$PACKAGE" not found in $TMP"
-      exit 1
-    fi
+    install_package
   fi
 
   # back to original directory
