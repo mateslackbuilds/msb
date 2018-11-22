@@ -43,7 +43,6 @@ CHECKDUPLICATE=0
 for dir in \
   deps/zenity \
   deps/graphviz \
-  deps/vala \
   deps/rarian \
   deps/yelp-xsl \
   deps/yelp-tools \
