@@ -24,7 +24,7 @@ any of the mirror sites.  Please note that MATE 1.20 has new package.
     upgradepkg --install-new --reinstall /path/to/extra/*.txz
 
 2.  Remove deprecated packages
-    removepkg vte3 docutils vala
+    removepkg vte3 docutils vala graphviz
 
 3.  It's advisable to reinstall vte and python-docutils
 
@@ -33,13 +33,7 @@ any of the mirror sites.  Please note that MATE 1.20 has new package.
     manager.  ALWAYS run this command for both new installations or upgrades
     from MATE 1.18
 
-At this point you should be running MATE 1.20 on Slackware Current.  :-)  If
-you have installed everything from /base and /extra (which will include
-packages from the /deps directory) then you should have a total of 55
-packages:
-
-    $ ls /var/log/packages | grep _msb | wc -l
-      55
+At this point you should be running MATE 1.20 on Slackware Current.  :-)
 
 We wish everyone good luck with this!  Please report any issues to
 mateslackbuilds@gmail.com.

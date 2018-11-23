@@ -26,9 +26,8 @@ How to build and install the MATE packages using these scripts:
 1.  Clone the Git repo or download a tarball/zip of the repo.
 
 2.  Run the 'mate-build-deps.sh' in the msb root directory which will build
-and install all the necessary dependencies in the /deps directory. There are
-a total of 20 packages. Please use "su" or "su -" to build as root instead
-of using "sudo".
+and install all the necessary dependencies in the /deps directory.
+Please use "su" or "su -" to build as root instead of using "sudo".
 
 3.  Run the 'mate-build-base.sh' in the msb root directory which will build
 and install all the base (required) packages. There are a total of 24 packages

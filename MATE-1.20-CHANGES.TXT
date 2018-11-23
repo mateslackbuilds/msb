@@ -1,5 +1,4 @@
 New Packages in MATE 1.20:
-graphviz
 
 Renamed Packages in MATE 1.20:
 
@@ -7,3 +6,4 @@ Packages removed in MATE 1.20:
 docutils
 vte3
 vala
+graphviz
