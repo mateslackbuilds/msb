@@ -2,7 +2,7 @@
 
 # Slackware build script for libgxps
 
-# Copyright 2017-2018 Willy Sudiarto Raharjo <willysr@slackware-id.org>
+# Copyright 2017-2019 Willy Sudiarto Raharjo <willysr@slackware-id.org>
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -23,7 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=libgxps
-VERSION=${VERSION:-0.3.0}
+VERSION=${VERSION:-0.3.1}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
@@ -35,7 +35,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c https://download.gnome.org/sources/libgxps/0.3/$PRGNAM-$VERSION.tar.xz
+wget -c http://ftp.acc.umu.se/pub/GNOME/sources/libgxps/0.3/$PRGNAM-$VERSION.tar.xz
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
