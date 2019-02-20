@@ -3,7 +3,7 @@
 # Slackware build script for mate-control-center
 
 # Copyright 2013 Chess Griffin <chess.griffin@gmail.com> Raleigh, NC
-# Copyright 2013-2018 Willy Sudiarto Raharjo <willysr@slackware-id.org>
+# Copyright 2013-2019 Willy Sudiarto Raharjo <willysr@slackware-id.org>
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -24,7 +24,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=mate-control-center
-VERSION=${VERSION:-1.20.4}
+VERSION=${VERSION:-1.21.2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
@@ -36,7 +36,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c http://pub.mate-desktop.org/releases/1.20/$PRGNAM-$VERSION.tar.xz
+wget -c http://pub.mate-desktop.org/releases/1.21/$PRGNAM-$VERSION.tar.xz
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
