@@ -25,7 +25,7 @@ one package need to be removed as it no longer built on -current.
     upgradepkg --install-new --reinstall /path/to/extra/*.txz
 
 2.  Remove deprecated packages
-    removepkg caja-action
+    removepkg caja-actions
 
 3.  Run xwmconfig and select xinitrc.mate-session. This ensures you get the
     latest copy of xinitrc.mate-session due to changes in mate-session-
