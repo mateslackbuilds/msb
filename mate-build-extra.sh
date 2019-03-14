@@ -47,7 +47,6 @@ for dir in \
   extra/caja-extensions \
   extra/caja-dropbox \
   extra/mate-applets \
-  extra/mate-icon-theme-faenza \
   extra/mate-sensors-applet \
   extra/mate-utils \
   extra/mozo \

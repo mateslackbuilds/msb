@@ -4,3 +4,4 @@ Renamed Packages in MATE 1.22:
 
 Packages removed in MATE 1.22:
 caja-actions
+mate-icon-theme-faenza

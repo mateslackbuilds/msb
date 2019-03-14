@@ -16,7 +16,8 @@ OK, now that everything is safely backed up, let's proceed. :-)
 You will need the MATE 1.22 packages available on your local system.  Grab
 them from the official repository at http://www.slackware.uk/msb/ or
 any of the mirror sites.  Please note that MATE 1.22 has no new package, but
-one package need to be removed as it no longer built on -current.
+two packages need to be removed as it no longer built on -current and dropped
+from upstream project.
 
 1.  Upgrade and install all new MATE 1.22 packages:
 
@@ -25,7 +26,7 @@ one package need to be removed as it no longer built on -current.
     upgradepkg --install-new --reinstall /path/to/extra/*.txz
 
 2.  Remove deprecated packages
-    removepkg caja-actions
+    removepkg caja-actions mate-icon-theme-faenza
 
 3.  Run xwmconfig and select xinitrc.mate-session. This ensures you get the
     latest copy of xinitrc.mate-session due to changes in mate-session-
