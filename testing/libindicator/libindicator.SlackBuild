@@ -23,7 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=libindicator
-VERSION=${VERSION:-12.10.1}
+VERSION=${VERSION:-16.10.0+18.04.20180321.1}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
@@ -35,7 +35,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c https://launchpad.net/$PRGNAM/12.10/$VERSION/+download/$PRGNAM-$VERSION.tar.gz
+wget -c https://launchpad.net/ubuntu/+archive/primary/+files/libindicator_16.10.0+18.04.20180321.1.orig.tar.gz
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
@@ -65,8 +65,9 @@ rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 rm -rf $PRGNAM-$VERSION
-tar xvf $CWD/$PRGNAM-$VERSION.tar.gz
+mkdir -p $PRGNAM-$VERSION
 cd $PRGNAM-$VERSION
+tar xvf $CWD/${PRGNAM}_$VERSION.orig.tar.gz
 chown -R root:root .
 find -L . \
  \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 \
@@ -74,12 +75,10 @@ find -L . \
  \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
   -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
 
-sed '/-Werror/s/$/ -Wno-deprecated-declarations/' -i libindicator/Makefile.{am,in}
-sed 's/LIBINDICATOR_LIBS+="$LIBM"/LIBINDICATOR_LIBS+=" $LIBM"/g' -i configure
-sed 's/LIBM="-lmw"/LIBM=" -lmw"/g' -i configure
-sed 's/LIBM="-lm"/LIBM=" -lm"/g' -i configure
-sed 's/LIBS="-lm  $LIBS"/LIBS=" -lm  $LIBS"/g' -i configure
-sed 's/LIBS="-lmw  $LIBS"/LIBS=" -lmw  $LIBS"/g' -i configure
+patch -p1 < $CWD/libindicator.patch
+export CFLAGS+=" -Wno-error=deprecated-declarations"
+
+autoreconf -vfi
 
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
@@ -95,14 +94,15 @@ CXXFLAGS="$SLKCFLAGS" \
   --disable-tests \
   --build=$ARCH-slackware-linux
 
-make
-make install DESTDIR=$PKG
+make -j1 -C data install DESTDIR=$PKG
+make -j1 -C libindicator install DESTDIR=$PKG
+make -j1 -C tools install DESTDIR=$PKG
 
 find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | grep ELF \
   | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-cp -a AUTHORS COPYING ChangeLog INSTALL NEWS $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a AUTHORS COPYING INSTALL NEWS $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
 mkdir -p $PKG/install

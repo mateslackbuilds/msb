@@ -1,0 +1,213 @@
+commit ce4654550ca72c1fd0ddd93bd36ee7562314b02d
+Author: Matthias Klose <doko@ubuntu.com>
+Date:   Tue Sep 3 18:14:42 2019 +0200
+
+    Import patches-unapplied version 16.10.0+18.04.20180321.1-0ubuntu3 to ubuntu/eoan-proposed
+    
+    Imported using git-ubuntu import.
+    
+    Changelog parent: b7f44f0040f0e9b62bca17a25ca1c8923a20fed5
+    
+    New changelog entries:
+      * Don't build with -Werror.
+
+diff --git a/libindicator/Makefile.am b/libindicator/Makefile.am
+index a3e58d7..4bbfd0b 100644
+--- a/libindicator/Makefile.am
++++ b/libindicator/Makefile.am
+@@ -65,7 +65,7 @@ libindicator_la_CFLAGS = \
+ 	$(LIBINDICATOR_CFLAGS) \
+ 	$(COVERAGE_CFLAGS) \
+ 	-DG_LOG_DOMAIN=\"libindicator\" \
+-	-Wall -Werror -Wno-error=deprecated-declarations
++	-Wall -Wno-error=deprecated-declarations
+ 
+ libindicator_la_LIBADD = \
+ 	$(LIBINDICATOR_LIBS) \
+diff --git a/tests/Makefile.am b/tests/Makefile.am
+index 96825f3..ecb53b0 100644
+--- a/tests/Makefile.am
++++ b/tests/Makefile.am
+@@ -39,7 +39,7 @@ test_loader_SOURCES = \
+ 	test-loader.c
+ 
+ test_loader_CFLAGS = \
+-	-Wall -Werror \
++	-Wall \
+ 	$(LIBINDICATOR_CFLAGS) -I$(top_srcdir) \
+ 	-DBUILD_DIR="\"$(builddir)\""
+ 
+@@ -58,7 +58,7 @@ test_desktop_shortcuts_SOURCES = \
+ 	test-desktop-shortcuts.c
+ 
+ test_desktop_shortcuts_CFLAGS = \
+-	-Wall -Werror \
++	-Wall \
+ 	-DSRCDIR="\"$(srcdir)\"" \
+ 	$(LIBINDICATOR_CFLAGS) -I$(top_srcdir) \
+ 	-DBUILD_DIR="\"$(abs_builddir)\""
+@@ -92,7 +92,7 @@ libdummy_indicator_blank_la_SOURCES = \
+ 	dummy-indicator-blank.c
+ 
+ libdummy_indicator_blank_la_CFLAGS = \
+-	-Wall -Werror \
++	-Wall \
+ 	$(LIBINDICATOR_CFLAGS) -I$(top_srcdir)
+ 
+ libdummy_indicator_blank_la_LIBADD = \
+@@ -112,7 +112,7 @@ libdummy_indicator_null_la_SOURCES = \
+ 	dummy-indicator-null.c
+ 
+ libdummy_indicator_null_la_CFLAGS = \
+-	-Wall -Werror \
++	-Wall \
+ 	$(LIBINDICATOR_CFLAGS) -I$(top_srcdir)
+ 
+ libdummy_indicator_null_la_LIBADD = \
+@@ -132,7 +132,7 @@ libdummy_indicator_signaler_la_SOURCES = \
+ 	dummy-indicator-signaler.c
+ 
+ libdummy_indicator_signaler_la_CFLAGS = \
+-	-Wall -Werror \
++	-Wall \
+ 	$(LIBINDICATOR_CFLAGS) -I$(top_srcdir)
+ 
+ libdummy_indicator_signaler_la_LIBADD = \
+@@ -152,7 +152,7 @@ libdummy_indicator_simple_la_SOURCES = \
+ 	dummy-indicator-simple.c
+ 
+ libdummy_indicator_simple_la_CFLAGS = \
+-	-Wall -Werror \
++	-Wall \
+ 	$(LIBINDICATOR_CFLAGS) -I$(top_srcdir)
+ 
+ libdummy_indicator_simple_la_LIBADD = \
+@@ -173,7 +173,7 @@ libdummy_indicator_entry_func_la_SOURCES = \
+ 	dummy-indicator-entry-func.h
+ 
+ libdummy_indicator_entry_func_la_CFLAGS = \
+-	-Wall -Werror \
++	-Wall \
+ 	$(LIBINDICATOR_CFLAGS) -I$(top_srcdir)
+ 
+ libdummy_indicator_entry_func_la_LIBADD = \
+@@ -193,7 +193,7 @@ libdummy_indicator_visible_la_SOURCES = \
+ 	dummy-indicator-visible.c
+ 
+ libdummy_indicator_visible_la_CFLAGS = \
+-	-Wall -Werror \
++	-Wall \
+ 	$(LIBINDICATOR_CFLAGS) -I$(top_srcdir)
+ 
+ libdummy_indicator_visible_la_LIBADD = \
+@@ -215,7 +215,7 @@ service_shutdown_timeout_SOURCES = \
+ 	service-shutdown-timeout.c
+ 
+ service_shutdown_timeout_CFLAGS = \
+-	-Wall -Werror \
++	-Wall \
+ 	$(LIBINDICATOR_CFLAGS) -I$(top_srcdir)
+ 
+ service_shutdown_timeout_LDADD = \
+@@ -241,7 +241,7 @@ service_manager_no_connect_SOURCES = \
+ 	service-manager-no-connect.c
+ 
+ service_manager_no_connect_CFLAGS = \
+-	-Wall -Werror \
++	-Wall \
+ 	$(LIBINDICATOR_CFLAGS) -I$(top_srcdir)
+ 
+ service_manager_no_connect_LDADD = \
+@@ -273,7 +273,7 @@ service_manager_connect_SOURCES = \
+ 	service-manager-connect.c
+ 
+ service_manager_connect_CFLAGS = \
+-	-Wall -Werror \
++	-Wall \
+ 	$(LIBINDICATOR_CFLAGS) -I$(top_srcdir)
+ 
+ service_manager_connect_LDADD = \
+@@ -287,7 +287,7 @@ service_manager_connect_service_SOURCES = \
+ 	service-manager-connect-service.c
+ 
+ service_manager_connect_service_CFLAGS = \
+-	-Wall -Werror \
++	-Wall \
+ 	$(LIBINDICATOR_CFLAGS) -I$(top_srcdir)
+ 
+ service_manager_connect_service_LDADD = \
+@@ -320,7 +320,7 @@ service_version_manager_SOURCES = \
+ 	service-version-manager.c
+ 
+ service_version_manager_CFLAGS = \
+-	-Wall -Werror \
++	-Wall \
+ 	$(LIBINDICATOR_CFLAGS) -I$(top_srcdir)
+ 
+ service_version_manager_LDADD = \
+@@ -335,7 +335,7 @@ service_version_bad_service_SOURCES = \
+ 	service-version-bad-service.c
+ 
+ service_version_bad_service_CFLAGS = \
+-	-Wall -Werror \
++	-Wall \
+ 	$(LIBINDICATOR_CFLAGS) -I$(top_srcdir)
+ 
+ service_version_bad_service_LDADD = \
+@@ -350,7 +350,7 @@ service_version_good_service_SOURCES = \
+ 	service-version-good-service.c
+ 
+ service_version_good_service_CFLAGS = \
+-	-Wall -Werror \
++	-Wall \
+ 	$(LIBINDICATOR_CFLAGS) -I$(top_srcdir)
+ 
+ service_version_good_service_LDADD = \
+@@ -377,7 +377,7 @@ service_version_multiwatch_manager_SOURCES = \
+ 	service-version-multiwatch-manager.c
+ 
+ service_version_multiwatch_manager_CFLAGS = \
+-	-Wall -Werror \
++	-Wall \
+ 	$(LIBINDICATOR_CFLAGS) -I$(top_srcdir)
+ 
+ service_version_multiwatch_manager_LDADD = \
+@@ -392,7 +392,7 @@ service_version_multiwatch_manager_impolite_SOURCES = \
+ 	service-version-multiwatch-manager-impolite.c
+ 
+ service_version_multiwatch_manager_impolite_CFLAGS = \
+-	-Wall -Werror \
++	-Wall \
+ 	$(LIBINDICATOR_CFLAGS) -I$(top_srcdir)
+ 
+ service_version_multiwatch_manager_impolite_LDADD = \
+@@ -407,7 +407,7 @@ service_version_multiwatch_service_SOURCES = \
+ 	service-version-multiwatch-service.c
+ 
+ service_version_multiwatch_service_CFLAGS = \
+-	-Wall -Werror \
++	-Wall \
+ 	$(LIBINDICATOR_CFLAGS) -I$(top_srcdir)
+ 
+ service_version_multiwatch_service_LDADD = \
+@@ -433,7 +433,7 @@ service_manager_nostart_connect_SOURCES = \
+ 	service-manager-nostart-connect.c
+ 
+ service_manager_nostart_connect_CFLAGS = \
+-	-Wall -Werror \
++	-Wall \
+ 	$(LIBINDICATOR_CFLAGS) -I$(top_srcdir)
+ 
+ service_manager_nostart_connect_LDADD = \
+diff --git a/tools/Makefile.am b/tools/Makefile.am
+index 8df5445..d487c59 100644
+--- a/tools/Makefile.am
++++ b/tools/Makefile.am
+@@ -13,7 +13,7 @@ indicator_loader_SOURCES = \
+ 	indicator-loader.c
+ 
+ indicator_loader_CFLAGS = \
+-	-Wall -Werror \
++	-Wall \
+ 	$(LIBINDICATOR_CFLAGS) -I$(top_srcdir) \
+ 	-DBUILD_DIR="\"$(builddir)\""
