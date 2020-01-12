@@ -30,7 +30,7 @@ TAG=${TAG:-_msb}
 
 ARCH=noarch
 
-wget -c http://pub.mate-desktop.org/releases/themes/3.22/$PRGNAM-$VERSION.tar.xz
+wget -c https://pub.mate-desktop.org/releases/themes/3.22/$PRGNAM-$VERSION.tar.xz
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
