@@ -11,3 +11,5 @@ This is a list of dependencies for the packages in the /extra directory.
 5.  extra/atril requires deps/libgxps
 
 6.  extra/pluma requires deps/libpeas
+
+7.  extra/mate-sensors requires deps/autoconf-archive

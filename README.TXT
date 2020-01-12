@@ -19,7 +19,7 @@ is MATE version 1.18, released in March 2017.  Checkout that branch using 'git
 checkout 14.2-mate-1.18' to build from the stable MSB branch.
 
 The rest of this README.TXT is specific to building from the 'master'
-branch which will build MATE 1.20, released on February 2018.
+branch which will build MATE 1.23, which is a development version of MATE.
 
 How to build and install the MATE packages using these scripts:
 
@@ -33,7 +33,7 @@ Please use "su" or "su -" to build as root instead of using "sudo".
 and install all the base (required) packages. There are a total of 24 packages
 and they do not replace any stock Slackware packages. The SlackBuilds will use
 wget to download the sources.  Or, you can also manually download the
-sources from: http://pub.mate-desktop.org/releases/1.20 and the download
+sources from: http://pub.mate-desktop.org/releases/1.23 and the download
 locations for each dependency and put each source into the corresponding
 directory within 'base' and 'deps'.
 

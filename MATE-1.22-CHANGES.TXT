@@ -1,6 +1,0 @@
-New Packages in MATE 1.22:
-
-Renamed Packages in MATE 1.22:
-
-Packages removed in MATE 1.22:
-mate-icon-theme-faenza
