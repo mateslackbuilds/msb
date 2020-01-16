@@ -23,7 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=mate-menu
-VERSION=${VERSION:-17.10.8}
+VERSION=${VERSION:-19.10.2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
@@ -75,6 +75,7 @@ find -L . \
   -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
 
 python setup.py install --root=$PKG
+python3 setup.py install --root=$PKG
 
 mv $PKG/usr/share/man/man1/ $PKG/usr/man
 rm -rf $PKG/usr/share/man
