@@ -25,7 +25,6 @@
 
 PRGNAM=mate-applets
 VERSION=${VERSION:-1.24.0}
-COMMITID=5829401ec83f31a351752088afd6aabffb28eaa3
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
@@ -37,8 +36,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-#wget -c https://pub.mate-desktop.org/releases/1.24/$PRGNAM-$VERSION.tar.xz
-wget -c https://git.mate-desktop.org/mate-applets/snapshot/mate-applets-5829401ec83f31a351752088afd6aabffb28eaa3.tar.xz
+wget -c https://pub.mate-desktop.org/releases/1.24/$PRGNAM-$VERSION.tar.xz
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
@@ -67,9 +65,9 @@ set -e
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
-rm -rf $PRGNAM-$COMMITID
-tar xvf $CWD/$PRGNAM-$COMMITID.tar.xz
-cd $PRGNAM-$COMMITID
+rm -rf $PRGNAM-$VERSION
+tar xvf $CWD/$PRGNAM-$VERSION.tar.xz
+cd $PRGNAM-$VERSION
 chown -R root:root .
 find -L . \
  \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 \
