@@ -24,13 +24,13 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=mate-icon-theme
-VERSION=${VERSION:-1.23.2}
+VERSION=${VERSION:-1.24.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
 ARCH=noarch
 
-wget -c https://pub.mate-desktop.org/releases/1.23/$PRGNAM-$VERSION.tar.xz
+wget -c https://pub.mate-desktop.org/releases/1.24/$PRGNAM-$VERSION.tar.xz
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
@@ -60,9 +60,7 @@ CXXFLAGS="$SLKCFLAGS" \
   --sysconfdir=/etc \
   --localstatedir=/var \
   --mandir=/usr/man \
-  --docdir=/usr/doc/$PRGNAM-$VERSION \
-  --build=$ARCH-slackware-linux
-
+  --docdir=/usr/doc/$PRGNAM-$VERSION
 make
 make install DESTDIR=$PKG
 
