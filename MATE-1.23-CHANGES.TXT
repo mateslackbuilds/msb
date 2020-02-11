@@ -1,6 +1,0 @@
-New Packages in MATE 1.23:
-autoconf-archive
-
-Renamed Packages in MATE 1.23:
-
-Packages removed in MATE 1.23:
