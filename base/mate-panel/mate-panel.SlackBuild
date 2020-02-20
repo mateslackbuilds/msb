@@ -25,7 +25,7 @@
 
 PRGNAM=mate-panel
 VERSION=${VERSION:-1.24.0}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-2}
 TAG=${TAG:-_msb}
 
 if [ -z "$ARCH" ]; then
@@ -87,6 +87,7 @@ CXXFLAGS="$SLKCFLAGS" \
   --disable-static \
   --libexecdir=/usr/lib${LIBDIRSUFFIX}/mate-panel \
   --enable-introspection=yes \
+  --enable-wayland \
   --build=$ARCH-slackware-linux
 
 make
