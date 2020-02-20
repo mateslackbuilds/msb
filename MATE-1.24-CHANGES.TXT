@@ -1,5 +1,6 @@
 New Packages in MATE 1.24:
 autoconf-archive
+gtk-layer-shell
 
 Renamed Packages in MATE 1.24:
 
