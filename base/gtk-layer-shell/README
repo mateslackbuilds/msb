@@ -1,1 +1,0 @@
-You need to rebuild GTK+3 to enable wayland using this meson parameter: -Dwayland_backend=true
