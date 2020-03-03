@@ -35,7 +35,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c http://ftp.acc.umu.se/pub/GNOME/sources/gssdp/1.2/$PRGNAM-$VERSION.tar.xz
+wget -c https://ftp.acc.umu.se/pub/GNOME/sources/gssdp/1.2/$PRGNAM-$VERSION.tar.xz
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
