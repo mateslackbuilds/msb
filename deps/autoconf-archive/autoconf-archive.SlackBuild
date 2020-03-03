@@ -35,7 +35,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c http://ftp.wayne.edu/gnu/autoconf-archive/$PRGNAM-$VERSION.tar.xz
+wget -c http://ftpmirror.gnu.org/autoconf-archive/$PRGNAM-$VERSION.tar.xz
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
