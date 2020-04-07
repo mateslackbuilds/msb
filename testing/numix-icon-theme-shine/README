@@ -1,6 +1,0 @@
-This script will attempt to download the latest source from GIT.
-
-If you have built it once and did not remove the source, it will
-use it and pull the latest revision and build a new package.
-
-This requires numix-icon-theme
