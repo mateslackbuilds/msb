@@ -1,0 +1,22 @@
+--- a/config.guess	2020-05-16 21:36:37.396768007 +0000
++++ b/config.guess	2020-05-16 21:47:41.648176596 +0000
+@@ -162,6 +162,9 @@
+ 	    sh3eb) machine=sh-unknown ;;
+ 	    *) machine=${UNAME_MACHINE_ARCH}-unknown ;;
+ 	esac
++	case "${UNAME_MACHINE_ARCH}" in
++	    aarch64) machine=${UNAME_MACHINE_ARCH}-unknown ;;
++	esac
+ 	# The Operating System including object format, if it has switched
+ 	# to ELF recently, or will in the future.
+ 	case "${UNAME_MACHINE_ARCH}" in
+@@ -831,6 +834,9 @@
+     arm*:Linux:*:*)
+ 	echo ${UNAME_MACHINE}-unknown-linux-gnu
+ 	exit ;;
++    aarch64:Linux:*:*)
++	echo ${UNAME_MACHINE}-unknown-linux-gnu
++	exit ;;
+     cris:Linux:*:*)
+ 	echo cris-axis-linux-gnu
+ 	exit ;;
