@@ -37,7 +37,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c https://rarian.freedesktop.org/Releases/rarian-0.8.1.tar.bz2
+wget -c http://ftp.gnome.org/pub/gnome/sources/rarian/0.8/rarian-0.8.1.tar.bz2
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
