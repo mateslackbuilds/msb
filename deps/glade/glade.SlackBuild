@@ -25,7 +25,7 @@
 # Modified by Willy Sudiarto Raharjo <willysr@slackware-id.org> for MSB Project
 
 PRGNAM=glade
-VERSION=${VERSION:-3.22.2}
+VERSION=${VERSION:-3.36.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
@@ -37,7 +37,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c https://ftp.gnome.org/pub/GNOME/sources/$PRGNAM/3.22/$PRGNAM-$VERSION.tar.xz
+wget -c https://ftp.gnome.org/pub/GNOME/sources/$PRGNAM/3.36/$PRGNAM-$VERSION.tar.xz
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
@@ -101,7 +101,7 @@ find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | gr
   | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-cp -a AUTHORS COPYING* INSTALL NEWS README* TODO $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a AUTHORS COPYING* INSTALL NEWS TODO $PKG/usr/doc/$PRGNAM-$VERSION
 
 find $PKG/usr/man -type f -exec gzip -9 {} \;
 for i in $(find $PKG/usr/man -type l) ; do ln -s $(readlink $i).gz $i.gz ; rm $i ; done
