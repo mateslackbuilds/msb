@@ -1,0 +1,29 @@
+From ebdd87a7224cd1d9a36ab8a7c6b7bd53ed582415 Mon Sep 17 00:00:00 2001
+From: William Wold <wm@wmww.sh>
+Date: Wed, 19 Feb 2020 14:10:57 -0500
+Subject: [PATCH] Enable applications in addto menu (fixes 1055)
+
+---
+ mate-panel/panel-addto.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/mate-panel/panel-addto.c b/mate-panel/panel-addto.c
+index fbf5c52fa..cfc9c715c 100644
+--- a/mate-panel/panel-addto.c
++++ b/mate-panel/panel-addto.c
+@@ -564,6 +564,7 @@ panel_addto_prepend_directory (GSList             **parent_list,
+ 	data->item_info.icon          = gicon ? g_icon_to_string(gicon) : g_strdup(PANEL_ICON_UNKNOWN);
+ 	data->item_info.menu_filename = g_strdup (filename);
+ 	data->item_info.menu_path     = matemenu_tree_directory_make_path (directory, NULL);
++	data->item_info.enabled       = TRUE;
+ 	data->item_info.static_data   = FALSE;
+ 
+ 	/* We should set the iid here to something and do
+@@ -598,6 +599,7 @@ panel_addto_prepend_entry (GSList         **parent_list,
+ 	data->item_info.description   = g_strdup (g_app_info_get_description(G_APP_INFO(ginfo)));
+ 	data->item_info.icon          = gicon ? g_icon_to_string(gicon) : g_strdup(PANEL_ICON_UNKNOWN);
+ 	data->item_info.launcher_path = g_strdup (matemenu_tree_entry_get_desktop_file_path (entry));
++	data->item_info.enabled       = TRUE;
+ 	data->item_info.static_data   = FALSE;
+ 
+ 	*parent_list = g_slist_prepend (*parent_list, data);
