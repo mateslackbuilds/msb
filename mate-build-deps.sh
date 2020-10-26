@@ -41,7 +41,6 @@ CHECKDUPLICATE=0
 
 # Loop for all dependency packages
 for dir in \
-  deps/autoconf-archive \
   deps/zenity \
   deps/rarian \
   deps/yelp-xsl \
