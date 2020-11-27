@@ -3,7 +3,7 @@
 # Copyright 2012  Patrick J. Volkerding, Sebeka, Minnesota, USA
 # All rights reserved.
 #
-# Copyright 2014-2018 Willy Sudiarto Raharjo <willysr@slackware-id.org>
+# Copyright 2014-2020 Willy Sudiarto Raharjo <willysr@slackware-id.org>
 # All rights reserved.
 #
 # Based on the xfce-build-all.sh script by Patrick J. Volkerding
@@ -45,15 +45,12 @@ for dir in \
   deps/rarian \
   deps/yelp-xsl \
   deps/yelp-tools \
-  deps/libwnck3 \
   deps/libunique \
   deps/libunique3 \
   deps/pangox-compat \
   deps/gtk-engines \
   deps/murrine \
-  deps/glade \
   deps/libpeas \
-  deps/gtksourceview3 \
   deps/libgtop \
   deps/libgksu \
   deps/gksu \

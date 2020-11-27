@@ -1,7 +1,10 @@
 New Packages in MATE 1.24:
-autoconf-archive
 gtk-layer-shell
 
 Renamed Packages in MATE 1.24:
 
 Packages removed in MATE 1.24:
+gtksourceview3 (included in current)
+glade (included in current)
+autoconf-archive (included in current)
+libwnck3 (included in current)
