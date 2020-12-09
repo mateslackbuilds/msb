@@ -25,7 +25,7 @@
 
 PRGNAM=mate-session-manager
 VERSION=${VERSION:-1.24.0}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-2}
 TAG=${TAG:-_msb}
 
 if [ -z "$ARCH" ]; then
@@ -89,6 +89,7 @@ CXXFLAGS="$SLKCFLAGS" \
   --docdir=/usr/doc/$PRGNAM-$VERSION \
   --libexecdir=/usr/lib${LIBDIRSUFFIX} \
   --without-systemd \
+  --with-elogind \
   --build=$ARCH-slackware-linux
 
 make
