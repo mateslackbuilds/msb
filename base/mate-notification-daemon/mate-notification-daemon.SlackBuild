@@ -25,7 +25,7 @@
 
 PRGNAM=mate-notification-daemon
 VERSION=${VERSION:-1.24.1}
-BUILD=${BUILD:-2}
+BUILD=${BUILD:-3}
 TAG=${TAG:-_msb}
 
 if [ -z "$ARCH" ]; then
@@ -121,6 +121,10 @@ chown -R root:root $PKG/usr/doc/$PRGNAM-$VERSION
 mkdir -p $PKG/etc/xdg/autostart
 cp $CWD/mate-notification-daemon.desktop $PKG/etc/xdg/autostart
 sed -i "s|%LIBDIR%|${LIBDIRSUFFIX}|g" $PKG/etc/xdg/autostart/mate-notification-daemon.desktop
+
+mkdir -p $PKG/etc/cron.hourly/
+cp $CWD/mate-notification $PKG/etc/cron.hourly/
+sed -i "s|%LIBDIR%|${LIBDIRSUFFIX}|g" $PKG/etc/cron.hourly/mate-notification
 
 mkdir -p $PKG/install
 cat $CWD/slack-desc > $PKG/install/slack-desc
