@@ -51,7 +51,6 @@ for dir in \
   deps/gtk-engines \
   deps/murrine \
   deps/libpeas \
-  deps/libgtop \
   deps/libgksu \
   deps/gksu \
   deps/gssdp \
