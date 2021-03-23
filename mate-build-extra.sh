@@ -42,9 +42,6 @@ CHECKDUPLICATE=0
 
 # Loop for all extra packages
 for dir in \
-  extra/mate-calc \
-  extra/atril \
-  extra/caja-extensions \
   extra/caja-dropbox \
   extra/mate-applets \
   extra/mate-sensors-applet \
