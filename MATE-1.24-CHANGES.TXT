@@ -1,5 +1,6 @@
 New Packages in MATE 1.24:
 gtk-layer-shell
+lxml
 
 Renamed Packages in MATE 1.24:
 
