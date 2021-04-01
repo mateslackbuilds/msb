@@ -24,7 +24,7 @@
 #  Modified by Willy Sudiarto Raharjo for MSB Project
 
 PRGNAM=libpeas
-VERSION=${VERSION:-1.24.1}
+VERSION=${VERSION:-1.30.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
@@ -36,7 +36,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c https://ftp.acc.umu.se/pub/GNOME/sources/$PRGNAM/1.24//$PRGNAM-$VERSION.tar.xz
+wget -c https://ftp.acc.umu.se/pub/GNOME/sources/$PRGNAM/1.30/$PRGNAM-$VERSION.tar.xz
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
