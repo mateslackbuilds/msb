@@ -1,5 +1,12 @@
 The following is a list of known issues with MATE on Slackware:
 
+Sun May  9 18:18:03 UTC 2021
+Users running xdm instead of the default kdm might face a situation
+where users can't login. This happened because there's a race condition
+issue in xdm which can be solved easily by adding this line in
+/etc/X11/xdm/xdm-config:
+DisplayManager*AuthName:        MIT-MAGIC-COOKIE-1
+
 Tue Mar 17 14:58:26 UTC 2020
 Users running Slackware 14.2 upgraded to current will got an error when
 logging in using runlevel 4. It worked fine on runlevel 3. This happened
