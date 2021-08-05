@@ -19,7 +19,7 @@ is MATE version 1.18, released in March 2017.  Checkout that branch using 'git
 checkout 14.2-mate-1.18' to build from the stable MSB branch.
 
 The rest of this README.TXT is specific to building from the 'master'
-branch which will build MATE 1.24, which is the latest stable version of MATE.
+branch which will build MATE 1.26, which is the latest stable version of MATE.
 
 How to build and install the MATE packages using these scripts:
 

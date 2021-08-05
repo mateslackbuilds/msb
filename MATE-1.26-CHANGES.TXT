@@ -1,10 +1,10 @@
-New Packages in MATE 1.24:
+New Packages in MATE 1.26:
 gtk-layer-shell
 lxml
 
-Renamed Packages in MATE 1.24:
+Renamed Packages in MATE 1.26:
 
-Packages removed in MATE 1.24:
+Packages removed in MATE 1.26:
 gtksourceview3 (included in current)
 glade (included in current)
 autoconf-archive (included in current)
