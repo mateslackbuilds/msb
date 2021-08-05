@@ -24,13 +24,13 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=mate-backgrounds
-VERSION=${VERSION:-1.24.1}
+VERSION=${VERSION:-1.26.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
 ARCH=noarch
 
-wget -c https://pub.mate-desktop.org/releases/1.24/$PRGNAM-$VERSION.tar.xz
+wget -c https://pub.mate-desktop.org/releases/1.26/$PRGNAM-$VERSION.tar.xz
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
