@@ -14,8 +14,8 @@ is complete. Back it up, or take your chances.
 OK, now that everything is safely backed up, let's proceed. :-)
 
 You will need the MATE 1.26 packages available on your local system.  Grab
-them from the official repository at http://www.slackware.uk/msb/ or
-any of the mirror sites.  Please note that MATE 1.26 has three new packages.
+them from the official repository at https://www.slackware.uk/msb/ or
+any of the mirror sites.  Please note that MATE 1.26 has three new packages and 6 removed packages.
 
 1.  Upgrade and install all new MATE 1.26 packages:
 
@@ -23,7 +23,11 @@ any of the mirror sites.  Please note that MATE 1.26 has three new packages.
     upgradepkg --install-new --reinstall /path/to/base/*.txz
     upgradepkg --install-new --reinstall /path/to/extra/*.txz
 
-2.  Run xwmconfig and select xinitrc.mate-session. This ensures you get the
+2.  Remove MSB packages that are now part of Slackware and removed during 1.26 development:
+    gtksourceview3 glade autoconf-archive libwnck3 libgtop caja-actions
+    It's advised to reinstall those packages from Slackware repository after removing MSB packages.
+
+3.  Run xwmconfig and select xinitrc.mate-session. This ensures you get the
     latest copy of xinitrc.mate-session due to changes in mate-session-
     manager.  ALWAYS run this command for both new installations or upgrades
     from MATE 1.22
