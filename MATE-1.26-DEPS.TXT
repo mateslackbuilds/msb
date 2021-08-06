@@ -1,13 +1,13 @@
 This is a list of dependencies for the packages in the /extra directory.
 
-1.  extra/mate-applets requires deps/libgtop and deps/gtksourceview3
+1.  extra/mate-applets requires deps/libgtop
 
 2.  extra/caja-extensions requires deps/gssdp and deps/gupnp
 
 3.  extra/mate-utils requires deps/libgtop
 
-4.  extra/pluma requires deps/gtksourceview3 and deps/libpeas
+4.  extra/pluma requires deps/libpeas
 
 5.  extra/atril requires deps/libgxps
 
-6.  extra/pluma requires deps/libpeas
+6.  extra/pluma requires deps/libpeas and deps/gtksourceview4

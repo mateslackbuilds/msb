@@ -1,6 +1,7 @@
 New Packages in MATE 1.26:
 gtk-layer-shell
 lxml
+gtksourceview4
 
 Renamed Packages in MATE 1.26:
 
