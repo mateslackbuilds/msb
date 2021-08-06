@@ -1,7 +1,7 @@
-MATE 1.22 to 1.24 Upgrade HOWTO
+MATE 1.22 to 1.26 Upgrade HOWTO
 <mateslackbuilds@gmail.com>
 
-This document explains how to upgrade from MATE 1.22 on MATE 1.24 on
+This document explains how to upgrade from MATE 1.22 on MATE 1.26 on
 Slackware Linux Current
 
 ----------------------------------------------------------------------------
@@ -13,11 +13,11 @@ is complete. Back it up, or take your chances.
 
 OK, now that everything is safely backed up, let's proceed. :-)
 
-You will need the MATE 1.24 packages available on your local system.  Grab
+You will need the MATE 1.26 packages available on your local system.  Grab
 them from the official repository at http://www.slackware.uk/msb/ or
-any of the mirror sites.  Please note that MATE 1.24 has one new package.
+any of the mirror sites.  Please note that MATE 1.26 has three new packages.
 
-1.  Upgrade and install all new MATE 1.24 packages:
+1.  Upgrade and install all new MATE 1.26 packages:
 
     upgradepkg --install-new --reinstall /path/to/deps/*.txz
     upgradepkg --install-new --reinstall /path/to/base/*.txz
@@ -28,7 +28,7 @@ any of the mirror sites.  Please note that MATE 1.24 has one new package.
     manager.  ALWAYS run this command for both new installations or upgrades
     from MATE 1.22
 
-At this point you should be running MATE 1.24 on Slackware Current.  :-)
+At this point you should be running MATE 1.26 on Slackware Current.  :-)
 
 We wish everyone good luck with this!  Please report any issues to
 mateslackbuilds@gmail.com.
