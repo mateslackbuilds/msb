@@ -89,6 +89,7 @@ CXXFLAGS="$SLKCFLAGS" \
   --docdir=/usr/doc/$PRGNAM-$VERSION \
   --without-systemd \
   --enable-pam \
+  --with-elogind \
   --build=$ARCH-slackware-linux
 
 make
