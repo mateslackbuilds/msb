@@ -24,7 +24,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=atril
-VERSION=${VERSION:-1.24.1}
+VERSION=${VERSION:-1.26.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
@@ -36,7 +36,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c https://pub.mate-desktop.org/releases/1.24/$PRGNAM-$VERSION.tar.xz
+wget -c https://pub.mate-desktop.org/releases/1.26/$PRGNAM-$VERSION.tar.xz
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
@@ -131,7 +131,7 @@ fi
 rm -rf $PKG/usr/share/omf/atril
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-cp -a AUTHORS COPYING NEWS README $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a AUTHORS COPYING NEWS README.md $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 find $PKG/usr/doc/$PRGNAM-$VERSION/ -type f -exec chmod 644 {} \;
 chown -R root:root $PKG/usr/doc/$PRGNAM-$VERSION
