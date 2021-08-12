@@ -23,7 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=brisk-menu
-VERSION=${VERSION:-0.5.0}
+VERSION=${VERSION:-0.6.2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
@@ -35,7 +35,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c https://github.com/solus-project/${PRGNAM}/archive/v${VERSION}/${PRGNAM}-${VERSION}.tar.gz
+wget -c https://github.com/getsolus/${PRGNAM}/releases/download/v${VERSION}/${PRGNAM}-v${VERSION}.tar.gz
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
@@ -68,7 +68,7 @@ rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 rm -rf $PRGNAM-$VERSION
-tar xvf $CWD/$PRGNAM-$VERSION.tar.gz
+tar xvf $CWD/$PRGNAM-v$VERSION.tar.xz
 cd $PRGNAM-$VERSION
 chown -R root:root .
 find -L . \
@@ -83,7 +83,7 @@ meson --prefix=/usr \
       --buildtype=release \
       --localstatedir=/var \
       --libdir=lib${LIBDIRSUFFIX} \
-      --libexecdir=/usr/lib${LIBDIRSUFFIX}/colord \
+      --libexecdir=/usr/lib${LIBDIRSUFFIX}/$PRGNAM \
       --mandir=/usr/man \
       ../
 ninja
