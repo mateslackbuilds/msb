@@ -35,7 +35,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c https://github.com/getsolus/${PRGNAM}/releases/download/v${VERSION}/${PRGNAM}-v${VERSION}.tar.gz
+wget -c https://github.com/getsolus/${PRGNAM}/releases/download/v${VERSION}/${PRGNAM}-v${VERSION}.tar.xz
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
