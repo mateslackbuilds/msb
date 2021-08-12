@@ -5,7 +5,7 @@
 # Modified by Willy Sudiarto Raharjo for MSB Project
 
 PRGNAM=zenity
-VERSION=${VERSION:-3.32.0}
+VERSION=${VERSION:-3.41.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
@@ -17,7 +17,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c https://ftp.acc.umu.se/pub/GNOME/sources/$PRGNAM/3.32/$PRGNAM-$VERSION.tar.xz
+wget -c https://ftp.acc.umu.se/pub/GNOME/sources/$PRGNAM/3.41/$PRGNAM-$VERSION.tar.xz
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
@@ -46,6 +46,14 @@ fi
 
 set -e
 
+# Check for WebKit
+webkit=`pkg-config --exists webkit2gtk-4.0`
+if [ "$?" -eq 0 ]; then
+  wk="TRUE"
+else
+  wk="FALSE"
+fi
+
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
@@ -59,26 +67,32 @@ find -L . \
  \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
   -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
 
-CFLAGS="$SLKCFLAGS" \
-CXXFLAGS="$SLKCFLAGS" \
-./configure \
-  --prefix=/usr \
-  --libdir=/usr/lib${LIBDIRSUFFIX} \
-  --sysconfdir=/etc \
-  --localstatedir=/var \
-  --mandir=/usr/man \
-  --enable-debug=no \
-  --enable-libnotify \
-  --build=$ARCH-slackware-linux
-
-make
-make install-strip DESTDIR=$PKG
+mkdir build
+cd build
+  CFLAGS="$SLKCFLAGS" \
+  CXXFLAGS="$SLKCFLAGS" \
+  meson .. \
+    --buildtype=release \
+    --infodir=/usr/info \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --localstatedir=/var \
+    --mandir=/usr/man \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    -Dlibnotify=true \
+    -Dwebkitgtk=${wk}
+  ninja
+  DESTDIR=$PKG ninja install
+cd ..
 
 find $PKG/usr/man -type f -exec gzip -9 {} \;
 for i in $( find $PKG/usr/man -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-cp -a AUTHORS ChangeLog COPYING HACKING NEWS README THANKS TODO $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a \
+    AUTHORS ChangeLog HACKING README TODO \
+    COPYING ChangeLog.pre-git NEWS THANKS \
+  $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
 mkdir -p $PKG/install
