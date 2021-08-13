@@ -44,8 +44,6 @@ else
   LIBDIRSUFFIX=""
 fi
 
-set -e
-
 # Check for WebKit
 webkit=`pkg-config --exists webkit2gtk-4.0`
 if [ "$?" -eq 0 ]; then
@@ -53,6 +51,8 @@ if [ "$?" -eq 0 ]; then
 else
   wk="FALSE"
 fi
+
+set -e
 
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
