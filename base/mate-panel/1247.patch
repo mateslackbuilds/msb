@@ -1,0 +1,31 @@
+From c759f2e68a11d1483a10670937b1ecfd4565b477 Mon Sep 17 00:00:00 2001
+From: mbkma <johannes.unruh@fau.de>
+Date: Thu, 26 Aug 2021 21:02:36 +0200
+Subject: [PATCH] fix mate-desktop-item-edit executable
+
+---
+ mate-panel/Makefile.am | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/mate-panel/Makefile.am b/mate-panel/Makefile.am
+index 1ec92a0e1..f2f04d27b 100644
+--- a/mate-panel/Makefile.am
++++ b/mate-panel/Makefile.am
+@@ -170,6 +170,8 @@ mate_panel_LDFLAGS = -export-dynamic
+ mate_desktop_item_edit_SOURCES = \
+ 	mate-desktop-item-edit.c \
+ 	panel-ditem-editor.c \
++	panel-resources.c		\
++	panel-resources.h		\
+ 	panel-marshal.c \
+ 	panel-util.c
+ 
+@@ -188,6 +190,8 @@ mate_desktop_item_edit_LDADD += \
+ 	-lX11
+ endif
+ 
++mate_desktop_item_edit_LDFLAGS = -export-dynamic
++
+ mate_panel_test_applets_SOURCES = \
+ 	$(panel_test_applets_BUILT_SOURCES)	\
+ 	panel-modules.c \
