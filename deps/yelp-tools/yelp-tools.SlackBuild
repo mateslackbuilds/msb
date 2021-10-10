@@ -36,7 +36,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c https://ftp.gnome.org/pub/gnome/sources/yelp-tools/40/$PRGNAM-$VERSION.tar.xz
+wget -c https://download.gnome.org/sources/yelp-tools/40/$PRGNAM-$VERSION.tar.xz
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
