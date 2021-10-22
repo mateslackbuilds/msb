@@ -1,3 +1,3 @@
 mate-menu is an Advanced Menu for the MATE Desktop
 
-This requires python-xlib and Unidecode (with Python3 support enabled) from SBo and setproctitle
+This requires python-distutils-extra, python-xlib and Unidecode (with Python3 support enabled) from SBo and setproctitle
