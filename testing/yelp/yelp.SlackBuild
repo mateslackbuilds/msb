@@ -2,7 +2,7 @@
 
 # Slackware build script for yelp
 
-# Copyright 2014-2022 Willy Sudiarto Raharjo <willysr@slackware-id.org>
+# Copyright 2014-2021 Willy Sudiarto Raharjo <willysr@slackware-id.org>
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -23,7 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=yelp
-VERSION=${VERSION:-41.2}
+VERSION=${VERSION:-40.2}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
@@ -35,7 +35,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c http://ftp.acc.umu.se/pub/GNOME/sources/yelp/41/$PRGNAM-$VERSION.tar.xz
+wget -c http://ftp.acc.umu.se/pub/GNOME/sources/yelp/40/$PRGNAM-$VERSION.tar.xz
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
