@@ -63,12 +63,18 @@ else
   LIBDIRSUFFIX=""
 fi
 
-# check webkitgtk existence
-webkit=`pkg-config --exists webkit2gtk-4.1`
+# check webkit2gtk 4.0 API existence
+webkit=`pkg-config --exists webkit2gtk-4.0`
 if [ "$?" -eq 0 ]; then
   epub="--enable-epub"
 else
-  epub="--disable-epub"
+  # check webkit2gtk 4.1 API existence
+  webkit=`pkg-config --exists webkit2gtk-4.1`
+  if [ "$?" -eq 0 ]; then
+    epub="--enable-epub"
+  else
+    epub="--disable-epub"
+  fi
 fi
 
 set -e
