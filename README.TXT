@@ -15,7 +15,7 @@ After cloning the initial Git repo, you will be using 'master' branch which
 will build the latest release or development branch for MATE desktop.
 Building from the master branch is not supported and may or may not work at
 any given moment. Most users will want to build from the stable branch which
-is MATE version 1.26, released in October 2021.  Checkout that branch using 'git
+is MATE version 1.26, released in August 2021.  Checkout that branch using 'git
 checkout 15.0-mate-1.26' to build from the stable MSB branch.
 
 The rest of this README.TXT is specific to building from the 'master'
