@@ -72,6 +72,7 @@ else
   webkit=`pkg-config --exists webkit2gtk-4.1`
   if [ "$?" -eq 0 ]; then
     epub="--enable-epub"
+    API4.1=yes
   else
     epub="--disable-epub"
   fi
@@ -92,7 +93,10 @@ find -L . \
  \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
   -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
 
-sed -i "s|webkit2gtk-4.0|webkit2gtk-4.1|g" configure.ac
+if [ "$API4.1" == "yes" ]; then
+  sed -i "s|webkit2gtk-4.0|webkit2gtk-4.1|g" configure.ac
+fi
+
 autoreconf -fiv
 
 CFLAGS="$SLKCFLAGS" \
