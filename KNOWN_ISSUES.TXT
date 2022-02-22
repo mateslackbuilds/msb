@@ -1,5 +1,13 @@
 The following is a list of known issues with MATE on Slackware:
 
+Tue Feb 22 04:55:09 UTC 2022
+Users running latest NVidia drivers (495.46 and 510.54) will not be able
+to run startx due to a bug in xorg-server which has been reported
+(https://gitlab.freedesktop.org/xorg/xserver/-/issues/1275).
+Users may need to rebuild xorg-server with a patch
+(https://gitlab.freedesktop.org/xorg/xserver/uploads/77b05c7b76be45e56447f37950be3092/present-crash-fix.diff)
+unless the patch is backported back to Slackware 15.0.
+
 Sun May  9 18:18:03 UTC 2021
 Users running xdm instead of the default kdm might face a situation
 where users can't login. This happened because there's a race condition
