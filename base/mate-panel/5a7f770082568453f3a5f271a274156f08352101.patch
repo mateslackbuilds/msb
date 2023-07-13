@@ -1,0 +1,31 @@
+From 5a7f770082568453f3a5f271a274156f08352101 Mon Sep 17 00:00:00 2001
+From: Brahmajit Das <brahmajit.xyz@gmail.com>
+Date: Mon, 26 Jun 2023 21:37:46 +0530
+Subject: [PATCH] libmate-panel-applet/Makefile.am: Fix build with gettext 0.22
+
+With gettext-0.22 we are getting build errors like:
+/usr/bin/msgfmt --desktop --keyword Name --keyword Description --template org.mate.panel.TestApplet.mate-panel-applet.desktop.in -d ../po -o org.mate.panel.TestApplet.mate-panel-applet
+/usr/bin/msgfmt: no input file should be given if --desktop and -d are specified
+Try '/usr/bin/msgfmt --help' for more information.
+make[3]: *** [Makefile:1035: org.mate.panel.TestApplet.mate-panel-applet] Error 1
+make[3]: *** Waiting for unfinished jobs....
+
+Bug: https://bugs.gentoo.org/908877
+Signed-off-by: Brahmajit Das <brahmajit.xyz@gmail.com>
+---
+ libmate-panel-applet/Makefile.am | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/libmate-panel-applet/Makefile.am b/libmate-panel-applet/Makefile.am
+index 196436e9a..dbb640b1e 100644
+--- a/libmate-panel-applet/Makefile.am
++++ b/libmate-panel-applet/Makefile.am
+@@ -95,7 +95,7 @@ appletdir       = $(datadir)/mate-panel/applets
+ applet_in_files = org.mate.panel.TestApplet.mate-panel-applet.desktop.in
+ noinst_DATA     = $(applet_in_files:.mate-panel-applet.desktop.in=.mate-panel-applet)
+ $(noinst_DATA): $(applet_in_files)
+-	$(AM_V_GEN) $(MSGFMT) --desktop --keyword Name --keyword Description --template $< -d $(top_srcdir)/po -o $@
++	$(AM_V_GEN) $(MSGFMT) --desktop --keyword=Name --keyword=Description --template $< -d $(top_srcdir)/po -o $@
+ 
+ EXTRA_DIST =						\
+ 	org.mate.panel.TestApplet.mate-panel-applet.desktop.in	\
