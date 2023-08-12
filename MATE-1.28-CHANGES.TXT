@@ -1,0 +1,6 @@
+New Packages in MATE 1.28:
+
+Renamed Packages in MATE 1.28:
+
+Packages removed in MATE 1.28:
+lxml (included in current)
