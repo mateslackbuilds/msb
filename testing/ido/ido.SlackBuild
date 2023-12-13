@@ -23,7 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=ido
-VERSION=${VERSION:-13.10.0+17.04.20161028}
+VERSION=${VERSION:-13.10.0+22.10.20221007}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
@@ -35,7 +35,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c https://launchpad.net/ubuntu/+archive/primary/+files/ido_13.10.0+17.04.20161028.orig.tar.gz
+wget -c https://launchpad.net/ubuntu/+archive/primary/+sourcefiles/ido/13.10.0+22.10.20221007-0ubuntu1/ido_13.10.0+22.10.20221007.orig.tar.gz
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
