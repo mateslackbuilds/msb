@@ -78,6 +78,11 @@ find -L . \
  \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
   -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
 
+# The system-info capplet partially depends on systemd, remove the systemd check
+# to make this build. system-info will output some (null)-fields.
+# More info here https://github.com/mate-desktop/mate-control-center/issues/738
+sed -i '19302,19392d' configure
+
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
 ./configure \
@@ -88,7 +93,7 @@ CXXFLAGS="$SLKCFLAGS" \
   --mandir=/usr/man \
   --docdir=/usr/doc/$PRGNAM-$VERSION \
   --disable-static \
-  --enable-appindicator=auto \
+  --disable-schemas-compile \
   --build=$ARCH-slackware-linux
 
 make
