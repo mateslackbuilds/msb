@@ -3,7 +3,7 @@
 # Slackware build script for eom
 
 # Copyright 2013 Chess Griffin <chess.griffin@gmail.com> Raleigh, NC
-# Copyright 2013-2023 Willy Sudiarto Raharjo <willysr@slackware-id.org>
+# Copyright 2013-2024 Willy Sudiarto Raharjo <willysr@slackware-id.org>
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -24,7 +24,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=eom
-VERSION=${VERSION:-1.26.1}
+VERSION=${VERSION:-1.28.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
@@ -36,7 +36,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c https://pub.mate-desktop.org/releases/1.26/$PRGNAM-$VERSION.tar.xz
+wget -c https://pub.mate-desktop.org/releases/1.28/$PRGNAM-$VERSION.tar.xz
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
