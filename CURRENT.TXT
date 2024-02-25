@@ -1,7 +1,7 @@
 The following is a list of notes on building MATE on Slackware -current:
 
 Sun Feb 25 02:18:31 UTC 2024
-since libsoup3 has been included in Slackware-Current, you don't need to
+since lxml and libsoup3 has been included in Slackware-Current, you don't need to
 build/install this package and use the one included in Slackware instead.
 
 Sat Apr  9 02:17:03 UTC 2016
