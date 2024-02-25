@@ -2,7 +2,7 @@ MATE 1.26 to 1.28 Upgrade HOWTO
 <mateslackbuilds@gmail.com>
 
 This document explains how to upgrade from MATE 1.26 on MATE 1.28 on
-Slackware Linux Current
+Slackware Linux 15.0
 
 ----------------------------------------------------------------------------
 
@@ -15,7 +15,7 @@ OK, now that everything is safely backed up, let's proceed. :-)
 
 You will need the MATE 1.28 packages available on your local system.  Grab
 them from the official repository at https://www.slackware.uk/msb/ or
-any of the mirror sites.  Please note that MATE 1.28 has no new packages and 1 removed packages.
+any of the mirror sites.  Please note that MATE 1.28 has one package and no removed packages.
 
 1.  Upgrade and install all new MATE 1.28 packages:
 
@@ -23,16 +23,12 @@ any of the mirror sites.  Please note that MATE 1.28 has no new packages and 1 r
     upgradepkg --install-new --reinstall /path/to/base/*.txz
     upgradepkg --install-new --reinstall /path/to/extra/*.txz
 
-2.  Remove MSB package that are now part of Slackware:
-    lxml
-    It's advised to reinstall those packages from Slackware repository after removing MSB packages.
-
-3.  Run xwmconfig and select xinitrc.mate-session. This ensures you get the
+2.  Run xwmconfig and select xinitrc.mate-session. This ensures you get the
     latest copy of xinitrc.mate-session due to changes in mate-session-
     manager.  ALWAYS run this command for both new installations or upgrades
     from MATE 1.28
 
-At this point you should be running MATE 1.28 on Slackware Current.  :-)
+At this point you should be running MATE 1.28 on Slackware 15.0.  :-)
 
 We wish everyone good luck with this!  Please report any issues to
 mateslackbuilds@gmail.com.
