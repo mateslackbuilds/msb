@@ -15,11 +15,11 @@ After cloning the initial Git repo, you will be using 'master' branch which
 will build the latest release or development branch for MATE desktop.
 Building from the master branch is not supported and may or may not work at
 any given moment. Most users will want to build from the stable branch which
-is MATE version 1.26, released in August 2021.  Checkout that branch using 'git
-checkout 15.0-mate-1.26' to build from the stable MSB branch.
+is MATE version 1.28, released in February 2024.  Checkout that branch using 'git
+checkout 15.0-mate-1.28' to build from the stable MSB branch.
 
 The rest of this README.TXT is specific to building from the 'master'
-branch which will build MATE 1.26, which is the latest stable version of MATE.
+branch which will build MATE 1.28, which is the latest stable version of MATE.
 
 How to build and install the MATE packages using these scripts:
 
@@ -33,7 +33,7 @@ Please use "su" or "su -" to build as root instead of using "sudo".
 and install all the base (required) packages. There are a total of 25 packages
 and they do not replace any stock Slackware packages. The SlackBuilds will use
 wget to download the sources.  Or, you can also manually download the
-sources from: http://pub.mate-desktop.org/releases/1.26 and the download
+sources from: http://pub.mate-desktop.org/releases/1.28 and the download
 locations for each dependency and put each source into the corresponding
 directory within 'base' and 'deps'.
 

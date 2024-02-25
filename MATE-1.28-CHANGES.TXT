@@ -1,4 +1,5 @@
 New Packages in MATE 1.28:
+libsoup3
 
 Renamed Packages in MATE 1.28:
 
