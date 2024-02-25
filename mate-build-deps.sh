@@ -53,6 +53,7 @@ for dir in \
   deps/libpeas \
   deps/libgksu \
   deps/gksu \
+  deps/libsoup3 \
   deps/gssdp \
   deps/gupnp \
   deps/libgxps \
