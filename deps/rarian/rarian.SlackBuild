@@ -4,7 +4,7 @@
 # Based on the rarian SlackBuild script at SlackBuilds.org
 
 # Copyright 2013 Chess Griffin <chess.griffin@gmail.com> Raleigh, NC
-# Copyright 2015-2021 Willy Sudiarto Raharjo <willysr@slackware-id.org>
+# Copyright 2015-2024 Willy Sudiarto Raharjo <willysr@slackware-id.org>
 # All rights reserved.
 #
 # Redistribution and use of this script, with or without modification, is
@@ -25,8 +25,8 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=rarian
-VERSION=${VERSION:-0.8.1}
-BUILD=${BUILD:-3}
+VERSION=${VERSION:-0.8.5}
+BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
 if [ -z "$ARCH" ]; then
@@ -37,7 +37,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c http://ftp.gnome.org/pub/gnome/sources/rarian/0.8/rarian-0.8.1.tar.bz2
+wget -c https://gitlab.freedesktop.org/rarian/rarian/-/releases/0.8.5/downloads/assets/rarian-0.8.5.tar.bz2
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
@@ -121,7 +121,7 @@ fi
 rm -f $PKG/{,usr/}lib${LIBDIRSUFFIX}/*.la
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-cp -a MAINTAINERS TODO COPYING NEWS README INSTALL COPYING.UTILS COPYING.LIB ChangeLog \
+cp -a MAINTAINERS TODO COPYING NEWS README COPYING.UTILS COPYING.LIB ChangeLog \
   $PKG/usr/doc/$PRGNAM-$VERSION
 mv $PKG/usr/share/help $PKG/usr/doc/$PRGNAM-$VERSION/help
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
