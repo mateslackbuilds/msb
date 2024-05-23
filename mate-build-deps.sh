@@ -42,6 +42,7 @@ CHECKDUPLICATE=0
 # Loop for all dependency packages
 for dir in \
   deps/zenity \
+  deps/tinyxml \
   deps/rarian \
   deps/yelp-xsl \
   deps/yelp-tools \

@@ -1,4 +1,5 @@
 New Packages in MATE 1.28:
+tinyxml (needed by rarian)
 
 Renamed Packages in MATE 1.28:
 
