@@ -6,3 +6,4 @@ Renamed Packages in MATE 1.28:
 Packages removed in MATE 1.28:
 lxml (included in current)
 libsoup3 (included in current)
+gtk-layer-shell (included in current)

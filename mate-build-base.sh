@@ -55,7 +55,6 @@ for dir in \
   base/mate-session-manager \
   base/mate-menus \
   base/mate-terminal \
-  base/gtk-layer-shell \
   base/mate-panel \
   base/mate-backgrounds \
   base/mate-themes \
