@@ -57,7 +57,6 @@ for dir in \
   deps/gssdp \
   deps/gupnp \
   deps/libgxps \
-  deps/gtksourceview4 \
   ; do
   # Get the package name
   package=$(echo $dir | cut -f2- -d /)

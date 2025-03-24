@@ -7,3 +7,4 @@ Packages removed in MATE 1.28:
 lxml (included in current)
 libsoup3 (included in current)
 gtk-layer-shell (included in current)
+gtksourceview4 (included in current)
