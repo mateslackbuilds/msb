@@ -36,7 +36,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c https://pub.mate-desktop.org/releases/1.28/$PRGNAM-$VERSION.tar.xz
+wget -c https://github.com/mate-desktop/atril/archive/v$VERSION/$PRGNAM-$VERSION.zip
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
@@ -66,15 +66,15 @@ fi
 # check webkit2gtk 4.0 API existence
 webkit=`pkg-config --exists webkit2gtk-4.0`
 if [ "$?" -eq 0 ]; then
-  epub="--enable-epub"
+  epub="true"
 else
   # check webkit2gtk 4.1 API existence
   webkit=`pkg-config --exists webkit2gtk-4.1`
   if [ "$?" -eq 0 ]; then
-    epub="--enable-epub"
+    epub="true"
     API4.1=yes
   else
-    epub="--disable-epub"
+    epub="false"
   fi
 fi
 
@@ -84,7 +84,7 @@ rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
 rm -rf $PRGNAM-$VERSION
-tar xvf $CWD/$PRGNAM-$VERSION.tar.xz
+unzip $CWD/$PRGNAM-$VERSION.zip
 cd $PRGNAM-$VERSION
 chown -R root:root .
 find -L . \
@@ -97,26 +97,30 @@ if [ "$API4.1" == "yes" ]; then
   sed -i "s|webkit2gtk-4.0|webkit2gtk-4.1|g" configure.ac
 fi
 
-autoreconf -fiv
+# Fix mathjax path
+sed -i 's|/usr/share/javascript/mathjax|/usr/share/mathjax2|' backend/epub/epub-document.c
 
-CFLAGS="$SLKCFLAGS" \
-CXXFLAGS="$SLKCFLAGS" \
-LDFLAGS="-L/usr/share/texmf/lib" \
-CPPFLAGS="-I/usr/share/texmf/include" \
-./configure \
-  --prefix=/usr \
-  --libdir=/usr/lib${LIBDIRSUFFIX} \
-  --sysconfdir=/etc \
-  --localstatedir=/var \
-  --mandir=/usr/man \
-  --docdir=/usr/doc/$PRGNAM-$VERSION \
-  --disable-static \
-  --enable-introspection \
-  $epub \
-  --build=$ARCH-slackware-linux
 
-make
-make install DESTDIR=$PKG
+mkdir build
+cd build
+  CFLAGS="$SLKCFLAGS" \
+  CXXFLAGS="$SLKCFLAGS" \
+  meson .. \
+    --buildtype=release \
+    --infodir=/usr/info \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --localstatedir=/var \
+    --mandir=/usr/man \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    -Dstrip=true \
+    -Depub=$epub \
+    -Denable_dbus=true \
+    -Dintrospection=true \
+    -Dmathjax-directory=/usr/share/mathjax2
+  "${NINJA:=ninja}"
+  DESTDIR=$PKG $NINJA install
+cd ..
 
 # Don't ship .la files:
 rm -f $PKG/{,usr/}lib${LIBDIRSUFFIX}/*.la
