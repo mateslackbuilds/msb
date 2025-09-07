@@ -1,5 +1,6 @@
 New Packages in MATE 1.28:
 tinyxml (needed by rarian)
+mathjax2 (needed by Atril)
 
 Renamed Packages in MATE 1.28:
 
