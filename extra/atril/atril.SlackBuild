@@ -63,21 +63,6 @@ else
   LIBDIRSUFFIX=""
 fi
 
-# check webkit2gtk 4.0 API existence
-webkit=`pkg-config --exists webkit2gtk-4.0`
-if [ "$?" -eq 0 ]; then
-  epub="true"
-else
-  # check webkit2gtk 4.1 API existence
-  webkit=`pkg-config --exists webkit2gtk-4.1`
-  if [ "$?" -eq 0 ]; then
-    epub="true"
-    API4.1=yes
-  else
-    epub="false"
-  fi
-fi
-
 set -e
 
 rm -rf $PKG
@@ -92,10 +77,6 @@ find -L . \
   -o -perm 511 \) -exec chmod 755 {} \; -o \
  \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
   -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
-
-if [ "$API4.1" == "yes" ]; then
-  sed -i "s|webkit2gtk-4.0|webkit2gtk-4.1|g" configure.ac
-fi
 
 # Fix mathjax path
 sed -i 's|/usr/share/javascript/mathjax|/usr/share/mathjax2|' backend/epub/epub-document.c
@@ -114,7 +95,7 @@ cd build
     --prefix=/usr \
     --sysconfdir=/etc \
     -Dstrip=true \
-    -Depub=$epub \
+    -Depub=false \
     -Denable_dbus=true \
     -Dintrospection=true \
     -Dmathjax-directory=/usr/share/mathjax2
