@@ -25,7 +25,7 @@
 
 PRGNAM=libmateweather
 VERSION=${VERSION:-1.28.0}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-2}
 TAG=${TAG:-_msb}
 
 if [ -z "$ARCH" ]; then
@@ -36,7 +36,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c https://pub.mate-desktop.org/releases/1.28/$PRGNAM-$VERSION.tar.xz
+wget -c https://github.com/mate-desktop/$PRGNAM/releases/download/v$VERSION/$PRGNAM-$VERSION.tar.xz
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
@@ -78,6 +78,10 @@ find -L . \
  \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
   -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
 
+patch -p1 < $CWD/c1c54a15545f13f3dabd2bcd303533d818905c7b.patch
+patch -p1 < $CWD/0e881958caf4679dcd79e99e4f1a6f8464624e10.patch
+
+autoreconf -fiv
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
 ./configure \
