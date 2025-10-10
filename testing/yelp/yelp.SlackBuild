@@ -23,7 +23,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=yelp
-VERSION=${VERSION:-42.3}
+VERSION=${VERSION:-49.0}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
@@ -35,7 +35,8 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c http://ftp.acc.umu.se/pub/GNOME/sources/yelp/42/$PRGNAM-$VERSION.tar.xz
+wget -c https://download.gnome.org/sources/yelp/49/$PRGNAM-$VERSION.tar.xz
+
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
