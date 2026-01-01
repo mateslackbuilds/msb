@@ -5,7 +5,7 @@
 # Modified by Willy Sudiarto Raharjo for MSB Project
 
 PRGNAM=zenity
-VERSION=${VERSION:-3.44.5}
+VERSION=${VERSION:-4.2.1}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
@@ -17,7 +17,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c https://download.gnome.org/sources/$PRGNAM/3.44/$PRGNAM-$VERSION.tar.xz
+wget -c https://download.gnome.org/sources/$PRGNAM/4.2/$PRGNAM-$VERSION.tar.xz
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
@@ -45,7 +45,7 @@ else
 fi
 
 # Check for WebKit
-webkit=`pkg-config --exists webkit2gtk-4.1`
+webkit=`pkg-config --exists webkit2gtk-6.0`
 if [ "$?" -eq 0 ]; then
   wk="TRUE"
 else
@@ -71,7 +71,7 @@ mkdir build
 cd build
   CFLAGS="$SLKCFLAGS" \
   CXXFLAGS="$SLKCFLAGS" \
-  meson .. \
+  meson setup .. \
     --buildtype=release \
     --infodir=/usr/info \
     --libdir=/usr/lib${LIBDIRSUFFIX} \
@@ -79,7 +79,6 @@ cd build
     --mandir=/usr/man \
     --prefix=/usr \
     --sysconfdir=/etc \
-    -Dlibnotify=true \
     -Dwebkitgtk=${wk}
   ninja
   DESTDIR=$PKG ninja install
@@ -89,10 +88,7 @@ find $PKG/usr/man -type f -exec gzip -9 {} \;
 for i in $( find $PKG/usr/man -type l ) ; do ln -s $( readlink $i ).gz $i.gz ; rm $i ; done
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-cp -a \
-    AUTHORS ChangeLog TODO \
-    COPYING ChangeLog.pre-git NEWS THANKS \
-  $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a AUTHORS ChangeLog COPYING NEWS README.md $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 
 mkdir -p $PKG/install
