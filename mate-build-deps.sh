@@ -41,6 +41,7 @@ CHECKDUPLICATE=0
 
 # Loop for all dependency packages
 for dir in \
+  deps/libadwaita \
   deps/zenity \
   deps/tinyxml \
   deps/rarian \

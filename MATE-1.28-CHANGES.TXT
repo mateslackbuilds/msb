@@ -1,6 +1,7 @@
 New Packages in MATE 1.28:
 tinyxml (needed by rarian)
 mathjax2 (needed by Atril)
+libadwaita (needed by zenity)
 
 Renamed Packages in MATE 1.28:
 
