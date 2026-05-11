@@ -24,7 +24,7 @@
 
 PRGNAM=yelp
 VERSION=${VERSION:-42.3}
-BUILD=${BUILD:-1}
+BUILD=${BUILD:-2}
 TAG=${TAG:-_msb}
 
 if [ -z "$ARCH" ]; then
@@ -35,7 +35,7 @@ if [ -z "$ARCH" ]; then
   esac
 fi
 
-wget -c http://ftp.acc.umu.se/pub/GNOME/sources/yelp/42/$PRGNAM-$VERSION.tar.xz
+wget -c https://download.gnome.org/sources/yelp/42/$PRGNAM-$VERSION.tar.xz
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
@@ -84,6 +84,8 @@ elif $(pkg-config --exists webkit2gtk-4.0); then
    WKIT2="webkit2gtk-4-0=true"
 fi
 
+patch -p1 < $CWD/d220aa2f754eed4e6a006a4acaa68b31892dea2b.patch
+
 mkdir build
 cd build
   CFLAGS="$SLKCFLAGS" \
@@ -106,7 +108,7 @@ find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | gr
   | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
 
 mkdir -p $PKG/usr/doc/$PRGNAM-$VERSION
-cp -a AUTHORS COPYING* ChangeLog INSTALL NEWS README $PKG/usr/doc/$PRGNAM-$VERSION
+cp -a AUTHORS COPYING* ChangeLog NEWS $PKG/usr/doc/$PRGNAM-$VERSION
 cat $CWD/$PRGNAM.SlackBuild > $PKG/usr/doc/$PRGNAM-$VERSION/$PRGNAM.SlackBuild
 find $PKG/usr/doc/$PRGNAM-$VERSION/ -type f -exec chmod 644 {} \;
 chown -R root:root $PKG/usr/doc/$PRGNAM-$VERSION
