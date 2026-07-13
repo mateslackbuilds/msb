@@ -58,6 +58,7 @@ for dir in \
   deps/gupnp \
   deps/libgxps \
   deps/mathjax2 \
+  deps/libgepub \
   ; do
   # Get the package name
   package=$(echo $dir | cut -f2- -d /)
