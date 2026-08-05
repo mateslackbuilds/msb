@@ -80,7 +80,8 @@ find -L . \
 mkdir -p build
 cd build
 
-meson --prefix=/usr \
+meson setup \
+      --prefix=/usr \
       --buildtype=release \
       --localstatedir=/var \
       --libdir=lib${LIBDIRSUFFIX} \
