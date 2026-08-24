@@ -43,6 +43,7 @@ CHECKDUPLICATE=0
 for dir in \
   deps/zenity \
   deps/rarian \
+  deps/lxml \
   deps/yelp-xsl \
   deps/yelp-tools \
   deps/libunique \
