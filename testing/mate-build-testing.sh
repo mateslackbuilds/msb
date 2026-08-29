@@ -48,6 +48,7 @@ for dir in \
   ido \
   libindicator \
   mate-indicator-applet \
+  yyjson \
   glm \
   wf-config \
   wayfire \
