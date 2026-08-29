@@ -1,0 +1,12 @@
+   |-----handy-ruler------------------------------------------------------|
+glm: glm (OpenGL Mathematics)
+glm:
+glm: OpenGL Mathematics (GLM) is a header only C++ mathematics library for
+glm: graphics software based on the OpenGL Shading Language (GLSL)
+glm: specification.
+glm: GLM provides classes and functions designed and implemented with the
+glm: same naming conventions and functionalities than GLSL so that when a
+glm: programmer knows GLSL, he knows GLM as well which makes it really easy
+glm: to use.
+glm:
+glm: homepage: http://glm.g-truc.net/
