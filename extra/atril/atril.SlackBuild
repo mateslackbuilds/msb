@@ -24,7 +24,7 @@
 #  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PRGNAM=atril
-VERSION=${VERSION:-1.28.6}
+VERSION=${VERSION:-1.28.7}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
@@ -96,8 +96,7 @@ cd build
     -Dstrip=true \
     -Depub=auto \
     -Denable_dbus=true \
-    -Dintrospection=true \
-    -Dmathjax-directory=/usr/share/mathjax2
+    -Dintrospection=true
   "${NINJA:=ninja}"
   DESTDIR=$PKG $NINJA install
 cd ..
