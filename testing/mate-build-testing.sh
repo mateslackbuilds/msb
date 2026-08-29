@@ -53,6 +53,7 @@ for dir in \
   glm \
   wf-config \
   wayfire \
+  mate-wayland-session \
   wf-shell \
   wcm \
   ; do
