@@ -49,6 +49,7 @@ for dir in \
   libindicator \
   mate-indicator-applet \
   yyjson \
+  gtk4-layer-shell \
   glm \
   wf-config \
   wayfire \
