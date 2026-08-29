@@ -1,0 +1,9 @@
+THIS IS CONSIDERED EXPERIMENTAL
+
+In order to use WAYLAND in MATE, you need to build:
+- glm
+- wf-config
+- wayfire
+- mate-wayland-session
+
+This features are still work in progress and not usable for daily usage.
