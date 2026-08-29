@@ -49,6 +49,7 @@ for dir in \
   libindicator \
   mate-indicator-applet \
   glm \
+  wf-config \
   ; do
   # Get the package name
   package=$(echo $dir | cut -f2- -d /)
