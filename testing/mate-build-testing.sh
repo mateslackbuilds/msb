@@ -50,6 +50,7 @@ for dir in \
   mate-indicator-applet \
   glm \
   wf-config \
+  wayfire \
   ; do
   # Get the package name
   package=$(echo $dir | cut -f2- -d /)
