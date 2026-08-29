@@ -1,0 +1,12 @@
+        |-----handy-ruler------------------------------------------------------|
+wf-shell: wf-shell (desktop components)
+wf-shell:
+wf-shell: wf-shell is a repository which contains various components that can
+wf-shell: be used to build a fully functional desktop based around wayfire
+wf-shell: - wf-panel
+wf-shell: - wf-dock
+wf-shell: - wf-locker
+wf-shell: - wf-background
+wf-shell:
+wf-shell: Homepage: https://github.com/WayfireWM/wf-shell
+wf-shell:

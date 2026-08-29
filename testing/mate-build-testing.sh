@@ -53,6 +53,7 @@ for dir in \
   glm \
   wf-config \
   wayfire \
+  wf-shell \
   ; do
   # Get the package name
   package=$(echo $dir | cut -f2- -d /)
