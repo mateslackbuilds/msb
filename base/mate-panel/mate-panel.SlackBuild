@@ -68,7 +68,7 @@ set -e
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
-rm -rf $PRGNAM-$COMMITVER
+rm -rf $PRGNAM
 git clone https://github.com/mate-desktop/mate-panel.git
 cd $PRGNAM
 
