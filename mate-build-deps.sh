@@ -57,7 +57,6 @@ for dir in \
   deps/gssdp \
   deps/gupnp \
   deps/libgxps \
-  deps/mathjax2 \
   deps/libgepub \
   ; do
   # Get the package name
