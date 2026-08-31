@@ -25,7 +25,8 @@
 
 PRGNAM=mate-session-manager
 VERSION=${VERSION:-1.28.0}
-BUILD=${BUILD:-1}
+COMMITVER="57a9178e766cd02176dc1c2d70cc48f963ee9fff"
+BUILD=${BUILD:-2}
 TAG=${TAG:-_msb}
 
 if [ -z "$ARCH" ]; then
@@ -35,8 +36,6 @@ if [ -z "$ARCH" ]; then
        *) ARCH=$( uname -m ) ;;
   esac
 fi
-
-wget -c https://pub.mate-desktop.org/releases/1.28/$PRGNAM-$VERSION.tar.xz
 
 CWD=$(pwd)
 TMP=${TMP:-/tmp/msb}
@@ -68,19 +67,18 @@ set -e
 rm -rf $PKG
 mkdir -p $TMP $PKG $OUTPUT
 cd $TMP
-rm -rf $PRGNAM-$VERSION
-tar xvf $CWD/$PRGNAM-$VERSION.tar.xz
-cd $PRGNAM-$VERSION
-chown -R root:root .
-find -L . \
- \( -perm 777 -o -perm 775 -o -perm 750 -o -perm 711 -o -perm 555 \
-  -o -perm 511 \) -exec chmod 755 {} \; -o \
- \( -perm 666 -o -perm 664 -o -perm 640 -o -perm 600 -o -perm 444 \
-  -o -perm 440 -o -perm 400 \) -exec chmod 644 {} \;
+rm -rf $PRGNAM
+git clone https://github.com/mate-desktop/mate-session-manager.git
+cd $PRGNAM
+
+git submodule init
+git submodule update
+
+patch -p1 < $CWD/340.patch
 
 CFLAGS="$SLKCFLAGS" \
 CXXFLAGS="$SLKCFLAGS" \
-./configure \
+./autogen.sh \
   --prefix=/usr \
   --libdir=/usr/lib${LIBDIRSUFFIX} \
   --sysconfdir=/etc \
