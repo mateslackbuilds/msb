@@ -1,0 +1,3842 @@
+From 555ddfb850b70681b8a30d5434767d90ab9d3717 Mon Sep 17 00:00:00 2001
+From: Sunderland93 <samoilov.lex@gmail.com>
+Date: Wed, 5 Aug 2026 18:28:42 +0400
+Subject: [PATCH 1/8] Add initial Wayland backend
+
+---
+ Makefile.am                              |   1 +
+ configure.ac                             |  20 ++
+ mate-session/Makefile.am                 |  16 ++
+ mate-session/gs-idle-monitor.c           | 271 ++++++++++++++++++++++-
+ mate-session/gsm-inhibit-dialog.c        |  20 +-
+ mate-session/gsm-manager.c               |  33 ++-
+ mate-session/gsm-util.c                  |  16 ++
+ mate-session/gsm-util.h                  |   2 +
+ mate-session/main.c                      |  27 ++-
+ mate-session/msm-gnome.c                 |  14 +-
+ wayfire/10_mate-wayland.gschema.override |   7 +
+ wayfire/Makefile.am                      |  38 ++++
+ wayfire/mate-wayland-session.in          | 166 ++++++++++++++
+ wayfire/mate-wayland.desktop.in          |  11 +
+ wayfire/wayfire.ini.in                   | 165 ++++++++++++++
+ 15 files changed, 777 insertions(+), 30 deletions(-)
+ create mode 100644 wayfire/10_mate-wayland.gschema.override
+ create mode 100644 wayfire/Makefile.am
+ create mode 100755 wayfire/mate-wayland-session.in
+ create mode 100644 wayfire/mate-wayland.desktop.in
+ create mode 100644 wayfire/wayfire.ini.in
+
+diff --git a/Makefile.am b/Makefile.am
+index 8083bc5e..b12e66b8 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -9,6 +9,7 @@ SUBDIRS = \
+ 	capplet \
+ 	tools \
+ 	data \
++	wayfire \
+ 	doc
+ 
+ ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}
+diff --git a/configure.ac b/configure.ac
+index c6d13c96..5be8035e 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -214,6 +214,24 @@ AC_SUBST(HAVE_XRENDER)
+ AC_SUBST(XRENDER_CFLAGS)
+ AC_SUBST(XRENDER_LIBS)
+ 
++dnl ====================================================================
++dnl Wayland (ext-idle-notify-v1 idle backend)
++dnl ====================================================================
++
++have_wayland=no
++PKG_CHECK_MODULES(WAYLAND, wayland-client,
++                  [AC_DEFINE(HAVE_WAYLAND, 1, [Define if Wayland support is enabled])
++                   have_wayland=yes], have_wayland=no)
++AC_PATH_PROG(WAYLAND_SCANNER, wayland-scanner, no)
++if test "x$have_wayland" = "xyes" -a "x$WAYLAND_SCANNER" = "xno"; then
++    AC_MSG_ERROR([wayland-scanner not found but is required for Wayland support (it is part of libwayland-dev)])
++fi
++AM_CONDITIONAL(HAVE_WAYLAND, test "x$have_wayland" = "xyes")
++WAYLAND_PROTOCOLS_DATADIR=`$PKG_CONFIG --variable=pkgdatadir wayland-protocols 2>/dev/null || echo /usr/share/wayland-protocols`
++WAYLAND_IDLE_NOTIFY_XML="$WAYLAND_PROTOCOLS_DATADIR/staging/ext-idle-notify/ext-idle-notify-v1.xml"
++AC_SUBST(WAYLAND_PROTOCOLS_DATADIR)
++AC_SUBST(WAYLAND_IDLE_NOTIFY_XML)
++
+ dnl ====================================================================
+ dnl - DocBook Documentation
+ dnl ====================================================================
+@@ -367,6 +385,7 @@ mate-submodules/Makefile
+ mate-submodules/libegg/Makefile
+ mate-session/Makefile
+ tools/Makefile
++wayfire/Makefile
+ po/Makefile.in
+ ])
+ AC_OUTPUT
+@@ -403,6 +422,7 @@ echo "
+         XRender support:          ${have_xrender}
+         XSync support:            ${have_xsync}
+         XTest support:            ${have_xtest}
++        Wayland support:          ${have_wayland}
+         Build documentation:      ${enable_docbook_docs}
+         Native Language support:  ${USE_NLS}
+         Libcanberra support:      ${have_libcanberra}
+diff --git a/mate-session/Makefile.am b/mate-session/Makefile.am
+index 43b861b4..25dfd240 100644
+--- a/mate-session/Makefile.am
++++ b/mate-session/Makefile.am
+@@ -6,6 +6,7 @@ noinst_PROGRAMS = 		\
+ 
+ AM_CPPFLAGS =					\
+ 	$(MATE_SESSION_CFLAGS)		\
++	$(WAYLAND_CFLAGS)			\
+ 	$(SYSTEMD_CFLAGS)			\
+ 	$(LIBELOGIND_CFLAGS)			\
+ 	$(DISABLE_DEPRECATED_CFLAGS)
+@@ -79,6 +80,7 @@ mate_session_LDADD =				\
+ 	$(XRENDER_LIBS)				\
+ 	$(XTEST_LIBS)				\
+ 	$(XEXT_LIBS)				\
++	$(WAYLAND_LIBS)				\
+ 	$(MATE_SESSION_LIBS)			\
+ 	$(SYSTEMD_LIBS)				\
+ 	$(LIBELOGIND_LIBS)			\
+@@ -136,6 +138,20 @@ BUILT_SOURCES =			\
+ 	gsm-inhibitor-glue.h	\
+ 	gsm-client-glue.h
+ 
++if HAVE_WAYLAND
++wayland_idle_protocol_sources =	\
++	ext-idle-notify-v1-client.c	\
++	ext-idle-notify-v1-client.h
++
++ext-idle-notify-v1-client.h: Makefile
++	$(AM_V_GEN)$(WAYLAND_SCANNER) client-header "$(WAYLAND_IDLE_NOTIFY_XML)" $@
++
++ext-idle-notify-v1-client.c: Makefile
++	$(AM_V_GEN)$(WAYLAND_SCANNER) private-code "$(WAYLAND_IDLE_NOTIFY_XML)" $@
++
++BUILT_SOURCES += $(wayland_idle_protocol_sources)
++endif
++
+ EXTRA_DIST =						\
+ 	README						\
+ 	gsm-marshal.list				\
+diff --git a/mate-session/gs-idle-monitor.c b/mate-session/gs-idle-monitor.c
+index 375cf5d2..23b98a6b 100644
+--- a/mate-session/gs-idle-monitor.c
++++ b/mate-session/gs-idle-monitor.c
+@@ -26,6 +26,11 @@
+ #include <time.h>
+ #include <string.h>
+ 
++#ifdef HAVE_WAYLAND
++#include <wayland-client.h>
++#include "ext-idle-notify-v1-client.h"
++#endif /* HAVE_WAYLAND */
++
+ #include <X11/Xlib.h>
+ #include <X11/extensions/sync.h>
+ 
+@@ -53,22 +58,50 @@ struct _GSIdleMonitor {
+         int          keycode1;
+         int          keycode2;
+         gboolean     have_xtest;
++
++#ifdef HAVE_WAYLAND
++        /* For use with the ext-idle-notify-v1 protocol */
++        struct wl_display           *wl_display;
++        struct ext_idle_notifier_v1 *wl_notifier;
++        struct wl_seat              *wl_seat;
++        guint                        wl_source_id;
++        uint32_t                     wl_notifier_version;
++#endif
+ };
+ 
+ typedef struct
+ {
+         guint                  id;
+-        XSyncValue             interval;
++        guint                  interval_ms;
+         GSIdleMonitorWatchFunc callback;
+         gpointer               user_data;
++        GSIdleMonitor         *monitor;
+         XSyncAlarm             xalarm_positive;
+         XSyncAlarm             xalarm_negative;
++
++#ifdef HAVE_WAYLAND
++        struct ext_idle_notification_v1 *notification;
++#endif
+ } GSIdleMonitorWatch;
+ 
+ static guint32 watch_serial = 1;
+ 
+ G_DEFINE_TYPE (GSIdleMonitor, gs_idle_monitor, G_TYPE_OBJECT)
+ 
++static gboolean
++gs_idle_monitor_using_wayland (GSIdleMonitor *monitor)
++{
++        GdkDisplay *display;
++
++        display = gdk_display_get_default ();
++
++        if (display == NULL) {
++                return FALSE;
++        }
++
++        return ! GDK_IS_X11_DISPLAY (display);
++}
++
+ static gint64
+ _xsyncvalue_to_int64 (XSyncValue value)
+ {
+@@ -95,6 +128,20 @@ gs_idle_monitor_dispose (GObject *object)
+ 
+         monitor = GS_IDLE_MONITOR (object);
+ 
++#ifdef HAVE_WAYLAND
++        if (monitor->wl_source_id != 0) {
++                g_source_remove (monitor->wl_source_id);
++                monitor->wl_source_id = 0;
++        }
++
++        if (monitor->wl_display != NULL) {
++                wl_display_disconnect (monitor->wl_display);
++                monitor->wl_display = NULL;
++                monitor->wl_notifier = NULL;
++                monitor->wl_seat = NULL;
++        }
++#endif
++
+         if (monitor->watches != NULL) {
+                 g_hash_table_destroy (monitor->watches);
+                 monitor->watches = NULL;
+@@ -165,12 +212,187 @@ gs_idle_monitor_reset (GSIdleMonitor *monitor)
+ {
+         g_return_if_fail (GS_IS_IDLE_MONITOR (monitor));
+ 
++        if (gs_idle_monitor_using_wayland (monitor)) {
++                /* The Wayland compositor keeps track of the idle time on its
++                 * own; there is no way for a client to reset it. */
++                return;
++        }
++
+ #ifdef HAVE_XTEST
+         /* FIXME: is there a better way to reset the IDLETIME? */
+         send_fake_event (monitor);
+ #endif
+ }
+ 
++#ifdef HAVE_WAYLAND
++
++static void
++wl_idle_notification_handle_idled (void                            *data,
++                                   struct ext_idle_notification_v1 *notification)
++{
++        GSIdleMonitorWatch *watch = data;
++        gboolean            res;
++
++        g_debug ("GSIdleMonitor: wayland watch %u went idle", watch->id);
++
++        res = TRUE;
++        if (watch->callback != NULL) {
++                res = watch->callback (watch->monitor,
++                                       watch->id,
++                                       TRUE,
++                                       watch->user_data);
++        }
++
++        (void) res;
++}
++
++static void
++wl_idle_notification_handle_resumed (void                            *data,
++                                     struct ext_idle_notification_v1 *notification)
++{
++        GSIdleMonitorWatch *watch = data;
++
++        g_debug ("GSIdleMonitor: wayland watch %u resumed", watch->id);
++
++        if (watch->callback != NULL) {
++                watch->callback (watch->monitor,
++                                 watch->id,
++                                 FALSE,
++                                 watch->user_data);
++        }
++}
++
++static const struct ext_idle_notification_v1_listener wl_idle_notification_listener = {
++        wl_idle_notification_handle_idled,
++        wl_idle_notification_handle_resumed,
++};
++
++static void
++wl_registry_handle_global (void                *data,
++                           struct wl_registry *registry,
++                           uint32_t             name,
++                           const char          *interface,
++                           uint32_t             version)
++{
++        GSIdleMonitor *monitor = data;
++
++        if (g_strcmp0 (interface, ext_idle_notifier_v1_interface.name) == 0) {
++                monitor->wl_notifier_version = MIN (version, 2);
++                monitor->wl_notifier = wl_registry_bind (registry,
++                                                         name,
++                                                         &ext_idle_notifier_v1_interface,
++                                                         monitor->wl_notifier_version);
++        } else if (monitor->wl_seat == NULL
++                   && g_strcmp0 (interface, wl_seat_interface.name) == 0) {
++                /* ext-idle-notify-v1 notifications are tied to a seat. */
++                monitor->wl_seat = wl_registry_bind (registry,
++                                                     name,
++                                                     &wl_seat_interface,
++                                                     1);
++        }
++}
++
++static void
++wl_registry_handle_global_remove (void                *data,
++                                  struct wl_registry *registry,
++                                  uint32_t             name)
++{
++}
++
++static const struct wl_registry_listener wl_registry_listener = {
++        wl_registry_handle_global,
++        wl_registry_handle_global_remove,
++};
++
++static gboolean
++wl_dispatch_source_cb (GIOChannel   *source,
++                       GIOCondition  condition,
++                       gpointer      data)
++{
++        GSIdleMonitor *monitor = data;
++
++        if (condition & (G_IO_HUP | G_IO_ERR)) {
++                g_warning ("GSIdleMonitor: Wayland connection lost; idle detection disabled");
++                wl_display_disconnect (monitor->wl_display);
++                monitor->wl_display = NULL;
++                monitor->wl_notifier = NULL;
++                return G_SOURCE_REMOVE;
++        }
++
++        if (wl_display_dispatch (monitor->wl_display) < 0) {
++                g_warning ("GSIdleMonitor: Wayland dispatch failed; idle detection disabled");
++                wl_display_disconnect (monitor->wl_display);
++                monitor->wl_display = NULL;
++                monitor->wl_notifier = NULL;
++                return G_SOURCE_REMOVE;
++        }
++
++        return G_SOURCE_CONTINUE;
++}
++
++static gboolean
++init_wayland (GSIdleMonitor *monitor)
++{
++        struct wl_registry *registry;
++        GIOChannel         *channel;
++
++        monitor->wl_display = wl_display_connect (NULL);
++        if (monitor->wl_display == NULL) {
++                return FALSE;
++        }
++
++        registry = wl_display_get_registry (monitor->wl_display);
++        wl_registry_add_listener (registry, &wl_registry_listener, monitor);
++
++        if (wl_display_roundtrip (monitor->wl_display) < 0
++            || monitor->wl_notifier == NULL) {
++                wl_display_disconnect (monitor->wl_display);
++                monitor->wl_display = NULL;
++                return FALSE;
++        }
++
++        channel = g_io_channel_unix_new (wl_display_get_fd (monitor->wl_display));
++        monitor->wl_source_id = g_io_add_watch (channel,
++                                                G_IO_IN | G_IO_HUP | G_IO_ERR,
++                                                wl_dispatch_source_cb,
++                                                monitor);
++        g_io_channel_unref (channel);
++
++        return TRUE;
++}
++
++static gboolean
++_wayland_notification_set (GSIdleMonitor      *monitor,
++                           GSIdleMonitorWatch *watch)
++{
++        if (monitor->wl_notifier == NULL || monitor->wl_seat == NULL) {
++                return FALSE;
++        }
++
++        if (monitor->wl_notifier_version >= 2) {
++                /* Track raw user input, matching the X11 IDLETIME counter
++                 * semantics used on X11 sessions. */
++                watch->notification = ext_idle_notifier_v1_get_input_idle_notification (monitor->wl_notifier,
++                                                                                        (uint32_t) watch->interval_ms,
++                                                                                        monitor->wl_seat);
++        } else {
++                watch->notification = ext_idle_notifier_v1_get_idle_notification (monitor->wl_notifier,
++                                                                                  (uint32_t) watch->interval_ms,
++                                                                                  monitor->wl_seat);
++        }
++
++        if (watch->notification == NULL) {
++                return FALSE;
++        }
++
++        ext_idle_notification_v1_add_listener (watch->notification,
++                                               &wl_idle_notification_listener,
++                                               watch);
++        return TRUE;
++}
++
++#endif /* HAVE_WAYLAND */
++
+ static void
+ handle_alarm_notify_event (GSIdleMonitor         *monitor,
+                            XSyncAlarmNotifyEvent *alarm_event)
+@@ -312,16 +534,30 @@ gs_idle_monitor_constructor (GType                  type,
+                              GObjectConstructParam *construct_properties)
+ {
+         GSIdleMonitor *monitor;
++        GdkDisplay    *display;
+ 
+         monitor = GS_IDLE_MONITOR (G_OBJECT_CLASS (gs_idle_monitor_parent_class)->constructor (type,
+                                                                                                n_construct_properties,
+                                                                                                construct_properties));
+ 
+-        _init_xtest (monitor);
++        display = gdk_display_get_default ();
++
++        if (display != NULL && GDK_IS_X11_DISPLAY (display)) {
++                _init_xtest (monitor);
+ 
+-        if (! init_xsync (monitor)) {
+-                g_object_unref (monitor);
+-                return NULL;
++                if (! init_xsync (monitor)) {
++                        g_object_unref (monitor);
++                        return NULL;
++                }
++        } else {
++#ifdef HAVE_WAYLAND
++                if (! init_wayland (monitor)) {
++                        /* Fall back to a monitor that never reports idle. */
++                        g_warning ("GSIdleMonitor: unable to initialize Wayland idle notifications; idle detection disabled");
++                }
++#else
++                g_warning ("GSIdleMonitor: this build has no Wayland idle support; idle detection disabled");
++#endif
+         }
+ 
+         return G_OBJECT (monitor);
+@@ -359,7 +595,7 @@ idle_monitor_watch_new (guint interval)
+         GSIdleMonitorWatch *watch;
+ 
+         watch = g_slice_new0 (GSIdleMonitorWatch);
+-        watch->interval = _int64_to_xsyncvalue ((gint64)interval);
++        watch->interval_ms = interval;
+         watch->id = get_next_watch_serial ();
+         watch->xalarm_positive = None;
+         watch->xalarm_negative = None;
+@@ -373,6 +609,12 @@ idle_monitor_watch_free (GSIdleMonitorWatch *watch)
+         if (watch == NULL) {
+                 return;
+         }
++#ifdef HAVE_WAYLAND
++        if (watch->notification != NULL) {
++                ext_idle_notification_v1_destroy (watch->notification);
++                watch->notification = NULL;
++        }
++#endif
+         if (watch->xalarm_positive != None) {
+                 XSyncDestroyAlarm (GDK_DISPLAY_XDISPLAY(gdk_display_get_default()), watch->xalarm_positive);
+         }
+@@ -425,6 +667,7 @@ _xsync_alarm_set (GSIdleMonitor      *monitor,
+ {
+         XSyncAlarmAttributes attr;
+         XSyncValue           delta;
++        XSyncValue           interval;
+         guint                flags;
+ 
+         flags = XSyncCACounter
+@@ -435,13 +678,14 @@ _xsync_alarm_set (GSIdleMonitor      *monitor,
+                 | XSyncCAEvents;
+ 
+         XSyncIntToValue (&delta, 0);
++        interval = _int64_to_xsyncvalue ((gint64)watch->interval_ms);
+         attr.trigger.counter = monitor->counter;
+         attr.trigger.value_type = XSyncAbsolute;
+-        attr.trigger.wait_value = watch->interval;
++        attr.trigger.wait_value = interval;
+         attr.delta = delta;
+         attr.events = TRUE;
+ 
+-        attr.trigger.wait_value = _int64_to_xsyncvalue (_xsyncvalue_to_int64 (watch->interval) - 1);
++        attr.trigger.wait_value = _int64_to_xsyncvalue ((gint64)watch->interval_ms - 1);
+         attr.trigger.test_type = XSyncPositiveTransition;
+         if (watch->xalarm_positive != None) {
+                 g_debug ("GSIdleMonitor: updating alarm for positive transition wait=%" G_GINT64_FORMAT,
+@@ -481,8 +725,17 @@ gs_idle_monitor_add_watch (GSIdleMonitor         *monitor,
+         watch = idle_monitor_watch_new (interval);
+         watch->callback = callback;
+         watch->user_data = user_data;
++        watch->monitor = monitor;
+ 
+-        _xsync_alarm_set (monitor, watch);
++        if (gs_idle_monitor_using_wayland (monitor)) {
++#ifdef HAVE_WAYLAND
++                _wayland_notification_set (monitor, watch);
++#else
++                g_warning ("GSIdleMonitor: Wayland idle notifications not supported");
++#endif
++        } else {
++                _xsync_alarm_set (monitor, watch);
++        }
+ 
+         g_hash_table_insert (monitor->watches,
+                              GUINT_TO_POINTER (watch->id),
+diff --git a/mate-session/gsm-inhibit-dialog.c b/mate-session/gsm-inhibit-dialog.c
+index 791a7b3f..15e0cd1e 100644
+--- a/mate-session/gsm-inhibit-dialog.c
++++ b/mate-session/gsm-inhibit-dialog.c
+@@ -966,16 +966,18 @@ gsm_inhibit_dialog_constructor (GType                  type,
+ 
+ #ifdef HAVE_XRENDER
+         gdkdisplay = gdk_display_get_default ();
+-        gdk_x11_display_error_trap_push (gdkdisplay);
+-        if (XRenderQueryExtension (GDK_DISPLAY_XDISPLAY (gdkdisplay), &dialog->xrender_event_base, &dialog->xrender_error_base)) {
+-                g_debug ("GsmInhibitDialog: Initialized XRender extension");
+-                dialog->have_xrender = TRUE;
+-        } else {
+-                g_debug ("GsmInhibitDialog: Unable to initialize XRender extension");
+-                dialog->have_xrender = FALSE;
++        if (GDK_IS_X11_DISPLAY (gdkdisplay)) {
++                gdk_x11_display_error_trap_push (gdkdisplay);
++                if (XRenderQueryExtension (GDK_DISPLAY_XDISPLAY (gdkdisplay), &dialog->xrender_event_base, &dialog->xrender_error_base)) {
++                        g_debug ("GsmInhibitDialog: Initialized XRender extension");
++                        dialog->have_xrender = TRUE;
++                } else {
++                        g_debug ("GsmInhibitDialog: Unable to initialize XRender extension");
++                        dialog->have_xrender = FALSE;
++                }
++                gdk_display_sync (gdkdisplay);
++                gdk_x11_display_error_trap_pop_ignored (gdkdisplay);
+         }
+-        gdk_display_sync (gdkdisplay);
+-        gdk_x11_display_error_trap_pop_ignored (gdkdisplay);
+ #endif /* HAVE_XRENDER */
+ 
+         /* FIXME: turn this on when it is ready */
+diff --git a/mate-session/gsm-manager.c b/mate-session/gsm-manager.c
+index 0b22eae2..65073ea3 100644
+--- a/mate-session/gsm-manager.c
++++ b/mate-session/gsm-manager.c
+@@ -76,6 +76,10 @@
+ 
+ #define GSM_MANAGER_PHASE_TIMEOUT 30 /* seconds */
+ 
++/* On Wayland, autostart components are not tracked by the session manager and
++ * do not register, so do not wait as long for the startup phases to finish. */
++#define GSM_MANAGER_PHASE_TIMEOUT_WAYLAND 3 /* seconds */
++
+ /* In the exit phase, all apps were already given the chance to inhibit the session end
+  * At that stage we don't want to wait much for apps to respond, we want to exit, and fast.
+  */
+@@ -535,6 +539,16 @@ gsm_manager_quit (GsmManager *manager)
+         }
+ }
+ 
++static guint
++get_phase_timeout (void)
++{
++        if (gsm_util_session_is_wayland ()) {
++                return GSM_MANAGER_PHASE_TIMEOUT_WAYLAND;
++        }
++
++        return GSM_MANAGER_PHASE_TIMEOUT;
++}
++
+ static void
+ end_phase (GsmManager *manager)
+ {
+@@ -542,7 +556,6 @@ end_phase (GsmManager *manager)
+         gboolean start_next_phase = TRUE;
+ 
+         priv = gsm_manager_get_instance_private (manager);
+-
+         g_debug ("GsmManager: ending phase %s\n",
+                  phase_num_to_name (priv->phase));
+ 
+@@ -757,7 +770,7 @@ do_phase_startup (GsmManager *manager)
+ 
+         if (priv->pending_apps != NULL) {
+                 if (priv->phase < GSM_MANAGER_PHASE_APPLICATION) {
+-                        priv->phase_timeout_id = g_timeout_add_seconds (GSM_MANAGER_PHASE_TIMEOUT,
++                        priv->phase_timeout_id = g_timeout_add_seconds (get_phase_timeout (),
+                                                                         (GSourceFunc)on_phase_timeout,
+                                                                         manager);
+                 }
+@@ -827,7 +840,7 @@ do_phase_end_session (GsmManager *manager)
+         }
+ 
+         if (gsm_store_size (priv->clients) > 0) {
+-                priv->phase_timeout_id = g_timeout_add_seconds (GSM_MANAGER_PHASE_TIMEOUT,
++                priv->phase_timeout_id = g_timeout_add_seconds (get_phase_timeout (),
+                                                                 (GSourceFunc)on_phase_timeout,
+                                                                 manager);
+ 
+@@ -3474,6 +3487,16 @@ logout_dialog_response (GsmLogoutDialog *logout_dialog,
+         }
+ }
+ 
++static guint32
++_get_current_window_time (GtkWidget *widget)
++{
++        if (gsm_util_session_is_wayland ()) {
++                return GDK_CURRENT_TIME;
++        }
++
++        return gdk_x11_get_server_time (gtk_widget_get_window (widget));
++}
++
+ static void
+ show_shutdown_dialog (GsmManager *manager)
+ {
+@@ -3497,7 +3520,7 @@ show_shutdown_dialog (GsmManager *manager)
+                           manager);
+         gtk_widget_show (dialog);
+         gtk_window_present_with_time (GTK_WINDOW (dialog),
+-                                      gdk_x11_get_server_time (gtk_widget_get_window (GTK_WIDGET (dialog))));
++                                      _get_current_window_time (GTK_WIDGET (dialog)));
+ }
+ 
+ static void
+@@ -3523,7 +3546,7 @@ show_logout_dialog (GsmManager *manager)
+                           manager);
+         gtk_widget_show (dialog);
+         gtk_window_present_with_time (GTK_WINDOW (dialog),
+-                                      gdk_x11_get_server_time (gtk_widget_get_window (GTK_WIDGET (dialog))));
++                                      _get_current_window_time (GTK_WIDGET (dialog)));
+ }
+ 
+ static void
+diff --git a/mate-session/gsm-util.c b/mate-session/gsm-util.c
+index 6f12ab46..e091e807 100644
+--- a/mate-session/gsm-util.c
++++ b/mate-session/gsm-util.c
+@@ -32,6 +32,7 @@
+ #include <glib/gi18n.h>
+ #include <glib/gstdio.h>
+ #include <gtk/gtk.h>
++#include <gdk/gdkx.h>
+ 
+ #include <dbus/dbus-glib.h>
+ 
+@@ -759,3 +760,18 @@ gsm_util_dialog_add_button (GtkDialog   *dialog,
+ 
+ 	return button;
+ }
++
++gboolean
++gsm_util_session_is_wayland (void)
++{
++	GdkDisplay *display;
++
++	display = gdk_display_get_default ();
++
++	if (display != NULL
++	    && GDK_IS_X11_DISPLAY (display)) {
++		return FALSE;
++	}
++
++	return TRUE;
++}
+diff --git a/mate-session/gsm-util.h b/mate-session/gsm-util.h
+index fc76fef5..297faae6 100644
+--- a/mate-session/gsm-util.h
++++ b/mate-session/gsm-util.h
+@@ -61,6 +61,8 @@ gboolean    gsm_util_export_user_environment        (GError     **error);
+ void        gsm_util_setenv                         (const char *variable,
+                                                      const char *value);
+ 
++gboolean    gsm_util_session_is_wayland             (void);
++
+ GtkWidget*  gsm_util_dialog_add_button              (GtkDialog   *dialog,
+                                                      const gchar *button_text,
+                                                      const gchar *icon_name,
+diff --git a/mate-session/main.c b/mate-session/main.c
+index 68e38647..f1039cb5 100644
+--- a/mate-session/main.c
++++ b/mate-session/main.c
+@@ -267,6 +267,15 @@ static void append_required_apps(GsmManager* manager)
+ 
+ 			component = required_components[i];
+ 
++			/* On Wayland the compositor (e.g. Wayfire) is the window
++			 * manager, so the required windowmanager component would
++			 * conflict with it and is not started. */
++			if (gsm_util_session_is_wayland ()
++			    && strcmp (component, "windowmanager") == 0) {
++				g_debug ("main: skipping '%s' required component on Wayland", component);
++				continue;
++			}
++
+ 			default_provider = g_settings_get_string (settings_required_components, component);
+ 
+ 			g_debug ("main: %s looking for component: '%s'", component, default_provider);
+@@ -579,7 +588,8 @@ check_gl (gchar **gl_renderer, GError **error)
+ 	int status;
+ 	char *argv[] = { LIBEXECDIR "/mate-session-check-accelerated", NULL };
+ 
+-	if (getenv ("DISPLAY") == NULL) {
++	if (getenv ("DISPLAY") == NULL
++	    || g_strcmp0 (g_getenv ("XDG_SESSION_TYPE"), "wayland") == 0) {
+ 		/* Not connected to X11, someone else will take care of checking GL */
+ 		return TRUE;
+ 	}
+@@ -697,10 +707,19 @@ int main(int argc, char** argv)
+ 		gsm_util_setenv ("XDG_CURRENT_DESKTOP", "MATE");
+ 
+ 	/* Set DISPLAY explicitly for all our children, in case --display
+-	 * was specified on the command line.
++	 * was specified on the command line. Only meaningful on X11: on
++	 * Wayland gdk_display_get_name() returns the Wayland socket name.
+ 	 */
+-	display_str = gdk_display_get_name (gdk_display_get_default());
+-	gsm_util_setenv("DISPLAY", display_str);
++	if (!gsm_util_session_is_wayland ()) {
++		display_str = gdk_display_get_name (gdk_display_get_default());
++		gsm_util_setenv("DISPLAY", display_str);
++	} else {
++		/* Export the Wayland display for bus activated children. */
++		display_str = g_getenv ("WAYLAND_DISPLAY");
++		if (display_str != NULL) {
++			gsm_util_setenv ("WAYLAND_DISPLAY", display_str);
++		}
++	}
+ 
+ 	/* Some third-party programs rely on MATE_DESKTOP_SESSION_ID to
+ 	 * detect if MATE is running. We keep this for compatibility reasons.
+diff --git a/mate-session/msm-gnome.c b/mate-session/msm-gnome.c
+index ce47b729..95059d9f 100644
+--- a/mate-session/msm-gnome.c
++++ b/mate-session/msm-gnome.c
+@@ -131,6 +131,9 @@ msm_compat_gnome_smproxy_shutdown (void)
+ {
+   GdkDisplay *gdkdisplay;
+ 
++  if (! GDK_IS_X11_DISPLAY (gdk_display_get_default ()))
++    return;
++
+   gdkdisplay = gdk_display_get_default ();
+   gdk_x11_display_error_trap_push (gdkdisplay);
+ 
+@@ -159,9 +162,14 @@ msm_gnome_start (void)
+ 
+     for (i = 0; array[i]; i++) {
+       if (strcmp (array[i], "smproxy") == 0) {
+-        g_debug ("MsmGnome: starting smproxy");
+-        msm_compat_gnome_smproxy_startup ();
+-        gnome_compat_started = TRUE;
++        if (GDK_IS_X11_DISPLAY (gdk_display_get_default ())) {
++          g_debug ("MsmGnome: starting smproxy");
++          msm_compat_gnome_smproxy_startup ();
++          gnome_compat_started = TRUE;
++        } else {
++          /* The GNOME_SM_PROXY window is an X11-only mechanism. */
++          g_debug ("MsmGnome: skipping smproxy on non-X11 session");
++        }
+       } else if (strcmp (array[i], "keyring") == 0) {
+         g_debug ("MsmGnome: starting keyring");
+         gnome_keyring_daemon_startup ();
+diff --git a/wayfire/10_mate-wayland.gschema.override b/wayfire/10_mate-wayland.gschema.override
+new file mode 100644
+index 00000000..4b5e2eab
+--- /dev/null
++++ b/wayfire/10_mate-wayland.gschema.override
+@@ -0,0 +1,7 @@
++[org.gnome.desktop.wm.preferences:MATE]
++button-layout='menu:minimize,maximize,close'
++
++[org.gnome.desktop.interface:MATE]
++gtk-theme='Menta'
++icon-theme='mate'
++overlay-scrolling=false
+diff --git a/wayfire/Makefile.am b/wayfire/Makefile.am
+new file mode 100644
+index 00000000..ccdd49b0
+--- /dev/null
++++ b/wayfire/Makefile.am
+@@ -0,0 +1,38 @@
++bin_SCRIPTS = mate-wayland-session
++
++mate-wayland-session: mate-wayland-session.in Makefile
++	$(AM_V_GEN) sed -e 's|@MATE_WAYLAND_DATADIR@|$(pkgdatadir)|g' $(srcdir)/mate-wayland-session.in > $@
++	chmod +x $@
++
++sessiondatadir = $(pkgdatadir)
++sessiondata_DATA = wayfire.ini
++
++wayfire.ini: wayfire.ini.in
++	$(AM_V_GEN) cp $(srcdir)/wayfire.ini.in $@
++
++xsessiondir = $(datadir)/xsessions
++xsession_in_files = mate-wayland.desktop.in
++xsession_DATA = $(xsession_in_files:.desktop.in=.desktop)
++
++schemasdir = $(datadir)/glib-2.0/schemas
++schemas_DATA = 10_mate-wayland.gschema.override
++
++%.desktop: %.desktop.in Makefile
++if USE_NLS
++	$(AM_V_GEN) $(MSGFMT) --desktop --template $< -d $(top_srcdir)/po -o $@
++else
++	$(AM_V_GEN) sed '/^# Translators/d' < $< > $@
++endif
++
++EXTRA_DIST =				\
++	$(xsession_in_files)		\
++	mate-wayland-session.in		\
++	wayfire.ini.in			\
++	$(schemas_DATA)
++
++CLEANFILES =				\
++	$(xsession_DATA)		\
++	mate-wayland-session		\
++	wayfire.ini
++
++-include $(top_srcdir)/git.mk
+diff --git a/wayfire/mate-wayland-session.in b/wayfire/mate-wayland-session.in
+new file mode 100755
+index 00000000..d4f90345
+--- /dev/null
++++ b/wayfire/mate-wayland-session.in
+@@ -0,0 +1,166 @@
++#!/bin/sh
++#
++# MATE Wayland session launcher.
++
++# Make sure we run as a Wayland session
++export XDG_SESSION_TYPE="wayland"
++export XDG_CURRENT_DESKTOP="MATE"
++
++# Make all toolkits prefer their Wayland backends (with safe fallbacks)
++if [ -z "${GDK_BACKEND}" ]; then
++  GDK_BACKEND="wayland,x11"
++  export GDK_BACKEND
++fi
++if [ -z "${QT_QPA_PLATFORM}" ]; then
++  QT_QPA_PLATFORM="wayland"
++  export QT_QPA_PLATFORM
++fi
++if [ -z "${CLUTTER_BACKEND}" ]; then
++  CLUTTER_BACKEND="gdk"
++  export CLUTTER_BACKEND
++fi
++export MOZ_ENABLE_WAYLAND="1"
++
++# Set XDG_RUNTIME_DIR for display managers that do not provide it.
++if [ -z "${XDG_RUNTIME_DIR}" ]; then
++  if [ -d "/run/user/$(id -ru)" ]; then
++    XDG_RUNTIME_DIR="/run/user/$(id -ru)"
++  elif [ -d "/var/run/user/$(id -ru)" ]; then
++    XDG_RUNTIME_DIR="/var/run/user/$(id -ru)"
++  else
++    XDG_RUNTIME_DIR="/tmp/${USER}-runtime"
++  fi
++  export XDG_RUNTIME_DIR
++fi
++if [ ! -d "${XDG_RUNTIME_DIR}" ]; then
++  mkdir -p -m 0700 "${XDG_RUNTIME_DIR}" || {
++    echo "$0: Unable to create runtime directory ${XDG_RUNTIME_DIR}!" >&2
++    exit 1
++  }
++fi
++
++CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
++CONFIG_DIR="${CONFIG_HOME}/mate"
++CONFIG="${CONFIG_DIR}/wayfire.ini"
++
++create_initial_config()
++{
++  mkdir -p "${CONFIG_DIR}"
++
++  # Use the MATE Wayfire configuration shipped with this package. It is
++  # copied only once; afterwards the user is free to customize the copy at
++  # ~/.config/mate/wayfire.ini (the existence check below skips this on
++  # later logins).
++  cp "@MATE_WAYLAND_DATADIR@/wayfire.ini" "${CONFIG}" || {
++    echo "$0: Unable to install the default Wayfire configuration" >&2
++    return 1
++  }
++
++  # Make sure the file is writable so we can tune it below.
++  chmod u+w "${CONFIG}"
++
++  # Set the keyboard layout to match the system configuration, unless the
++  # user has already configured one.
++  if ! grep -q '^xkb_layout' "${CONFIG}"; then
++    KEYMAP=$(awk -F '=' -v q1=\' -v q2=\" '
++      $1 == "KEYMAP" {
++        gsub ("[" q1 q2 "]", "", $2)
++        keymap = $2
++      }
++      $1 == "XKBLAYOUT" {
++        gsub ("[" q1 q2 "]", "", $2)
++        layout = $2
++      }
++      $1 == "XKBVARIANT" {
++        gsub ("[" q1 q2 "]", "", $2)
++        variant = $2
++      }
++      END {
++        if (layout != "") {
++          print "layout=" layout
++          if (variant != "") {
++            print "variant=" variant
++          }
++        } else if (keymap != "") {
++          print "layout=" keymap
++        }
++      }
++    ' /etc/vconsole.conf)
++    if [ -n "${KEYMAP}" ]; then
++      LAYOUT=$(printf '%s\n' "${KEYMAP}" | sed -n 's/^layout=//p')
++      VARIANT=$(printf '%s\n' "${KEYMAP}" | sed -n 's/^variant=//p')
++      {
++        printf '\n[input]\n'
++        printf 'xkb_layout = %s\n' "${LAYOUT}"
++        if [ -n "${VARIANT}" ]; then
++          printf 'xkb_variant = %s\n' "${VARIANT}"
++        fi
++      } >> "${CONFIG}"
++    fi
++  fi
++
++  return 0
++}
++
++if [ ! -e "${CONFIG}" ]; then
++  create_initial_config || exit 1
++fi
++
++if ! command -v wayfire >/dev/null 2>&1; then
++  echo "$0: wayfire is not installed; aborting session" >&2
++  exit 1
++fi
++
++# Start the compositor
++wayfire -c "${CONFIG}" &
++WAYFIRE_PID=$!
++
++# Wait for the Wayland socket to appear
++WAYLAND_DISPLAY="${WAYLAND_DISPLAY:-wayland-0}"
++export WAYLAND_DISPLAY
++SOCKET="${XDG_RUNTIME_DIR}/${WAYLAND_DISPLAY}"
++i=0
++while [ ! -S "${SOCKET}" ] && [ "${i}" -lt 100 ]; do
++  i=$((i + 1))
++  sleep 0.1
++done
++
++if [ ! -S "${SOCKET}" ]; then
++  echo "$0: Wayfire failed to start; aborting session" >&2
++  kill "${WAYFIRE_PID}" 2>/dev/null
++  exit 1
++fi
++
++# Make bus-activated and systemd-managed services aware of the Wayland
++# environment (also fixes the slow startup of Gtk+3 applications).
++if command -v dbus-update-activation-environment >/dev/null 2>&1; then
++  dbus-update-activation-environment --systemd WAYLAND_DISPLAY DISPLAY XAUTHORITY 2>/dev/null
++fi
++
++# Run the session manager. The compositor is the leader here: wayfire's
++# [autostart] only fires commands that are not lifecycle-tracked, so
++# mate-session runs in the foreground and is responsible for components.
++mate-session "$@" &
++MATE_PID=$!
++
++# End the session if the compositor goes away (crash) while mate-session
++# is still running.
++(
++  while [ -S "${SOCKET}" ]; do
++    sleep 1
++  done
++  if kill -0 "${MATE_PID}" 2>/dev/null; then
++    kill "${MATE_PID}" 2>/dev/null
++  fi
++) &
++WATCHER_PID=$!
++
++wait "${MATE_PID}"
++status=$?
++
++# Session over (logout): terminate the compositor.
++kill "${WAYFIRE_PID}" 2>/dev/null
++kill "${WATCHER_PID}" 2>/dev/null
++wait "${WAYFIRE_PID}" 2>/dev/null
++
++exit ${status}
+diff --git a/wayfire/mate-wayland.desktop.in b/wayfire/mate-wayland.desktop.in
+new file mode 100644
+index 00000000..83a004dd
+--- /dev/null
++++ b/wayfire/mate-wayland.desktop.in
+@@ -0,0 +1,11 @@
++[Desktop Entry]
++Name=MATE (Wayland)
++Comment=This session logs you into MATE on Wayland
++Exec=mate-wayland-session
++TryExec=wayfire
++Icon=
++Type=Application
++DesktopNames=MATE
++X-GDM-SessionRegisters=true
++# Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
++Keywords=launch;MATE;desktop;session;wayland;
+diff --git a/wayfire/wayfire.ini.in b/wayfire/wayfire.ini.in
+new file mode 100644
+index 00000000..91304b3d
+--- /dev/null
++++ b/wayfire/wayfire.ini.in
+@@ -0,0 +1,165 @@
++# MATE default Wayfire configuration.
++#
++# This is the template installed by mate-session-manager. On first login it is
++# copied to ~/.config/mate/wayfire.ini and may be edited there.
++# See the Wayfire documentation for a complete reference:
++# https://github.com/WayfireWM/wayfire/wiki/Configuration
++
++[core]
++
++# List of plugins to be enabled.
++plugins = \
++  alpha \
++  animate \
++  autostart \
++  command \
++  decoration \
++  ext-workspace \
++  fast-switcher \
++  foreign-toplevel \
++  grid \
++  idle \
++  invert \
++  move \
++  oswitch \
++  place \
++  resize \
++  session-lock \
++  shortcuts-inhibit \
++  switcher \
++  window-rules \
++  wm-actions \
++  zoom
++
++# Close focused window.
++close_top_view = <super> KEY_Q | <alt> KEY_F4
++
++# 4 workspaces by default.
++vwidth = 4
++vheight = 1
++
++# Prefer client-side decoration or server-side decoration
++preferred_decoration_mode = client
++
++# MATE dialogs are not forced to be modal.
++all_dialogs_modal = false
++
++# Mouse bindings ---------------------------------------------------------------
++
++# Drag windows by holding down Super and left mouse button.
++[move]
++activate = <super> BTN_LEFT
++
++# Resize them with right mouse button + Super.
++[resize]
++activate = <super> BTN_RIGHT
++
++# Zoom in the desktop by scrolling + Super.
++[zoom]
++modifier = <super>
++
++# Change opacity by scrolling with Super + Alt.
++[alpha]
++modifier = <super> <alt>
++
++# Startup commands -------------------------------------------------------------
++
++[autostart]
++# Make bus-activated and systemd-managed services aware of the Wayland
++# environment (also fixes the slow startup of Gtk+3 applications).
++0_env = dbus-update-activation-environment --systemd WAYLAND_DISPLAY DISPLAY XAUTHORITY
++
++# The background and panel are managed by MATE itself (mate-settings-daemon and
++# mate-panel), so do not start the wf-shell clients. wf-background provides a
++# placeholder background until then.
++autostart_wf_shell = false
++background = wf-background
++
++# Commands ---------------------------------------------------------------------
++
++[command]
++
++# Start a terminal
++binding_terminal = <ctrl> <alt> KEY_T
++command_terminal = mate-terminal
++
++# Start the MATE run dialog
++binding_launcher = <alt> KEY_F2
++command_launcher = mate-panel --run-dialog
++
++# Lock the screen
++binding_lock = <super> KEY_L
++command_lock = mate-screensaver-command --lock
++
++# Log out
++binding_logout = <ctrl> <alt> KEY_DELETE
++command_logout = mate-session-quit --logout
++
++# Take a screenshot
++binding_screenshot = KEY_PRINT
++command_screenshot = mate-screenshot
++
++# Windows ----------------------------------------------------------------------
++
++# Actions related to window management functionalities.
++[wm-actions]
++toggle_fullscreen = <super> KEY_F
++toggle_always_on_top = <super> KEY_X
++toggle_always_on_bottom = <super> <alt> KEY_X
++toggle_sticky = <super> <shift> KEY_X
++
++# Position the windows in certain regions of the output.
++[grid]
++slot_bl = <super> KEY_KP1
++slot_b = <super> KEY_KP2
++slot_br = <super> KEY_KP3
++slot_l = <super> KEY_LEFT | <super> KEY_KP4
++slot_c = <super> KEY_UP | <super> KEY_KP5
++slot_r = <super> KEY_RIGHT | <super> KEY_KP6
++slot_tl = <super> KEY_KP7
++slot_t = <super> KEY_KP8
++slot_tr = <super> KEY_KP9
++# Restore default.
++restore = <super> KEY_DOWN | <super> KEY_KP0
++
++# Change active window with an animation.
++[switcher]
++next_view = <alt> KEY_TAB
++prev_view = <alt> <shift> KEY_TAB
++
++# Simple active window switcher.
++[fast-switcher]
++activate = <alt> KEY_ESC
++
++# Outputs ----------------------------------------------------------------------
++
++# Change focused output.
++[oswitch]
++# Switch to the next output.
++next_output = <super> KEY_O
++# Same with the window.
++next_output_with_win = <super> <shift> KEY_O
++
++# Invert the colors of the whole output.
++[invert]
++toggle = <super> KEY_I
++
++# Rules ------------------------------------------------------------------------
++
++# Example configuration:
++#
++# [window-rules]
++# maximize_alacritty = on created if app_id is "Alacritty" then maximize
++#
++# You can get the properties of your applications with the following command:
++# $ WAYLAND_DEBUG=1 alacritty 2>&1 | kak
++#
++# See Window rules for a complete reference.
++# https://github.com/WayfireWM/wayfire/wiki/Configuration#window-rules
++
++# Idle -------------------------------------------------------------------------
++
++# MATE handles idle notification itself (via ext-idle-notify), so do not let
++# Wayfire turn off the display on its own.
++[idle]
++dpms_timeout = 0
+
+From 7f6594034d5fc7114b8781305b69e6bf528d6217 Mon Sep 17 00:00:00 2001
+From: Aleksey Samoilov <samoilov.lex@gmail.com>
+Date: Thu, 20 Aug 2026 14:48:08 -0400
+Subject: [PATCH 2/8] Refactor Wayland session init
+
+---
+ configure.ac                         |  12 +
+ data/Makefile.am                     |   2 +-
+ data/org.mate.session.gschema.xml.in |   5 +
+ mate-session/Makefile.am             |   2 +
+ mate-session/gsm-compositor.c        | 671 +++++++++++++++++++++++++++
+ mate-session/gsm-compositor.h        |  38 ++
+ mate-session/main.c                  |  60 ++-
+ wayfire/Makefile.am                  |  18 +-
+ wayfire/mate-wayland-session.in      | 166 -------
+ wayfire/mate-wayland.desktop.in      |   2 +-
+ wayfire/wayfire.ini.in               |   7 +-
+ 11 files changed, 793 insertions(+), 190 deletions(-)
+ create mode 100644 mate-session/gsm-compositor.c
+ create mode 100644 mate-session/gsm-compositor.h
+ delete mode 100755 wayfire/mate-wayland-session.in
+
+diff --git a/configure.ac b/configure.ac
+index 5be8035e..dfb68fe7 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -115,6 +115,17 @@ DEFAULT_WM=$with_default_wm
+ AC_SUBST(DEFAULT_WM)
+ AM_CONDITIONAL(USE_MATE_WM, test x$with_default_wm = xmate-wm)
+ 
++dnl ====================================================================
++dnl Option to set the default Wayland compositor
++dnl ====================================================================
++AC_ARG_WITH(default-compositor,
++              [AS_HELP_STRING([--with-default-compositor],
++                              [Specify the default Wayland compositor @<:@default=wayfire@:>@])],,
++                              [with_default_compositor="wayfire"])
++
++DEFAULT_COMPOSITOR=$with_default_compositor
++AC_SUBST(DEFAULT_COMPOSITOR)
++
+ dnl ====================================================================
+ dnl GSettings
+ dnl ====================================================================
+@@ -414,6 +425,7 @@ echo "
+         Warn about deprecations:  ${enable_deprecations}
+ 
+         Default WM:               ${with_default_wm}
++        Default compositor:       ${with_default_compositor}
+         Systemd support:          ${use_systemd}
+         Elogind support:          ${use_elogind}
+         GLES2 support:            ${have_glesv2}
+diff --git a/data/Makefile.am b/data/Makefile.am
+index c74a6692..d7d9d5ba 100644
+--- a/data/Makefile.am
++++ b/data/Makefile.am
+@@ -34,7 +34,7 @@ gsettings_SCHEMAS = $(gsettingsschema_in_files:.xml.in=.xml)
+ @GSETTINGS_RULES@
+ 
+ EXTRA_DIST =					\
+-	mate-wm				\
++	mate-wm					\
+ 	$(xsession_in_files)			\
+ 	$(gsettingsschema_in_files)		\
+ 	$(hwcompat_DATA)			\
+diff --git a/data/org.mate.session.gschema.xml.in b/data/org.mate.session.gschema.xml.in
+index f151dbb7..ca506771 100644
+--- a/data/org.mate.session.gschema.xml.in
++++ b/data/org.mate.session.gschema.xml.in
+@@ -36,6 +36,11 @@
+       <summary>Default session</summary>
+       <description>List of applications that are part of the default session.</description>
+     </key>
++    <key name="compositor" type="s">
++      <default>'@DEFAULT_COMPOSITOR@'</default>
++      <summary>Wayland compositor</summary>
++      <description>The compositor used to run a Wayland session. The value names the compositor to launch; currently supported compositors are 'wayfire'.</description>
++    </key>
+     <key name="required-components-list" type="as">
+       <default>[ 'windowmanager', 'panel', 'filemanager', 'dock' ]</default>
+       <summary>Required session components</summary>
+diff --git a/mate-session/Makefile.am b/mate-session/Makefile.am
+index 25dfd240..7f1ba9c4 100644
+--- a/mate-session/Makefile.am
++++ b/mate-session/Makefile.am
+@@ -34,6 +34,8 @@ mate_session_SOURCES =				\
+ 	gsm-inhibit-dialog.c			\
+ 	gs-idle-monitor.h			\
+ 	gs-idle-monitor.c			\
++	gsm-compositor.h			\
++	gsm-compositor.c			\
+ 	gsm-presence.h				\
+ 	gsm-presence.c				\
+ 	mdm.h					\
+diff --git a/mate-session/gsm-compositor.c b/mate-session/gsm-compositor.c
+new file mode 100644
+index 00000000..bb26da63
+--- /dev/null
++++ b/mate-session/gsm-compositor.c
+@@ -0,0 +1,671 @@
++/* -*- Mode: C; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 8 -*-
++ *
++ * Copyright (C) 2026 MATE Developers
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful, but
++ * WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
++ * Lesser General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
++ * 02110-1301, USA.
++ */
++
++#include <config.h>
++
++#include <errno.h>
++#include <signal.h>
++#include <string.h>
++#include <sys/stat.h>
++#include <sys/types.h>
++#include <sys/wait.h>
++#include <unistd.h>
++
++#include <glib.h>
++#include <glib/gstdio.h>
++#include <gio/gio.h>
++
++#include "gsm-compositor.h"
++#include "gsm-util.h"
++
++#define GSM_SCHEMA             "org.mate.session"
++#define GSM_COMPOSITOR_KEY     "compositor"
++
++/* How long to wait for the compositor's Wayland socket to appear. */
++#define GSM_COMPOSITOR_TIMEOUT     10 /* seconds */
++#define GSM_COMPOSITOR_WAIT_US     100000 /* 100 ms */
++
++/* How long to wait for the compositor to exit after SIGTERM. */
++#define GSM_COMPOSITOR_EXIT_TIMEOUT 5 /* seconds */
++
++typedef struct {
++        const gchar *name;             /* value used in GSettings / MATE_COMPOSITOR */
++        const gchar *binary;           /* executable to launch */
++        const gchar *config_subdir;    /* directory under ~/.config/mate for the user config; NULL = none */
++        const gchar *config_template;  /* default config installed under GTKBUILDER_DIR; NULL = none */
++        gboolean     needs_config_arg; /* whether "-c <config>" is passed (user copy or system template) */
++} GsmCompositorInfo;
++
++/* Keep this table sorted for readability. To add support for another
++ * compositor, add an entry here (e.g. labwc) and document its GSettings
++ * value. The session startup and shutdown logic is compositor agnostic. */
++static const GsmCompositorInfo compositor_infos[] = {
++        { "wayfire", "wayfire", "wayfire", "wayfire.ini", TRUE },
++        { NULL }
++};
++
++static GPid     compositor_pid     = 0;
++static guint    compositor_watch_id = 0;
++static gboolean compositor_started  = FALSE;
++static gboolean compositor_stopping = FALSE;
++static gchar   *xwayland_display   = NULL;
++
++static gchar *
++get_compositor_settings_name (void)
++{
++        GSettingsSchemaSource *source;
++        GSettingsSchema       *schema;
++        GSettings             *settings;
++        gchar                 *name = NULL;
++
++        source = g_settings_schema_source_get_default ();
++        if (source == NULL) {
++                return NULL;
++        }
++
++        schema = g_settings_schema_source_lookup (source, GSM_SCHEMA, TRUE);
++        if (schema == NULL || !g_settings_schema_has_key (schema, GSM_COMPOSITOR_KEY)) {
++                if (schema != NULL) {
++                        g_settings_schema_unref (schema);
++                }
++                return NULL;
++        }
++
++        settings = g_settings_new (GSM_SCHEMA);
++        name = g_settings_get_string (settings, GSM_COMPOSITOR_KEY);
++        g_object_unref (settings);
++        g_settings_schema_unref (schema);
++
++        return name;
++}
++
++static const GsmCompositorInfo *
++get_compositor_info (void)
++{
++        const GsmCompositorInfo *info;
++        const gchar             *name;
++        gchar                   *settings_name = NULL;
++
++        name = g_getenv ("MATE_COMPOSITOR");
++        if (name == NULL || name[0] == '\0') {
++                settings_name = get_compositor_settings_name ();
++                name = settings_name;
++        }
++
++        if (name != NULL && name[0] != '\0') {
++                for (info = compositor_infos; info->name != NULL; info++) {
++                        if (g_strcmp0 (info->name, name) == 0) {
++                                g_free (settings_name);
++                                return info;
++                        }
++                }
++        }
++
++        g_warning ("GsmCompositor: unknown compositor '%s', using the default one",
++                   name != NULL ? name : "(none)");
++        g_free (settings_name);
++
++        return &compositor_infos[0];
++}
++
++static gchar *
++get_config_dir (void)
++{
++        const gchar *config_home;
++
++        config_home = g_getenv ("XDG_CONFIG_HOME");
++        if (config_home != NULL && config_home[0] != '\0') {
++                return g_build_filename (config_home, "mate", NULL);
++        }
++
++        return g_build_filename (g_get_home_dir (), ".config", "mate", NULL);
++}
++
++static gchar *
++strip_quotes (const gchar *value)
++{
++        gchar *v;
++        gsize  len;
++
++        v = g_strstrip (g_strdup (value));
++        len = strlen (v);
++
++        if (len >= 2
++            && (v[0] == '"' || v[0] == '\'')
++            && v[len - 1] == v[0]) {
++                memmove (v, v + 1, len - 2);
++                v[len - 2] = '\0';
++        }
++
++        return v;
++}
++
++/* If the user did not set an explicit keyboard layout, export the system
++ * layout from /etc/vconsole.conf so that libxkbcommon applies it when the
++ * compositor configuration does not specify xkb_layout. */
++static void
++set_default_xkb_layout (void)
++{
++        gchar   *contents;
++        gchar  **lines;
++        gchar   *layout = NULL;
++        gchar   *variant = NULL;
++        gchar   *keymap = NULL;
++        gint     i;
++
++        if (g_getenv ("XKB_DEFAULT_LAYOUT") != NULL) {
++                return;
++        }
++
++        if (!g_file_get_contents ("/etc/vconsole.conf", &contents, NULL, NULL)) {
++                return;
++        }
++
++        lines = g_strsplit (contents, "\n", -1);
++        for (i = 0; lines[i] != NULL; i++) {
++                gchar *line = g_strstrip (g_strdup (lines[i]));
++
++                if (g_str_has_prefix (line, "KEYMAP=")) {
++                        keymap = strip_quotes (line + strlen ("KEYMAP="));
++                } else if (g_str_has_prefix (line, "XKBLAYOUT=")) {
++                        layout = strip_quotes (line + strlen ("XKBLAYOUT="));
++                } else if (g_str_has_prefix (line, "XKBVARIANT=")) {
++                        variant = strip_quotes (line + strlen ("XKBVARIANT="));
++                }
++
++                g_free (line);
++        }
++        g_strfreev (lines);
++
++        if (layout != NULL && layout[0] != '\0') {
++                gsm_util_setenv ("XKB_DEFAULT_LAYOUT", layout);
++                if (variant != NULL && variant[0] != '\0') {
++                        gsm_util_setenv ("XKB_DEFAULT_VARIANT", variant);
++                }
++        } else if (keymap != NULL && keymap[0] != '\0') {
++                gsm_util_setenv ("XKB_DEFAULT_LAYOUT", keymap);
++        }
++
++        g_free (layout);
++        g_free (variant);
++        g_free (keymap);
++        g_free (contents);
++}
++
++/* Return the compositor configuration file to use, creating a private copy
++ * of the default configuration on the first login so the user can freely
++ * customize it afterwards. If a user configuration already exists it is
++ * reused as-is. Falls back to the system template when a copy cannot be
++ * made, and returns NULL if no configuration is available at all. */
++static gchar *
++get_compositor_config_path (const GsmCompositorInfo *info)
++{
++        gchar *config_dir;
++        gchar *config_path;
++        gchar *template_path;
++
++        config_dir = g_build_filename (get_config_dir (),
++                                       info->config_subdir, NULL);
++        config_path = g_build_filename (config_dir, info->config_template, NULL);
++
++        if (g_mkdir_with_parents (config_dir, 0755) != 0) {
++                g_debug ("GsmCompositor: cannot create %s: %s",
++                         config_dir, g_strerror (errno));
++        }
++        g_free (config_dir);
++
++        if (g_file_test (config_path, G_FILE_TEST_EXISTS)) {
++                return config_path;
++        }
++
++        template_path = g_build_filename (GTKBUILDER_DIR, info->config_template, NULL);
++        if (g_file_test (template_path, G_FILE_TEST_EXISTS)) {
++                if (g_file_copy (g_file_new_for_path (template_path),
++                                 g_file_new_for_path (config_path),
++                                 G_FILE_COPY_NONE, NULL, NULL, NULL, NULL)) {
++                        g_free (template_path);
++                        return config_path;
++                }
++
++                g_warning ("GsmCompositor: unable to install %s, "
++                           "using the system template %s instead",
++                           config_path, template_path);
++                g_free (config_path);
++                return template_path;
++        }
++
++        g_warning ("GsmCompositor: no compositor configuration found "
++                   "(looked in %s and %s)",
++                   config_path, template_path);
++        g_free (config_path);
++        g_free (template_path);
++
++        return NULL;
++}
++
++static gchar *
++find_runtime_dir (void)
++{
++        const gchar *env;
++        gchar       *path;
++
++        env = g_getenv ("XDG_RUNTIME_DIR");
++        if (env != NULL && env[0] != '\0') {
++                return g_strdup (env);
++        }
++
++        path = g_strdup_printf ("/run/user/%u", (guint) getuid ());
++        if (g_file_test (path, G_FILE_TEST_IS_DIR)) {
++                return path;
++        }
++        g_free (path);
++
++        path = g_strdup_printf ("/var/run/user/%u", (guint) getuid ());
++        if (g_file_test (path, G_FILE_TEST_IS_DIR)) {
++                return path;
++        }
++        g_free (path);
++
++        return g_strdup_printf ("/tmp/%s-runtime",
++                                g_get_user_name () != NULL
++                                        ? g_get_user_name () : "mate");
++}
++
++static gboolean
++ensure_runtime_dir (GError **error)
++{
++        gchar   *runtime_dir;
++        gboolean ret = TRUE;
++
++        runtime_dir = find_runtime_dir ();
++        gsm_util_setenv ("XDG_RUNTIME_DIR", runtime_dir);
++
++        if (!g_file_test (runtime_dir, G_FILE_TEST_IS_DIR)) {
++                if (g_mkdir_with_parents (runtime_dir, 0700) != 0) {
++                        g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED,
++                                     "Unable to create runtime directory %s: %s",
++                                     runtime_dir, g_strerror (errno));
++                        ret = FALSE;
++                }
++        } else {
++                chmod (runtime_dir, 0700);
++        }
++
++        g_free (runtime_dir);
++
++        return ret;
++}
++
++static GList *
++list_sockets (const gchar *dir)
++{
++        GList       *sockets = NULL;
++        GDir        *gd;
++        const gchar *name;
++
++        gd = g_dir_open (dir, 0, NULL);
++        if (gd == NULL) {
++                return NULL;
++        }
++
++        while ((name = g_dir_read_name (gd)) != NULL) {
++                gchar      *path;
++                struct stat st;
++
++                if (!g_str_has_prefix (name, "wayland-")) {
++                        continue;
++                }
++
++                path = g_build_filename (dir, name, NULL);
++                if (g_stat (path, &st) == 0 && S_ISSOCK (st.st_mode)) {
++                        sockets = g_list_prepend (sockets, g_strdup (path));
++                }
++                g_free (path);
++        }
++
++        g_dir_close (gd);
++
++        return sockets;
++}
++
++static gboolean
++list_contains (GList      *list,
++               const gchar *path)
++{
++        GList *l;
++
++        for (l = list; l != NULL; l = l->next) {
++                if (g_strcmp0 (l->data, path) == 0) {
++                        return TRUE;
++                }
++        }
++
++        return FALSE;
++}
++
++/* Wait until the compositor creates a new Wayland socket that did not exist
++ * before it was launched (the compositor picks the first free "wayland-N"
++ * name itself, so we cannot assume a specific one). */
++static gchar *
++wait_for_new_socket (const gchar *runtime_dir,
++                     GList       *existing)
++{
++        gint i;
++
++        for (i = 0; i < GSM_COMPOSITOR_TIMEOUT * (1000000 / GSM_COMPOSITOR_WAIT_US); i++) {
++                GList  *current;
++                GList  *l;
++                gchar  *found = NULL;
++
++                current = list_sockets (runtime_dir);
++                for (l = current; l != NULL; l = l->next) {
++                        if (!list_contains (existing, l->data)) {
++                                found = g_strdup (l->data);
++                                break;
++                        }
++                }
++                g_list_free_full (current, g_free);
++
++                if (found != NULL) {
++                        return found;
++                }
++
++                g_usleep (GSM_COMPOSITOR_WAIT_US);
++        }
++
++        return NULL;
++}
++
++#define X11_SOCKET_DIR "/tmp/.X11-unix"
++
++static GList *
++list_x_displays (void)
++{
++        GList       *displays = NULL;
++        GDir        *gd;
++        const gchar *name;
++
++        gd = g_dir_open (X11_SOCKET_DIR, 0, NULL);
++        if (gd == NULL) {
++                return NULL;
++        }
++
++        while ((name = g_dir_read_name (gd)) != NULL) {
++                gchar      *path;
++                struct stat st;
++
++                if (!g_str_has_prefix (name, "X")) {
++                        continue;
++                }
++
++                path = g_build_filename (X11_SOCKET_DIR, name, NULL);
++                if (g_stat (path, &st) == 0 && S_ISSOCK (st.st_mode)) {
++                        displays = g_list_prepend (displays, path);
++                } else {
++                        g_free (path);
++                }
++        }
++
++        g_dir_close (gd);
++
++        return displays;
++}
++
++/* Find the Xwayland display after the compositor has started.  Xwayland may
++ * create a brand-new X11 socket or reuse one that already existed when we
++ * snapshotted the directory (e.g. the previous session's :0).  Because of
++ * this reuse, we cannot rely on "new socket" detection alone.  Instead we
++ * poll for any X11 socket to appear; the first one we find is Xwayland.
++ * Returns the display number as a string (e.g. "0") or NULL on timeout. */
++static gchar *
++wait_for_new_xdisplay (void)
++{
++        gint i;
++
++        for (i = 0; i < GSM_COMPOSITOR_TIMEOUT * (1000000 / GSM_COMPOSITOR_WAIT_US); i++) {
++                GList  *current;
++                GList  *l;
++                gchar  *found = NULL;
++
++                current = list_x_displays ();
++                for (l = current; l != NULL; l = l->next) {
++                        const gchar *basename;
++
++                        basename = g_path_get_basename (l->data);
++                        found = g_strdup (basename + 1); /* strip leading 'X' */
++                        break;
++                }
++                g_list_free_full (current, g_free);
++
++                if (found != NULL) {
++                        return found;
++                }
++
++                g_usleep (GSM_COMPOSITOR_WAIT_US);
++        }
++
++        return NULL;
++}
++
++gboolean
++gsm_compositor_start (GError **error)
++{
++        const GsmCompositorInfo *info;
++        gchar                   *config_path = NULL;
++        gchar                   *runtime_dir;
++        gchar                   *socket_path;
++        gchar                   *socket_name;
++        gchar                  **argv;
++        GList                   *existing;
++        GError                  *spawn_error = NULL;
++
++        g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
++
++        info = get_compositor_info ();
++
++        /* Make the environment look like a proper Wayland session. */
++        gsm_util_setenv ("XDG_SESSION_TYPE", "wayland");
++        gsm_util_setenv ("XDG_CURRENT_DESKTOP", "MATE");
++        set_default_xkb_layout ();
++
++        if (!ensure_runtime_dir (error)) {
++                return FALSE;
++        }
++
++        if (g_find_program_in_path (info->binary) == NULL) {
++                g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_NOENT,
++                             "The Wayland compositor '%s' is not installed",
++                             info->binary);
++                return FALSE;
++        }
++
++        if (info->needs_config_arg) {
++                config_path = get_compositor_config_path (info);
++                if (config_path != NULL) {
++                        argv = g_new0 (gchar *, 4);
++                        argv[0] = g_strdup (info->binary);
++                        argv[1] = g_strdup ("-c");
++                        argv[2] = g_strdup (config_path);
++                } else {
++                        argv = g_new0 (gchar *, 2);
++                        argv[0] = g_strdup (info->binary);
++                }
++        } else {
++                argv = g_new0 (gchar *, 2);
++                argv[0] = g_strdup (info->binary);
++        }
++
++        runtime_dir = g_strdup (g_getenv ("XDG_RUNTIME_DIR"));
++        existing = list_sockets (runtime_dir);
++
++        g_debug ("GsmCompositor: starting %s", info->binary);
++
++        if (!g_spawn_async (NULL, argv, NULL,
++                            G_SPAWN_DO_NOT_REAP_CHILD | G_SPAWN_SEARCH_PATH,
++                            NULL, NULL, &compositor_pid,
++                            &spawn_error)) {
++                g_propagate_error (error, spawn_error);
++                g_strfreev (argv);
++                g_free (config_path);
++                g_list_free_full (existing, g_free);
++                g_free (runtime_dir);
++                return FALSE;
++        }
++
++        g_strfreev (argv);
++        g_free (config_path);
++
++        compositor_started = TRUE;
++
++        socket_path = wait_for_new_socket (runtime_dir, existing);
++        g_list_free_full (existing, g_free);
++
++        if (socket_path == NULL) {
++                g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED,
++                             "The Wayland compositor '%s' failed to start "
++                             "(no Wayland socket appeared within %d seconds)",
++                             info->binary, GSM_COMPOSITOR_TIMEOUT);
++                g_free (socket_path);
++                g_free (runtime_dir);
++                gsm_compositor_stop ();
++                return FALSE;
++        }
++
++        socket_name = g_path_get_basename (socket_path);
++        g_debug ("GsmCompositor: compositor '%s' running on %s",
++                 info->binary, socket_name);
++        gsm_util_setenv ("WAYLAND_DISPLAY", socket_name);
++
++        g_free (socket_name);
++        g_free (socket_path);
++        g_free (runtime_dir);
++
++        /* Detect the Xwayland display for X11 clients.  This is best-effort:
++         * compositors that disable Xwayland will simply not create a display. */
++        {
++                gchar *xdisplay;
++
++                xdisplay = wait_for_new_xdisplay ();
++
++                if (xdisplay != NULL) {
++                        gchar *display_name;
++
++                        display_name = g_strdup_printf (":%s", xdisplay);
++                        g_debug ("GsmCompositor: Xwayland running on %s", display_name);
++                        gsm_util_setenv ("DISPLAY", display_name);
++
++                        g_free (xwayland_display);
++                        xwayland_display = display_name;
++                        g_free (xdisplay);
++                } else {
++                        /* Xwayland socket not detected; assume the first
++                         * display.  Without this, GDK will overwrite DISPLAY
++                         * with the Wayland socket name during gtk_init. */
++                        g_debug ("GsmCompositor: no Xwayland display detected "
++                                 "(assuming :0)");
++                        g_free (xwayland_display);
++                        xwayland_display = g_strdup (":0");
++                        gsm_util_setenv ("DISPLAY", ":0");
++                }
++        }
++
++        return TRUE;
++}
++
++static void
++compositor_exited (GPid     pid,
++                   gint     status,
++                   gpointer data)
++{
++        GsmManager *manager = data;
++        gboolean    running = FALSE;
++
++        g_spawn_close_pid (pid);
++
++        compositor_pid = 0;
++        compositor_started = FALSE;
++        compositor_watch_id = 0;
++
++        if (compositor_stopping) {
++                return;
++        }
++
++        g_warning ("GsmCompositor: the compositor exited unexpectedly");
++
++        if (manager != NULL
++            && gsm_manager_is_session_running (manager, &running, NULL)
++            && running) {
++                g_debug ("GsmCompositor: ending the session because the compositor died");
++                gsm_manager_logout (manager, GSM_MANAGER_LOGOUT_MODE_FORCE, NULL);
++        }
++}
++
++void
++gsm_compositor_watch (GsmManager *manager)
++{
++        if (!compositor_started || compositor_pid <= 0) {
++                return;
++        }
++
++        compositor_watch_id = g_child_watch_add (compositor_pid,
++                                                 compositor_exited,
++                                                 manager);
++}
++
++void
++gsm_compositor_stop (void)
++{
++        gint64 deadline;
++        gint   status;
++
++        if (!compositor_started || compositor_pid <= 0) {
++                return;
++        }
++
++        compositor_stopping = TRUE;
++
++        if (compositor_watch_id > 0) {
++                g_source_remove (compositor_watch_id);
++                compositor_watch_id = 0;
++        }
++
++        g_debug ("GsmCompositor: terminating the compositor");
++        kill (compositor_pid, SIGTERM);
++
++        deadline = g_get_monotonic_time () + GSM_COMPOSITOR_EXIT_TIMEOUT * G_TIME_SPAN_SECOND;
++        while (waitpid (compositor_pid, &status, WNOHANG) == 0) {
++                if (g_get_monotonic_time () > deadline) {
++                        g_warning ("GsmCompositor: compositor did not exit, sending SIGKILL");
++                        kill (compositor_pid, SIGKILL);
++                        waitpid (compositor_pid, &status, 0);
++                        break;
++                }
++                g_usleep (50000);
++        }
++
++        compositor_pid = 0;
++        compositor_started = FALSE;
++}
++
++const gchar *
++gsm_compositor_get_display (void)
++{
++        return xwayland_display;
++}
+diff --git a/mate-session/gsm-compositor.h b/mate-session/gsm-compositor.h
+new file mode 100644
+index 00000000..a709bb55
+--- /dev/null
++++ b/mate-session/gsm-compositor.h
+@@ -0,0 +1,38 @@
++/* -*- Mode: C; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 8 -*-
++ *
++ * Copyright (C) 2026 MATE Developers
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful, but
++ * WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
++ * Lesser General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
++ * 02110-1301, USA.
++ */
++
++#ifndef __GSM_COMPOSITOR_H
++#define __GSM_COMPOSITOR_H
++
++#include <glib.h>
++#include <gio/gio.h>
++
++#include "gsm-manager.h"
++
++G_BEGIN_DECLS
++
++gboolean gsm_compositor_start   (GError     **error);
++void     gsm_compositor_watch   (GsmManager  *manager);
++void     gsm_compositor_stop    (void);
++const gchar *gsm_compositor_get_display (void);
++
++G_END_DECLS
++
++#endif /* __GSM_COMPOSITOR_H */
+diff --git a/mate-session/main.c b/mate-session/main.c
+index f1039cb5..a04750f9 100644
+--- a/mate-session/main.c
++++ b/mate-session/main.c
+@@ -42,6 +42,7 @@
+ #include "mdm-signal-handler.h"
+ #include "mdm-log.h"
+ 
++#include "gsm-compositor.h"
+ #include "gsm-consolekit.h"
+ #ifdef HAVE_SYSTEMD
+ #include "gsm-systemd.h"
+@@ -83,6 +84,7 @@ static gboolean failsafe = FALSE;
+ static gboolean show_version = FALSE;
+ static gboolean debug = FALSE;
+ static gboolean disable_acceleration_check = FALSE;
++static gboolean wayland_mode = FALSE;
+ 
+ static gboolean
+ initialize_gsettings (void)
+@@ -605,7 +607,7 @@ check_gl (gchar **gl_renderer, GError **error)
+ int main(int argc, char** argv)
+ {
+ 	struct sigaction sa;
+-	GError* error;
++	GError* error = NULL;
+ 	const char* display_str;
+ 	GsmManager* manager;
+ 	GsmStore* client_store;
+@@ -623,6 +625,7 @@ int main(int argc, char** argv)
+ 		{"failsafe", 'f', 0, G_OPTION_ARG_NONE, &failsafe, N_("Do not load user-specified applications"), NULL},
+ 		{"version", 0, 0, G_OPTION_ARG_NONE, &show_version, N_("Version of this application"), NULL},
+ 		{ "disable-acceleration-check", 0, 0, G_OPTION_ARG_NONE, &disable_acceleration_check, N_("Disable hardware acceleration check"), NULL },
++		{ "wayland", 0, 0, G_OPTION_ARG_NONE, &wayland_mode, N_("Start a Wayland session, launching the compositor"), NULL },
+ 		{NULL, 0, 0, 0, NULL, NULL, NULL }
+ 	};
+ 
+@@ -643,6 +646,28 @@ int main(int argc, char** argv)
+ 	sigemptyset(&sa.sa_mask);
+ 	sigaction(SIGPIPE, &sa, 0);
+ 
++	/* On a Wayland session the compositor must be running before any toolkit
++	 * initializes (GDK needs the Wayland socket to exist), so detect the
++	 * option ourselves here and launch the compositor. */
++	if (!wayland_mode) {
++		int i;
++
++		for (i = 1; i < argc; i++) {
++			if (g_strcmp0 (argv[i], "--wayland") == 0) {
++				wayland_mode = TRUE;
++				break;
++			}
++		}
++	}
++
++	if (wayland_mode) {
++		if (!gsm_compositor_start (&error)) {
++			gsm_util_init_error (TRUE, "Unable to start the Wayland compositor: %s",
++			                     error != NULL ? error->message : "unknown error");
++			/* not reached */
++		}
++	}
++
+ 	error = NULL;
+ 	gtk_init_with_args(&argc, &argv, (char*) _(" - the MATE session manager"), entries, GETTEXT_PACKAGE, &error);
+ 
+@@ -658,12 +683,6 @@ int main(int argc, char** argv)
+ 		exit(1);
+ 	}
+ 
+-        gsm_util_export_activation_environment (NULL);
+-
+-#ifdef HAVE_SYSTEMD
+-        gsm_util_export_user_environment (NULL);
+-#endif
+-
+ 	mdm_log_init();
+ 
+ 	/* Allows to enable/disable debug from GSettings only if it is not set from argument */
+@@ -714,11 +733,22 @@ int main(int argc, char** argv)
+ 		display_str = gdk_display_get_name (gdk_display_get_default());
+ 		gsm_util_setenv("DISPLAY", display_str);
+ 	} else {
++		const gchar *xdisp;
++
+ 		/* Export the Wayland display for bus activated children. */
+ 		display_str = g_getenv ("WAYLAND_DISPLAY");
+ 		if (display_str != NULL) {
+ 			gsm_util_setenv ("WAYLAND_DISPLAY", display_str);
+ 		}
++
++		/* Set the Xwayland display for X11 clients.  Use the value
++		 * saved by gsm_compositor_start() rather than reading DISPLAY
++		 * back from the environment, because GDK may have overwritten
++		 * it with the Wayland socket name during gtk_init. */
++		xdisp = gsm_compositor_get_display ();
++		if (xdisp != NULL) {
++			gsm_util_setenv ("DISPLAY", xdisp);
++		}
+ 	}
+ 
+ 	/* Some third-party programs rely on MATE_DESKTOP_SESSION_ID to
+@@ -726,6 +756,16 @@ int main(int argc, char** argv)
+ 	 */
+ 	gsm_util_setenv("MATE_DESKTOP_SESSION_ID", "this-is-deprecated");
+ 
++	/* Now that DISPLAY and WAYLAND_DISPLAY are correctly set, export
++	 * the environment to the session bus and systemd.  This must happen
++	 * after the Wayland DISPLAY fixup above so that D-Bus activated
++	 * children receive the correct DISPLAY value. */
++	gsm_util_export_activation_environment (NULL);
++
++#ifdef HAVE_SYSTEMD
++	gsm_util_export_user_environment (NULL);
++#endif
++
+ 	/*
+ 	 * Make sure gsettings is set up correctly.  If not, then bail.
+ 	 */
+@@ -780,8 +820,14 @@ int main(int argc, char** argv)
+ 	_gsm_manager_set_renderer (manager, gl_renderer);
+ 	gsm_manager_start(manager);
+ 
++	/* Watch the compositor so that a compositor crash ends the session. */
++	gsm_compositor_watch (manager);
++
+ 	gtk_main();
+ 
++	/* Session is over (logout); stop the compositor. */
++	gsm_compositor_stop ();
++
+ 	if (xsmp_server != NULL)
+ 	{
+ 		g_object_unref(xsmp_server);
+diff --git a/wayfire/Makefile.am b/wayfire/Makefile.am
+index ccdd49b0..7354103a 100644
+--- a/wayfire/Makefile.am
++++ b/wayfire/Makefile.am
+@@ -1,18 +1,12 @@
+-bin_SCRIPTS = mate-wayland-session
+-
+-mate-wayland-session: mate-wayland-session.in Makefile
+-	$(AM_V_GEN) sed -e 's|@MATE_WAYLAND_DATADIR@|$(pkgdatadir)|g' $(srcdir)/mate-wayland-session.in > $@
+-	chmod +x $@
+-
+ sessiondatadir = $(pkgdatadir)
+ sessiondata_DATA = wayfire.ini
+ 
+ wayfire.ini: wayfire.ini.in
+ 	$(AM_V_GEN) cp $(srcdir)/wayfire.ini.in $@
+ 
+-xsessiondir = $(datadir)/xsessions
+-xsession_in_files = mate-wayland.desktop.in
+-xsession_DATA = $(xsession_in_files:.desktop.in=.desktop)
++waylandsessionsdir = $(datadir)/wayland-sessions
++waylandsession_in_files = mate-wayland.desktop.in
++waylandsessions_DATA = $(waylandsession_in_files:.desktop.in=.desktop)
+ 
+ schemasdir = $(datadir)/glib-2.0/schemas
+ schemas_DATA = 10_mate-wayland.gschema.override
+@@ -25,14 +19,12 @@ else
+ endif
+ 
+ EXTRA_DIST =				\
+-	$(xsession_in_files)		\
+-	mate-wayland-session.in		\
++	$(waylandsession_in_files)	\
+ 	wayfire.ini.in			\
+ 	$(schemas_DATA)
+ 
+ CLEANFILES =				\
+-	$(xsession_DATA)		\
+-	mate-wayland-session		\
++	$(waylandsessions_DATA)		\
+ 	wayfire.ini
+ 
+ -include $(top_srcdir)/git.mk
+diff --git a/wayfire/mate-wayland-session.in b/wayfire/mate-wayland-session.in
+deleted file mode 100755
+index d4f90345..00000000
+--- a/wayfire/mate-wayland-session.in
++++ /dev/null
+@@ -1,166 +0,0 @@
+-#!/bin/sh
+-#
+-# MATE Wayland session launcher.
+-
+-# Make sure we run as a Wayland session
+-export XDG_SESSION_TYPE="wayland"
+-export XDG_CURRENT_DESKTOP="MATE"
+-
+-# Make all toolkits prefer their Wayland backends (with safe fallbacks)
+-if [ -z "${GDK_BACKEND}" ]; then
+-  GDK_BACKEND="wayland,x11"
+-  export GDK_BACKEND
+-fi
+-if [ -z "${QT_QPA_PLATFORM}" ]; then
+-  QT_QPA_PLATFORM="wayland"
+-  export QT_QPA_PLATFORM
+-fi
+-if [ -z "${CLUTTER_BACKEND}" ]; then
+-  CLUTTER_BACKEND="gdk"
+-  export CLUTTER_BACKEND
+-fi
+-export MOZ_ENABLE_WAYLAND="1"
+-
+-# Set XDG_RUNTIME_DIR for display managers that do not provide it.
+-if [ -z "${XDG_RUNTIME_DIR}" ]; then
+-  if [ -d "/run/user/$(id -ru)" ]; then
+-    XDG_RUNTIME_DIR="/run/user/$(id -ru)"
+-  elif [ -d "/var/run/user/$(id -ru)" ]; then
+-    XDG_RUNTIME_DIR="/var/run/user/$(id -ru)"
+-  else
+-    XDG_RUNTIME_DIR="/tmp/${USER}-runtime"
+-  fi
+-  export XDG_RUNTIME_DIR
+-fi
+-if [ ! -d "${XDG_RUNTIME_DIR}" ]; then
+-  mkdir -p -m 0700 "${XDG_RUNTIME_DIR}" || {
+-    echo "$0: Unable to create runtime directory ${XDG_RUNTIME_DIR}!" >&2
+-    exit 1
+-  }
+-fi
+-
+-CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
+-CONFIG_DIR="${CONFIG_HOME}/mate"
+-CONFIG="${CONFIG_DIR}/wayfire.ini"
+-
+-create_initial_config()
+-{
+-  mkdir -p "${CONFIG_DIR}"
+-
+-  # Use the MATE Wayfire configuration shipped with this package. It is
+-  # copied only once; afterwards the user is free to customize the copy at
+-  # ~/.config/mate/wayfire.ini (the existence check below skips this on
+-  # later logins).
+-  cp "@MATE_WAYLAND_DATADIR@/wayfire.ini" "${CONFIG}" || {
+-    echo "$0: Unable to install the default Wayfire configuration" >&2
+-    return 1
+-  }
+-
+-  # Make sure the file is writable so we can tune it below.
+-  chmod u+w "${CONFIG}"
+-
+-  # Set the keyboard layout to match the system configuration, unless the
+-  # user has already configured one.
+-  if ! grep -q '^xkb_layout' "${CONFIG}"; then
+-    KEYMAP=$(awk -F '=' -v q1=\' -v q2=\" '
+-      $1 == "KEYMAP" {
+-        gsub ("[" q1 q2 "]", "", $2)
+-        keymap = $2
+-      }
+-      $1 == "XKBLAYOUT" {
+-        gsub ("[" q1 q2 "]", "", $2)
+-        layout = $2
+-      }
+-      $1 == "XKBVARIANT" {
+-        gsub ("[" q1 q2 "]", "", $2)
+-        variant = $2
+-      }
+-      END {
+-        if (layout != "") {
+-          print "layout=" layout
+-          if (variant != "") {
+-            print "variant=" variant
+-          }
+-        } else if (keymap != "") {
+-          print "layout=" keymap
+-        }
+-      }
+-    ' /etc/vconsole.conf)
+-    if [ -n "${KEYMAP}" ]; then
+-      LAYOUT=$(printf '%s\n' "${KEYMAP}" | sed -n 's/^layout=//p')
+-      VARIANT=$(printf '%s\n' "${KEYMAP}" | sed -n 's/^variant=//p')
+-      {
+-        printf '\n[input]\n'
+-        printf 'xkb_layout = %s\n' "${LAYOUT}"
+-        if [ -n "${VARIANT}" ]; then
+-          printf 'xkb_variant = %s\n' "${VARIANT}"
+-        fi
+-      } >> "${CONFIG}"
+-    fi
+-  fi
+-
+-  return 0
+-}
+-
+-if [ ! -e "${CONFIG}" ]; then
+-  create_initial_config || exit 1
+-fi
+-
+-if ! command -v wayfire >/dev/null 2>&1; then
+-  echo "$0: wayfire is not installed; aborting session" >&2
+-  exit 1
+-fi
+-
+-# Start the compositor
+-wayfire -c "${CONFIG}" &
+-WAYFIRE_PID=$!
+-
+-# Wait for the Wayland socket to appear
+-WAYLAND_DISPLAY="${WAYLAND_DISPLAY:-wayland-0}"
+-export WAYLAND_DISPLAY
+-SOCKET="${XDG_RUNTIME_DIR}/${WAYLAND_DISPLAY}"
+-i=0
+-while [ ! -S "${SOCKET}" ] && [ "${i}" -lt 100 ]; do
+-  i=$((i + 1))
+-  sleep 0.1
+-done
+-
+-if [ ! -S "${SOCKET}" ]; then
+-  echo "$0: Wayfire failed to start; aborting session" >&2
+-  kill "${WAYFIRE_PID}" 2>/dev/null
+-  exit 1
+-fi
+-
+-# Make bus-activated and systemd-managed services aware of the Wayland
+-# environment (also fixes the slow startup of Gtk+3 applications).
+-if command -v dbus-update-activation-environment >/dev/null 2>&1; then
+-  dbus-update-activation-environment --systemd WAYLAND_DISPLAY DISPLAY XAUTHORITY 2>/dev/null
+-fi
+-
+-# Run the session manager. The compositor is the leader here: wayfire's
+-# [autostart] only fires commands that are not lifecycle-tracked, so
+-# mate-session runs in the foreground and is responsible for components.
+-mate-session "$@" &
+-MATE_PID=$!
+-
+-# End the session if the compositor goes away (crash) while mate-session
+-# is still running.
+-(
+-  while [ -S "${SOCKET}" ]; do
+-    sleep 1
+-  done
+-  if kill -0 "${MATE_PID}" 2>/dev/null; then
+-    kill "${MATE_PID}" 2>/dev/null
+-  fi
+-) &
+-WATCHER_PID=$!
+-
+-wait "${MATE_PID}"
+-status=$?
+-
+-# Session over (logout): terminate the compositor.
+-kill "${WAYFIRE_PID}" 2>/dev/null
+-kill "${WATCHER_PID}" 2>/dev/null
+-wait "${WAYFIRE_PID}" 2>/dev/null
+-
+-exit ${status}
+diff --git a/wayfire/mate-wayland.desktop.in b/wayfire/mate-wayland.desktop.in
+index 83a004dd..e21d171a 100644
+--- a/wayfire/mate-wayland.desktop.in
++++ b/wayfire/mate-wayland.desktop.in
+@@ -1,7 +1,7 @@
+ [Desktop Entry]
+ Name=MATE (Wayland)
+ Comment=This session logs you into MATE on Wayland
+-Exec=mate-wayland-session
++Exec=mate-session --wayland
+ TryExec=wayfire
+ Icon=
+ Type=Application
+diff --git a/wayfire/wayfire.ini.in b/wayfire/wayfire.ini.in
+index 91304b3d..2f562d25 100644
+--- a/wayfire/wayfire.ini.in
++++ b/wayfire/wayfire.ini.in
+@@ -1,7 +1,10 @@
+ # MATE default Wayfire configuration.
+ #
+-# This is the template installed by mate-session-manager. On first login it is
+-# copied to ~/.config/mate/wayfire.ini and may be edited there.
++# This is the system template installed by mate-session-manager at
++# /usr/share/mate-session-manager/wayfire.ini. On the first Wayland login it is
++# copied to ~/.config/mate/wayfire/wayfire.ini, which you can edit freely; the system
++# template is never overwritten again. To go back to the defaults, simply remove
++# ~/.config/mate/wayfire/wayfire.ini.
+ # See the Wayfire documentation for a complete reference:
+ # https://github.com/WayfireWM/wayfire/wiki/Configuration
+ 
+
+From 04900dd24d57fe2b190f1fbaa64405e20ee8d866 Mon Sep 17 00:00:00 2001
+From: Aleksey Samoilov <samoilov.lex@gmail.com>
+Date: Fri, 21 Aug 2026 15:37:35 -0400
+Subject: [PATCH 3/8] xwayland: poll for any X11 socket to appear
+
+---
+ mate-session/gsm-compositor.c | 23 +++++++++++++++--------
+ 1 file changed, 15 insertions(+), 8 deletions(-)
+
+diff --git a/mate-session/gsm-compositor.c b/mate-session/gsm-compositor.c
+index bb26da63..20ff2a8b 100644
+--- a/mate-session/gsm-compositor.c
++++ b/mate-session/gsm-compositor.c
+@@ -432,10 +432,10 @@ list_x_displays (void)
+  * create a brand-new X11 socket or reuse one that already existed when we
+  * snapshotted the directory (e.g. the previous session's :0).  Because of
+  * this reuse, we cannot rely on "new socket" detection alone.  Instead we
+- * poll for any X11 socket to appear; the first one we find is Xwayland.
+- * Returns the display number as a string (e.g. "0") or NULL on timeout. */
++ * poll for any X11 socket to appear; the first NEW one we find is Xwayland.
++ * Returns the display number as a string (e.g. "1") or NULL on timeout. */
+ static gchar *
+-wait_for_new_xdisplay (void)
++wait_for_new_xdisplay (GList *existing)
+ {
+         gint i;
+ 
+@@ -446,11 +446,13 @@ wait_for_new_xdisplay (void)
+ 
+                 current = list_x_displays ();
+                 for (l = current; l != NULL; l = l->next) {
+-                        const gchar *basename;
++                        if (!list_contains (existing, l->data)) {
++                                const gchar *basename;
+ 
+-                        basename = g_path_get_basename (l->data);
+-                        found = g_strdup (basename + 1); /* strip leading 'X' */
+-                        break;
++                                basename = g_path_get_basename (l->data);
++                                found = g_strdup (basename + 1); /* strip leading 'X' */
++                                break;
++                        }
+                 }
+                 g_list_free_full (current, g_free);
+ 
+@@ -474,6 +476,7 @@ gsm_compositor_start (GError **error)
+         gchar                   *socket_name;
+         gchar                  **argv;
+         GList                   *existing;
++        GList                   *existing_x;
+         GError                  *spawn_error = NULL;
+ 
+         g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+@@ -514,6 +517,7 @@ gsm_compositor_start (GError **error)
+ 
+         runtime_dir = g_strdup (g_getenv ("XDG_RUNTIME_DIR"));
+         existing = list_sockets (runtime_dir);
++        existing_x = list_x_displays ();
+ 
+         g_debug ("GsmCompositor: starting %s", info->binary);
+ 
+@@ -525,6 +529,7 @@ gsm_compositor_start (GError **error)
+                 g_strfreev (argv);
+                 g_free (config_path);
+                 g_list_free_full (existing, g_free);
++                g_list_free_full (existing_x, g_free);
+                 g_free (runtime_dir);
+                 return FALSE;
+         }
+@@ -562,7 +567,7 @@ gsm_compositor_start (GError **error)
+         {
+                 gchar *xdisplay;
+ 
+-                xdisplay = wait_for_new_xdisplay ();
++                xdisplay = wait_for_new_xdisplay (existing_x);
+ 
+                 if (xdisplay != NULL) {
+                         gchar *display_name;
+@@ -586,6 +591,8 @@ gsm_compositor_start (GError **error)
+                 }
+         }
+ 
++        g_list_free_full (existing_x, g_free);
++
+         return TRUE;
+ }
+ 
+
+From dd085795d7f60f1c7671d8c8edce75a63429c8c2 Mon Sep 17 00:00:00 2001
+From: Aleksey Samoilov <samoilov.lex@gmail.com>
+Date: Sat, 22 Aug 2026 11:58:58 -0400
+Subject: [PATCH 4/8] wayfire: enable more protocol plugins
+
+---
+ wayfire/wayfire.ini.in | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/wayfire/wayfire.ini.in b/wayfire/wayfire.ini.in
+index 2f562d25..def1b531 100644
+--- a/wayfire/wayfire.ini.in
++++ b/wayfire/wayfire.ini.in
+@@ -17,21 +17,26 @@ plugins = \
+   autostart \
+   command \
+   decoration \
++  ext-toplevel \
+   ext-workspace \
+   fast-switcher \
+   foreign-toplevel \
+   grid \
++  gtk-shell \
+   idle \
++  input-method-v1 \
+   invert \
+   move \
+   oswitch \
+   place \
+   resize \
++  security-context-v1 \
+   session-lock \
+   shortcuts-inhibit \
+   switcher \
+   window-rules \
+   wm-actions \
++  xdg-activation \
+   zoom
+ 
+ # Close focused window.
+
+From 11608b8c67872f083c1fa625221590d38467403b Mon Sep 17 00:00:00 2001
+From: Aleksey Samoilov <samoilov.lex@gmail.com>
+Date: Tue, 25 Aug 2026 18:08:07 -0400
+Subject: [PATCH 5/8] wayland: fix compositor crash hang and Xwayland display
+ detection
+
+---
+ mate-session/gsm-compositor.c | 52 +++++++++++++++++++++++++++++++----
+ mate-session/gsm-manager.c    |  5 +++-
+ 2 files changed, 51 insertions(+), 6 deletions(-)
+
+diff --git a/mate-session/gsm-compositor.c b/mate-session/gsm-compositor.c
+index 20ff2a8b..a007af47 100644
+--- a/mate-session/gsm-compositor.c
++++ b/mate-session/gsm-compositor.c
+@@ -61,11 +61,14 @@ static const GsmCompositorInfo compositor_infos[] = {
+         { NULL }
+ };
+ 
+-static GPid     compositor_pid     = 0;
+-static guint    compositor_watch_id = 0;
+-static gboolean compositor_started  = FALSE;
+-static gboolean compositor_stopping = FALSE;
+-static gchar   *xwayland_display   = NULL;
++static GPid     compositor_pid      = 0;
++static guint    compositor_watch_id  = 0;
++static guint    compositor_watchdog_id = 0;
++static gboolean compositor_started   = FALSE;
++static gboolean compositor_stopping  = FALSE;
++static gchar   *xwayland_display    = NULL;
++
++static void compositor_exited (GPid pid, gint status, gpointer data);
+ 
+ static gchar *
+ get_compositor_settings_name (void)
+@@ -596,6 +599,28 @@ gsm_compositor_start (GError **error)
+         return TRUE;
+ }
+ 
++/* Watchdog timer: if the GLib main loop is wedged by the compositor crash
++ * (e.g. GDK-Wayland connection loss stops dispatching child watches), this
++ * periodic timer still fires and detects the dead child via waitpid(). */
++static gboolean
++compositor_watchdog_cb (gpointer data)
++{
++        gint status;
++        gint ret;
++
++        if (!compositor_started || compositor_pid <= 0)
++                return G_SOURCE_REMOVE;
++
++        ret = waitpid (compositor_pid, &status, WNOHANG);
++        if (ret > 0) {
++                g_debug ("GsmCompositor: watchdog detected compositor exit");
++                compositor_exited (compositor_pid, status, data);
++                return G_SOURCE_REMOVE;
++        }
++
++        return G_SOURCE_CONTINUE;
++}
++
+ static void
+ compositor_exited (GPid     pid,
+                    gint     status,
+@@ -610,6 +635,11 @@ compositor_exited (GPid     pid,
+         compositor_started = FALSE;
+         compositor_watch_id = 0;
+ 
++        if (compositor_watchdog_id > 0) {
++                g_source_remove (compositor_watchdog_id);
++                compositor_watchdog_id = 0;
++        }
++
+         if (compositor_stopping) {
+                 return;
+         }
+@@ -634,6 +664,13 @@ gsm_compositor_watch (GsmManager *manager)
+         compositor_watch_id = g_child_watch_add (compositor_pid,
+                                                  compositor_exited,
+                                                  manager);
++
++        /* Belt-and-suspenders: a periodic watchdog that detects compositor
++         * death via waitpid() even if the main loop stops dispatching the
++         * child-watch source (e.g. GDK-Wayland connection loss). */
++        compositor_watchdog_id = g_timeout_add_seconds (1,
++                                                        compositor_watchdog_cb,
++                                                        manager);
+ }
+ 
+ void
+@@ -653,6 +690,11 @@ gsm_compositor_stop (void)
+                 compositor_watch_id = 0;
+         }
+ 
++        if (compositor_watchdog_id > 0) {
++                g_source_remove (compositor_watchdog_id);
++                compositor_watchdog_id = 0;
++        }
++
+         g_debug ("GsmCompositor: terminating the compositor");
+         kill (compositor_pid, SIGTERM);
+ 
+diff --git a/mate-session/gsm-manager.c b/mate-session/gsm-manager.c
+index 65073ea3..63e5b997 100644
+--- a/mate-session/gsm-manager.c
++++ b/mate-session/gsm-manager.c
+@@ -1421,7 +1421,10 @@ query_end_session_complete (GsmManager *manager)
+                 priv->query_timeout_id = 0;
+         }
+ 
+-        if (! gsm_manager_is_logout_inhibited (manager)) {
++        /* When logout is forced (e.g. compositor crash), skip the inhibit
++         * dialog entirely — there is no display to show it on. */
++        if (priv->logout_mode == GSM_MANAGER_LOGOUT_MODE_FORCE
++            || ! gsm_manager_is_logout_inhibited (manager)) {
+                 end_phase (manager);
+                 return;
+         }
+
+From 57b5ceefd23ffca9731c1b62082abb69d918b0aa Mon Sep 17 00:00:00 2001
+From: Aleksey Samoilov <samoilov.lex@gmail.com>
+Date: Sat, 29 Aug 2026 15:03:05 -0400
+Subject: [PATCH 7/8] wayland: launch compositor first
+
+---
+ data/org.mate.session.gschema.xml.in |   2 +-
+ mate-session/gsm-compositor.c        | 731 ++-------------------------
+ mate-session/gsm-compositor.h        |   8 +-
+ mate-session/gsm-manager.c           |   4 +-
+ mate-session/gsm-manager.h           |   2 +
+ mate-session/main.c                  |  73 ++-
+ wayfire/Makefile.am                  |   9 +
+ wayfire/mate-wayland.desktop.in      |   4 +-
+ wayfire/startmatewayland.in          | 124 +++++
+ wayfire/wayfire.ini.in               |   4 +
+ 10 files changed, 219 insertions(+), 742 deletions(-)
+ create mode 100644 wayfire/startmatewayland.in
+
+diff --git a/data/org.mate.session.gschema.xml.in b/data/org.mate.session.gschema.xml.in
+index ca506771..ac1b6509 100644
+--- a/data/org.mate.session.gschema.xml.in
++++ b/data/org.mate.session.gschema.xml.in
+@@ -39,7 +39,7 @@
+     <key name="compositor" type="s">
+       <default>'@DEFAULT_COMPOSITOR@'</default>
+       <summary>Wayland compositor</summary>
+-      <description>The compositor used to run a Wayland session. The value names the compositor to launch; currently supported compositors are 'wayfire'.</description>
++      <description>The compositor used to run a Wayland session. Currently supported compositors are 'wayfire'.</description>
+     </key>
+     <key name="required-components-list" type="as">
+       <default>[ 'windowmanager', 'panel', 'filemanager', 'dock' ]</default>
+diff --git a/mate-session/gsm-compositor.c b/mate-session/gsm-compositor.c
+index a007af47..76b6e8c6 100644
+--- a/mate-session/gsm-compositor.c
++++ b/mate-session/gsm-compositor.c
+@@ -16,705 +16,54 @@
+  * along with this program; if not, write to the Free Software
+  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+  * 02110-1301, USA.
++ *
+  */
+ 
+-#include <config.h>
++#include "config.h"
+ 
+-#include <errno.h>
+-#include <signal.h>
+-#include <string.h>
+-#include <sys/stat.h>
+-#include <sys/types.h>
+ #include <sys/wait.h>
+-#include <unistd.h>
+ 
+-#include <glib.h>
+-#include <glib/gstdio.h>
+ #include <gio/gio.h>
++#include <glib.h>
+ 
+ #include "gsm-compositor.h"
+-#include "gsm-util.h"
+-
+-#define GSM_SCHEMA             "org.mate.session"
+-#define GSM_COMPOSITOR_KEY     "compositor"
+-
+-/* How long to wait for the compositor's Wayland socket to appear. */
+-#define GSM_COMPOSITOR_TIMEOUT     10 /* seconds */
+-#define GSM_COMPOSITOR_WAIT_US     100000 /* 100 ms */
+-
+-/* How long to wait for the compositor to exit after SIGTERM. */
+-#define GSM_COMPOSITOR_EXIT_TIMEOUT 5 /* seconds */
+-
+-typedef struct {
+-        const gchar *name;             /* value used in GSettings / MATE_COMPOSITOR */
+-        const gchar *binary;           /* executable to launch */
+-        const gchar *config_subdir;    /* directory under ~/.config/mate for the user config; NULL = none */
+-        const gchar *config_template;  /* default config installed under GTKBUILDER_DIR; NULL = none */
+-        gboolean     needs_config_arg; /* whether "-c <config>" is passed (user copy or system template) */
+-} GsmCompositorInfo;
+-
+-/* Keep this table sorted for readability. To add support for another
+- * compositor, add an entry here (e.g. labwc) and document its GSettings
+- * value. The session startup and shutdown logic is compositor agnostic. */
+-static const GsmCompositorInfo compositor_infos[] = {
+-        { "wayfire", "wayfire", "wayfire", "wayfire.ini", TRUE },
+-        { NULL }
+-};
+-
+-static GPid     compositor_pid      = 0;
+-static guint    compositor_watch_id  = 0;
+-static guint    compositor_watchdog_id = 0;
+-static gboolean compositor_started   = FALSE;
+-static gboolean compositor_stopping  = FALSE;
+-static gchar   *xwayland_display    = NULL;
+-
+-static void compositor_exited (GPid pid, gint status, gpointer data);
+-
+-static gchar *
+-get_compositor_settings_name (void)
+-{
+-        GSettingsSchemaSource *source;
+-        GSettingsSchema       *schema;
+-        GSettings             *settings;
+-        gchar                 *name = NULL;
+-
+-        source = g_settings_schema_source_get_default ();
+-        if (source == NULL) {
+-                return NULL;
+-        }
+-
+-        schema = g_settings_schema_source_lookup (source, GSM_SCHEMA, TRUE);
+-        if (schema == NULL || !g_settings_schema_has_key (schema, GSM_COMPOSITOR_KEY)) {
+-                if (schema != NULL) {
+-                        g_settings_schema_unref (schema);
+-                }
+-                return NULL;
+-        }
+-
+-        settings = g_settings_new (GSM_SCHEMA);
+-        name = g_settings_get_string (settings, GSM_COMPOSITOR_KEY);
+-        g_object_unref (settings);
+-        g_settings_schema_unref (schema);
+-
+-        return name;
+-}
+-
+-static const GsmCompositorInfo *
+-get_compositor_info (void)
+-{
+-        const GsmCompositorInfo *info;
+-        const gchar             *name;
+-        gchar                   *settings_name = NULL;
+-
+-        name = g_getenv ("MATE_COMPOSITOR");
+-        if (name == NULL || name[0] == '\0') {
+-                settings_name = get_compositor_settings_name ();
+-                name = settings_name;
+-        }
+-
+-        if (name != NULL && name[0] != '\0') {
+-                for (info = compositor_infos; info->name != NULL; info++) {
+-                        if (g_strcmp0 (info->name, name) == 0) {
+-                                g_free (settings_name);
+-                                return info;
+-                        }
+-                }
+-        }
+-
+-        g_warning ("GsmCompositor: unknown compositor '%s', using the default one",
+-                   name != NULL ? name : "(none)");
+-        g_free (settings_name);
+-
+-        return &compositor_infos[0];
+-}
+-
+-static gchar *
+-get_config_dir (void)
+-{
+-        const gchar *config_home;
+-
+-        config_home = g_getenv ("XDG_CONFIG_HOME");
+-        if (config_home != NULL && config_home[0] != '\0') {
+-                return g_build_filename (config_home, "mate", NULL);
+-        }
+-
+-        return g_build_filename (g_get_home_dir (), ".config", "mate", NULL);
+-}
+-
+-static gchar *
+-strip_quotes (const gchar *value)
+-{
+-        gchar *v;
+-        gsize  len;
+-
+-        v = g_strstrip (g_strdup (value));
+-        len = strlen (v);
+-
+-        if (len >= 2
+-            && (v[0] == '"' || v[0] == '\'')
+-            && v[len - 1] == v[0]) {
+-                memmove (v, v + 1, len - 2);
+-                v[len - 2] = '\0';
+-        }
+-
+-        return v;
+-}
+-
+-/* If the user did not set an explicit keyboard layout, export the system
+- * layout from /etc/vconsole.conf so that libxkbcommon applies it when the
+- * compositor configuration does not specify xkb_layout. */
+-static void
+-set_default_xkb_layout (void)
+-{
+-        gchar   *contents;
+-        gchar  **lines;
+-        gchar   *layout = NULL;
+-        gchar   *variant = NULL;
+-        gchar   *keymap = NULL;
+-        gint     i;
+-
+-        if (g_getenv ("XKB_DEFAULT_LAYOUT") != NULL) {
+-                return;
+-        }
+-
+-        if (!g_file_get_contents ("/etc/vconsole.conf", &contents, NULL, NULL)) {
+-                return;
+-        }
+-
+-        lines = g_strsplit (contents, "\n", -1);
+-        for (i = 0; lines[i] != NULL; i++) {
+-                gchar *line = g_strstrip (g_strdup (lines[i]));
+-
+-                if (g_str_has_prefix (line, "KEYMAP=")) {
+-                        keymap = strip_quotes (line + strlen ("KEYMAP="));
+-                } else if (g_str_has_prefix (line, "XKBLAYOUT=")) {
+-                        layout = strip_quotes (line + strlen ("XKBLAYOUT="));
+-                } else if (g_str_has_prefix (line, "XKBVARIANT=")) {
+-                        variant = strip_quotes (line + strlen ("XKBVARIANT="));
+-                }
+-
+-                g_free (line);
+-        }
+-        g_strfreev (lines);
+-
+-        if (layout != NULL && layout[0] != '\0') {
+-                gsm_util_setenv ("XKB_DEFAULT_LAYOUT", layout);
+-                if (variant != NULL && variant[0] != '\0') {
+-                        gsm_util_setenv ("XKB_DEFAULT_VARIANT", variant);
+-                }
+-        } else if (keymap != NULL && keymap[0] != '\0') {
+-                gsm_util_setenv ("XKB_DEFAULT_LAYOUT", keymap);
+-        }
+-
+-        g_free (layout);
+-        g_free (variant);
+-        g_free (keymap);
+-        g_free (contents);
+-}
+-
+-/* Return the compositor configuration file to use, creating a private copy
+- * of the default configuration on the first login so the user can freely
+- * customize it afterwards. If a user configuration already exists it is
+- * reused as-is. Falls back to the system template when a copy cannot be
+- * made, and returns NULL if no configuration is available at all. */
+-static gchar *
+-get_compositor_config_path (const GsmCompositorInfo *info)
+-{
+-        gchar *config_dir;
+-        gchar *config_path;
+-        gchar *template_path;
+-
+-        config_dir = g_build_filename (get_config_dir (),
+-                                       info->config_subdir, NULL);
+-        config_path = g_build_filename (config_dir, info->config_template, NULL);
+-
+-        if (g_mkdir_with_parents (config_dir, 0755) != 0) {
+-                g_debug ("GsmCompositor: cannot create %s: %s",
+-                         config_dir, g_strerror (errno));
+-        }
+-        g_free (config_dir);
+-
+-        if (g_file_test (config_path, G_FILE_TEST_EXISTS)) {
+-                return config_path;
+-        }
+-
+-        template_path = g_build_filename (GTKBUILDER_DIR, info->config_template, NULL);
+-        if (g_file_test (template_path, G_FILE_TEST_EXISTS)) {
+-                if (g_file_copy (g_file_new_for_path (template_path),
+-                                 g_file_new_for_path (config_path),
+-                                 G_FILE_COPY_NONE, NULL, NULL, NULL, NULL)) {
+-                        g_free (template_path);
+-                        return config_path;
+-                }
+-
+-                g_warning ("GsmCompositor: unable to install %s, "
+-                           "using the system template %s instead",
+-                           config_path, template_path);
+-                g_free (config_path);
+-                return template_path;
+-        }
+-
+-        g_warning ("GsmCompositor: no compositor configuration found "
+-                   "(looked in %s and %s)",
+-                   config_path, template_path);
+-        g_free (config_path);
+-        g_free (template_path);
+-
+-        return NULL;
+-}
+-
+-static gchar *
+-find_runtime_dir (void)
+-{
+-        const gchar *env;
+-        gchar       *path;
+-
+-        env = g_getenv ("XDG_RUNTIME_DIR");
+-        if (env != NULL && env[0] != '\0') {
+-                return g_strdup (env);
+-        }
+-
+-        path = g_strdup_printf ("/run/user/%u", (guint) getuid ());
+-        if (g_file_test (path, G_FILE_TEST_IS_DIR)) {
+-                return path;
+-        }
+-        g_free (path);
+-
+-        path = g_strdup_printf ("/var/run/user/%u", (guint) getuid ());
+-        if (g_file_test (path, G_FILE_TEST_IS_DIR)) {
+-                return path;
+-        }
+-        g_free (path);
+-
+-        return g_strdup_printf ("/tmp/%s-runtime",
+-                                g_get_user_name () != NULL
+-                                        ? g_get_user_name () : "mate");
+-}
+-
+-static gboolean
+-ensure_runtime_dir (GError **error)
+-{
+-        gchar   *runtime_dir;
+-        gboolean ret = TRUE;
+-
+-        runtime_dir = find_runtime_dir ();
+-        gsm_util_setenv ("XDG_RUNTIME_DIR", runtime_dir);
+-
+-        if (!g_file_test (runtime_dir, G_FILE_TEST_IS_DIR)) {
+-                if (g_mkdir_with_parents (runtime_dir, 0700) != 0) {
+-                        g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED,
+-                                     "Unable to create runtime directory %s: %s",
+-                                     runtime_dir, g_strerror (errno));
+-                        ret = FALSE;
+-                }
+-        } else {
+-                chmod (runtime_dir, 0700);
+-        }
+-
+-        g_free (runtime_dir);
+-
+-        return ret;
+-}
+-
+-static GList *
+-list_sockets (const gchar *dir)
+-{
+-        GList       *sockets = NULL;
+-        GDir        *gd;
+-        const gchar *name;
+-
+-        gd = g_dir_open (dir, 0, NULL);
+-        if (gd == NULL) {
+-                return NULL;
+-        }
+-
+-        while ((name = g_dir_read_name (gd)) != NULL) {
+-                gchar      *path;
+-                struct stat st;
+-
+-                if (!g_str_has_prefix (name, "wayland-")) {
+-                        continue;
+-                }
+-
+-                path = g_build_filename (dir, name, NULL);
+-                if (g_stat (path, &st) == 0 && S_ISSOCK (st.st_mode)) {
+-                        sockets = g_list_prepend (sockets, g_strdup (path));
+-                }
+-                g_free (path);
+-        }
+-
+-        g_dir_close (gd);
+-
+-        return sockets;
+-}
+-
+-static gboolean
+-list_contains (GList      *list,
+-               const gchar *path)
+-{
+-        GList *l;
+-
+-        for (l = list; l != NULL; l = l->next) {
+-                if (g_strcmp0 (l->data, path) == 0) {
+-                        return TRUE;
+-                }
+-        }
+-
+-        return FALSE;
+-}
+-
+-/* Wait until the compositor creates a new Wayland socket that did not exist
+- * before it was launched (the compositor picks the first free "wayland-N"
+- * name itself, so we cannot assume a specific one). */
+-static gchar *
+-wait_for_new_socket (const gchar *runtime_dir,
+-                     GList       *existing)
+-{
+-        gint i;
+-
+-        for (i = 0; i < GSM_COMPOSITOR_TIMEOUT * (1000000 / GSM_COMPOSITOR_WAIT_US); i++) {
+-                GList  *current;
+-                GList  *l;
+-                gchar  *found = NULL;
+-
+-                current = list_sockets (runtime_dir);
+-                for (l = current; l != NULL; l = l->next) {
+-                        if (!list_contains (existing, l->data)) {
+-                                found = g_strdup (l->data);
+-                                break;
+-                        }
+-                }
+-                g_list_free_full (current, g_free);
+-
+-                if (found != NULL) {
+-                        return found;
+-                }
+-
+-                g_usleep (GSM_COMPOSITOR_WAIT_US);
+-        }
+-
+-        return NULL;
+-}
+-
+-#define X11_SOCKET_DIR "/tmp/.X11-unix"
+-
+-static GList *
+-list_x_displays (void)
+-{
+-        GList       *displays = NULL;
+-        GDir        *gd;
+-        const gchar *name;
+-
+-        gd = g_dir_open (X11_SOCKET_DIR, 0, NULL);
+-        if (gd == NULL) {
+-                return NULL;
+-        }
+-
+-        while ((name = g_dir_read_name (gd)) != NULL) {
+-                gchar      *path;
+-                struct stat st;
+-
+-                if (!g_str_has_prefix (name, "X")) {
+-                        continue;
+-                }
+-
+-                path = g_build_filename (X11_SOCKET_DIR, name, NULL);
+-                if (g_stat (path, &st) == 0 && S_ISSOCK (st.st_mode)) {
+-                        displays = g_list_prepend (displays, path);
+-                } else {
+-                        g_free (path);
+-                }
+-        }
+-
+-        g_dir_close (gd);
+-
+-        return displays;
+-}
+-
+-/* Find the Xwayland display after the compositor has started.  Xwayland may
+- * create a brand-new X11 socket or reuse one that already existed when we
+- * snapshotted the directory (e.g. the previous session's :0).  Because of
+- * this reuse, we cannot rely on "new socket" detection alone.  Instead we
+- * poll for any X11 socket to appear; the first NEW one we find is Xwayland.
+- * Returns the display number as a string (e.g. "1") or NULL on timeout. */
+-static gchar *
+-wait_for_new_xdisplay (GList *existing)
+-{
+-        gint i;
+-
+-        for (i = 0; i < GSM_COMPOSITOR_TIMEOUT * (1000000 / GSM_COMPOSITOR_WAIT_US); i++) {
+-                GList  *current;
+-                GList  *l;
+-                gchar  *found = NULL;
+-
+-                current = list_x_displays ();
+-                for (l = current; l != NULL; l = l->next) {
+-                        if (!list_contains (existing, l->data)) {
+-                                const gchar *basename;
+-
+-                                basename = g_path_get_basename (l->data);
+-                                found = g_strdup (basename + 1); /* strip leading 'X' */
+-                                break;
+-                        }
+-                }
+-                g_list_free_full (current, g_free);
+-
+-                if (found != NULL) {
+-                        return found;
+-                }
+-
+-                g_usleep (GSM_COMPOSITOR_WAIT_US);
+-        }
+-
+-        return NULL;
+-}
+ 
++/* Ask logind to terminate the session scope. */
+ gboolean
+-gsm_compositor_start (GError **error)
+-{
+-        const GsmCompositorInfo *info;
+-        gchar                   *config_path = NULL;
+-        gchar                   *runtime_dir;
+-        gchar                   *socket_path;
+-        gchar                   *socket_name;
+-        gchar                  **argv;
+-        GList                   *existing;
+-        GList                   *existing_x;
+-        GError                  *spawn_error = NULL;
+-
+-        g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+-
+-        info = get_compositor_info ();
+-
+-        /* Make the environment look like a proper Wayland session. */
+-        gsm_util_setenv ("XDG_SESSION_TYPE", "wayland");
+-        gsm_util_setenv ("XDG_CURRENT_DESKTOP", "MATE");
+-        set_default_xkb_layout ();
+-
+-        if (!ensure_runtime_dir (error)) {
+-                return FALSE;
+-        }
+-
+-        if (g_find_program_in_path (info->binary) == NULL) {
+-                g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_NOENT,
+-                             "The Wayland compositor '%s' is not installed",
+-                             info->binary);
+-                return FALSE;
+-        }
+-
+-        if (info->needs_config_arg) {
+-                config_path = get_compositor_config_path (info);
+-                if (config_path != NULL) {
+-                        argv = g_new0 (gchar *, 4);
+-                        argv[0] = g_strdup (info->binary);
+-                        argv[1] = g_strdup ("-c");
+-                        argv[2] = g_strdup (config_path);
+-                } else {
+-                        argv = g_new0 (gchar *, 2);
+-                        argv[0] = g_strdup (info->binary);
+-                }
+-        } else {
+-                argv = g_new0 (gchar *, 2);
+-                argv[0] = g_strdup (info->binary);
+-        }
+-
+-        runtime_dir = g_strdup (g_getenv ("XDG_RUNTIME_DIR"));
+-        existing = list_sockets (runtime_dir);
+-        existing_x = list_x_displays ();
+-
+-        g_debug ("GsmCompositor: starting %s", info->binary);
+-
+-        if (!g_spawn_async (NULL, argv, NULL,
+-                            G_SPAWN_DO_NOT_REAP_CHILD | G_SPAWN_SEARCH_PATH,
+-                            NULL, NULL, &compositor_pid,
+-                            &spawn_error)) {
+-                g_propagate_error (error, spawn_error);
+-                g_strfreev (argv);
+-                g_free (config_path);
+-                g_list_free_full (existing, g_free);
+-                g_list_free_full (existing_x, g_free);
+-                g_free (runtime_dir);
+-                return FALSE;
+-        }
+-
+-        g_strfreev (argv);
+-        g_free (config_path);
+-
+-        compositor_started = TRUE;
+-
+-        socket_path = wait_for_new_socket (runtime_dir, existing);
+-        g_list_free_full (existing, g_free);
+-
+-        if (socket_path == NULL) {
+-                g_set_error (error, G_SPAWN_ERROR, G_SPAWN_ERROR_FAILED,
+-                             "The Wayland compositor '%s' failed to start "
+-                             "(no Wayland socket appeared within %d seconds)",
+-                             info->binary, GSM_COMPOSITOR_TIMEOUT);
+-                g_free (socket_path);
+-                g_free (runtime_dir);
+-                gsm_compositor_stop ();
+-                return FALSE;
+-        }
+-
+-        socket_name = g_path_get_basename (socket_path);
+-        g_debug ("GsmCompositor: compositor '%s' running on %s",
+-                 info->binary, socket_name);
+-        gsm_util_setenv ("WAYLAND_DISPLAY", socket_name);
+-
+-        g_free (socket_name);
+-        g_free (socket_path);
+-        g_free (runtime_dir);
+-
+-        /* Detect the Xwayland display for X11 clients.  This is best-effort:
+-         * compositors that disable Xwayland will simply not create a display. */
+-        {
+-                gchar *xdisplay;
+-
+-                xdisplay = wait_for_new_xdisplay (existing_x);
+-
+-                if (xdisplay != NULL) {
+-                        gchar *display_name;
+-
+-                        display_name = g_strdup_printf (":%s", xdisplay);
+-                        g_debug ("GsmCompositor: Xwayland running on %s", display_name);
+-                        gsm_util_setenv ("DISPLAY", display_name);
+-
+-                        g_free (xwayland_display);
+-                        xwayland_display = display_name;
+-                        g_free (xdisplay);
+-                } else {
+-                        /* Xwayland socket not detected; assume the first
+-                         * display.  Without this, GDK will overwrite DISPLAY
+-                         * with the Wayland socket name during gtk_init. */
+-                        g_debug ("GsmCompositor: no Xwayland display detected "
+-                                 "(assuming :0)");
+-                        g_free (xwayland_display);
+-                        xwayland_display = g_strdup (":0");
+-                        gsm_util_setenv ("DISPLAY", ":0");
+-                }
+-        }
+-
+-        g_list_free_full (existing_x, g_free);
+-
+-        return TRUE;
+-}
+-
+-/* Watchdog timer: if the GLib main loop is wedged by the compositor crash
+- * (e.g. GDK-Wayland connection loss stops dispatching child watches), this
+- * periodic timer still fires and detects the dead child via waitpid(). */
+-static gboolean
+-compositor_watchdog_cb (gpointer data)
+-{
+-        gint status;
+-        gint ret;
+-
+-        if (!compositor_started || compositor_pid <= 0)
+-                return G_SOURCE_REMOVE;
+-
+-        ret = waitpid (compositor_pid, &status, WNOHANG);
+-        if (ret > 0) {
+-                g_debug ("GsmCompositor: watchdog detected compositor exit");
+-                compositor_exited (compositor_pid, status, data);
+-                return G_SOURCE_REMOVE;
+-        }
+-
+-        return G_SOURCE_CONTINUE;
+-}
+-
+-static void
+-compositor_exited (GPid     pid,
+-                   gint     status,
+-                   gpointer data)
+-{
+-        GsmManager *manager = data;
+-        gboolean    running = FALSE;
+-
+-        g_spawn_close_pid (pid);
+-
+-        compositor_pid = 0;
+-        compositor_started = FALSE;
+-        compositor_watch_id = 0;
+-
+-        if (compositor_watchdog_id > 0) {
+-                g_source_remove (compositor_watchdog_id);
+-                compositor_watchdog_id = 0;
+-        }
+-
+-        if (compositor_stopping) {
+-                return;
+-        }
+-
+-        g_warning ("GsmCompositor: the compositor exited unexpectedly");
+-
+-        if (manager != NULL
+-            && gsm_manager_is_session_running (manager, &running, NULL)
+-            && running) {
+-                g_debug ("GsmCompositor: ending the session because the compositor died");
+-                gsm_manager_logout (manager, GSM_MANAGER_LOGOUT_MODE_FORCE, NULL);
+-        }
+-}
+-
+-void
+-gsm_compositor_watch (GsmManager *manager)
+-{
+-        if (!compositor_started || compositor_pid <= 0) {
+-                return;
+-        }
+-
+-        compositor_watch_id = g_child_watch_add (compositor_pid,
+-                                                 compositor_exited,
+-                                                 manager);
+-
+-        /* Belt-and-suspenders: a periodic watchdog that detects compositor
+-         * death via waitpid() even if the main loop stops dispatching the
+-         * child-watch source (e.g. GDK-Wayland connection loss). */
+-        compositor_watchdog_id = g_timeout_add_seconds (1,
+-                                                        compositor_watchdog_cb,
+-                                                        manager);
+-}
+-
+-void
+-gsm_compositor_stop (void)
+-{
+-        gint64 deadline;
+-        gint   status;
+-
+-        if (!compositor_started || compositor_pid <= 0) {
+-                return;
+-        }
+-
+-        compositor_stopping = TRUE;
+-
+-        if (compositor_watch_id > 0) {
+-                g_source_remove (compositor_watch_id);
+-                compositor_watch_id = 0;
+-        }
+-
+-        if (compositor_watchdog_id > 0) {
+-                g_source_remove (compositor_watchdog_id);
+-                compositor_watchdog_id = 0;
+-        }
+-
+-        g_debug ("GsmCompositor: terminating the compositor");
+-        kill (compositor_pid, SIGTERM);
+-
+-        deadline = g_get_monotonic_time () + GSM_COMPOSITOR_EXIT_TIMEOUT * G_TIME_SPAN_SECOND;
+-        while (waitpid (compositor_pid, &status, WNOHANG) == 0) {
+-                if (g_get_monotonic_time () > deadline) {
+-                        g_warning ("GsmCompositor: compositor did not exit, sending SIGKILL");
+-                        kill (compositor_pid, SIGKILL);
+-                        waitpid (compositor_pid, &status, 0);
+-                        break;
+-                }
+-                g_usleep (50000);
+-        }
+-
+-        compositor_pid = 0;
+-        compositor_started = FALSE;
+-}
+-
+-const gchar *
+-gsm_compositor_get_display (void)
+-{
+-        return xwayland_display;
++gsm_compositor_terminate_session (void)
++{
++	const gchar *session_id;
++	gchar      **argv;
++	gchar       *loginctl;
++	GError      *error = NULL;
++	gint         status;
++
++	session_id = g_getenv ("XDG_SESSION_ID");
++	if (session_id == NULL || session_id[0] == '\0') {
++		return FALSE;
++	}
++
++	loginctl = g_find_program_in_path ("loginctl");
++	if (loginctl == NULL) {
++		return FALSE;
++	}
++	g_free (loginctl);
++
++	argv = g_new0 (gchar *, 4);
++	argv[0] = "loginctl";
++	argv[1] = "terminate-session";
++	argv[2] = (gchar *) session_id;
++
++	if (!g_spawn_sync (NULL, argv, NULL, G_SPAWN_SEARCH_PATH,
++	                   NULL, NULL, NULL, NULL, &status, &error)) {
++		g_warning ("GsmCompositor: unable to terminate the session: %s",
++		           error != NULL ? error->message : "unknown error");
++		g_clear_error (&error);
++		g_free (argv);
++		return FALSE;
++	}
++
++	g_free (argv);
++
++	return WIFEXITED (status) && WEXITSTATUS (status) == 0;
+ }
+diff --git a/mate-session/gsm-compositor.h b/mate-session/gsm-compositor.h
+index a709bb55..a559bd2d 100644
+--- a/mate-session/gsm-compositor.h
++++ b/mate-session/gsm-compositor.h
+@@ -22,16 +22,10 @@
+ #define __GSM_COMPOSITOR_H
+ 
+ #include <glib.h>
+-#include <gio/gio.h>
+-
+-#include "gsm-manager.h"
+ 
+ G_BEGIN_DECLS
+ 
+-gboolean gsm_compositor_start   (GError     **error);
+-void     gsm_compositor_watch   (GsmManager  *manager);
+-void     gsm_compositor_stop    (void);
+-const gchar *gsm_compositor_get_display (void);
++gboolean gsm_compositor_terminate_session (void);
+ 
+ G_END_DECLS
+ 
+diff --git a/mate-session/gsm-manager.c b/mate-session/gsm-manager.c
+index 63e5b997..02181ad9 100644
+--- a/mate-session/gsm-manager.c
++++ b/mate-session/gsm-manager.c
+@@ -458,7 +458,7 @@ quit_request_completed_systemd (GsmSystemd *systemd,
+ }
+ #endif
+ 
+-static void
++void
+ gsm_manager_quit (GsmManager *manager)
+ {
+         GsmConsolekit *consolekit;
+@@ -941,7 +941,7 @@ maybe_restart_user_bus (GsmManager *manager)
+                                              g_variant_new ("(ss)", "dbus.service", "replace"),
+                                              NULL,
+                                              G_DBUS_CALL_FLAGS_NONE,
+-                                             -1,
++                                             5000, /* 5 second timeout — don't block session exit */
+                                              NULL,
+                                              &error);
+ 
+diff --git a/mate-session/gsm-manager.h b/mate-session/gsm-manager.h
+index 4c0cb547..c89b33d1 100644
+--- a/mate-session/gsm-manager.h
++++ b/mate-session/gsm-manager.h
+@@ -178,6 +178,8 @@ gboolean            gsm_manager_is_session_running             (GsmManager *mana
+                                                                 gboolean *running,
+                                                                 GError **error);
+ 
++void                gsm_manager_quit                           (GsmManager *manager);
++
+ void                _gsm_manager_set_renderer                  (GsmManager     *manager,
+                                                                 const char     *renderer);
+ 
+diff --git a/mate-session/main.c b/mate-session/main.c
+index a04750f9..c04ffc47 100644
+--- a/mate-session/main.c
++++ b/mate-session/main.c
+@@ -84,7 +84,6 @@ static gboolean failsafe = FALSE;
+ static gboolean show_version = FALSE;
+ static gboolean debug = FALSE;
+ static gboolean disable_acceleration_check = FALSE;
+-static gboolean wayland_mode = FALSE;
+ 
+ static gboolean
+ initialize_gsettings (void)
+@@ -269,7 +268,7 @@ static void append_required_apps(GsmManager* manager)
+ 
+ 			component = required_components[i];
+ 
+-			/* On Wayland the compositor (e.g. Wayfire) is the window
++			/* On Wayland the compositor is the window
+ 			 * manager, so the required windowmanager component would
+ 			 * conflict with it and is not started. */
+ 			if (gsm_util_session_is_wayland ()
+@@ -609,6 +608,7 @@ int main(int argc, char** argv)
+ 	struct sigaction sa;
+ 	GError* error = NULL;
+ 	const char* display_str;
++	gchar* saved_display = NULL;
+ 	GsmManager* manager;
+ 	GsmStore* client_store;
+ 	GsmXsmpServer* xsmp_server;
+@@ -625,7 +625,6 @@ int main(int argc, char** argv)
+ 		{"failsafe", 'f', 0, G_OPTION_ARG_NONE, &failsafe, N_("Do not load user-specified applications"), NULL},
+ 		{"version", 0, 0, G_OPTION_ARG_NONE, &show_version, N_("Version of this application"), NULL},
+ 		{ "disable-acceleration-check", 0, 0, G_OPTION_ARG_NONE, &disable_acceleration_check, N_("Disable hardware acceleration check"), NULL },
+-		{ "wayland", 0, 0, G_OPTION_ARG_NONE, &wayland_mode, N_("Start a Wayland session, launching the compositor"), NULL },
+ 		{NULL, 0, 0, 0, NULL, NULL, NULL }
+ 	};
+ 
+@@ -646,27 +645,12 @@ int main(int argc, char** argv)
+ 	sigemptyset(&sa.sa_mask);
+ 	sigaction(SIGPIPE, &sa, 0);
+ 
+-	/* On a Wayland session the compositor must be running before any toolkit
+-	 * initializes (GDK needs the Wayland socket to exist), so detect the
+-	 * option ourselves here and launch the compositor. */
+-	if (!wayland_mode) {
+-		int i;
+-
+-		for (i = 1; i < argc; i++) {
+-			if (g_strcmp0 (argv[i], "--wayland") == 0) {
+-				wayland_mode = TRUE;
+-				break;
+-			}
+-		}
+-	}
+-
+-	if (wayland_mode) {
+-		if (!gsm_compositor_start (&error)) {
+-			gsm_util_init_error (TRUE, "Unable to start the Wayland compositor: %s",
+-			                     error != NULL ? error->message : "unknown error");
+-			/* not reached */
+-		}
+-	}
++	/* On a Wayland session the compositor is already running: the display
++	 * manager started it through startmatewayland, and this process is a
++	 * child of the compositor. Remember the X11 (Xwayland) display
++         * the compositor provided, because GDK may overwrite DISPLAY with the
++         * Wayland socket name during gtk_init and we want the correct value for X11 clients below. */
++	saved_display = g_strdup (g_getenv ("DISPLAY"));
+ 
+ 	error = NULL;
+ 	gtk_init_with_args(&argc, &argv, (char*) _(" - the MATE session manager"), entries, GETTEXT_PACKAGE, &error);
+@@ -733,22 +717,21 @@ int main(int argc, char** argv)
+ 		display_str = gdk_display_get_name (gdk_display_get_default());
+ 		gsm_util_setenv("DISPLAY", display_str);
+ 	} else {
+-		const gchar *xdisp;
+-
+ 		/* Export the Wayland display for bus activated children. */
+ 		display_str = g_getenv ("WAYLAND_DISPLAY");
+ 		if (display_str != NULL) {
+ 			gsm_util_setenv ("WAYLAND_DISPLAY", display_str);
+ 		}
+ 
+-		/* Set the Xwayland display for X11 clients.  Use the value
+-		 * saved by gsm_compositor_start() rather than reading DISPLAY
+-		 * back from the environment, because GDK may have overwritten
+-		 * it with the Wayland socket name during gtk_init. */
+-		xdisp = gsm_compositor_get_display ();
+-		if (xdisp != NULL) {
+-			gsm_util_setenv ("DISPLAY", xdisp);
++		/* Set the Xwayland display for X11 clients.  Use the value the
++		 * compositor provided before gtk_init (which may have overwritten
++		 * DISPLAY with the Wayland socket name) rather than reading DISPLAY
++		 * back from the environment. */
++		if (saved_display != NULL && saved_display[0] != '\0') {
++			gsm_util_setenv ("DISPLAY", saved_display);
+ 		}
++		g_free (saved_display);
++		saved_display = NULL;
+ 	}
+ 
+ 	/* Some third-party programs rely on MATE_DESKTOP_SESSION_ID to
+@@ -820,14 +803,8 @@ int main(int argc, char** argv)
+ 	_gsm_manager_set_renderer (manager, gl_renderer);
+ 	gsm_manager_start(manager);
+ 
+-	/* Watch the compositor so that a compositor crash ends the session. */
+-	gsm_compositor_watch (manager);
+-
+ 	gtk_main();
+ 
+-	/* Session is over (logout); stop the compositor. */
+-	gsm_compositor_stop ();
+-
+ 	if (xsmp_server != NULL)
+ 	{
+ 		g_object_unref(xsmp_server);
+@@ -855,6 +832,24 @@ int main(int argc, char** argv)
+ 	}
+ 
+ 	msm_gnome_stop();
++
++	/* Reset the signal handlers loginctl might trigger, then ask logind to
++	 * terminate the session scope.  This frees the seat and display so the
++	 * display manager returns to the login screen promptly instead of
++	 * blocking on a lingering session scope after logout. */
++	{
++		struct sigaction sa;
++
++		memset (&sa, 0, sizeof (sa));
++		sa.sa_handler = SIG_DFL;
++		sigemptyset (&sa.sa_mask);
++		sigaction (SIGTERM, &sa, NULL);
++		sigaction (SIGINT, &sa, NULL);
++		sigaction (SIGHUP, &sa, NULL);
++	}
++
++	gsm_compositor_terminate_session ();
++
+ 	mdm_log_shutdown();
+ 
+ 	return 0;
+diff --git a/wayfire/Makefile.am b/wayfire/Makefile.am
+index 7354103a..6ecb64cb 100644
+--- a/wayfire/Makefile.am
++++ b/wayfire/Makefile.am
+@@ -4,6 +4,13 @@ sessiondata_DATA = wayfire.ini
+ wayfire.ini: wayfire.ini.in
+ 	$(AM_V_GEN) cp $(srcdir)/wayfire.ini.in $@
+ 
++bin_SCRIPTS = startmatewayland
++
++startmatewayland: startmatewayland.in Makefile
++	$(AM_V_GEN) sed -e 's,[@]DEFAULT_COMPOSITOR[@],$(DEFAULT_COMPOSITOR),g' \
++		-e 's,[@]pkgdatadir[@],$(pkgdatadir),g' \
++		$< > $@ && chmod +x $@
++
+ waylandsessionsdir = $(datadir)/wayland-sessions
+ waylandsession_in_files = mate-wayland.desktop.in
+ waylandsessions_DATA = $(waylandsession_in_files:.desktop.in=.desktop)
+@@ -20,11 +27,13 @@ endif
+ 
+ EXTRA_DIST =				\
+ 	$(waylandsession_in_files)	\
++	startmatewayland.in		\
+ 	wayfire.ini.in			\
+ 	$(schemas_DATA)
+ 
+ CLEANFILES =				\
+ 	$(waylandsessions_DATA)		\
++	startmatewayland		\
+ 	wayfire.ini
+ 
+ -include $(top_srcdir)/git.mk
+diff --git a/wayfire/mate-wayland.desktop.in b/wayfire/mate-wayland.desktop.in
+index e21d171a..f6f8014a 100644
+--- a/wayfire/mate-wayland.desktop.in
++++ b/wayfire/mate-wayland.desktop.in
+@@ -1,8 +1,8 @@
+ [Desktop Entry]
+ Name=MATE (Wayland)
+ Comment=This session logs you into MATE on Wayland
+-Exec=mate-session --wayland
+-TryExec=wayfire
++Exec=startmatewayland
++TryExec=startmatewayland
+ Icon=
+ Type=Application
+ DesktopNames=MATE
+diff --git a/wayfire/startmatewayland.in b/wayfire/startmatewayland.in
+new file mode 100644
+index 00000000..7fac9dec
+--- /dev/null
++++ b/wayfire/startmatewayland.in
+@@ -0,0 +1,124 @@
++#!/bin/sh
++# startmatewayland -- Start the compositor for a MATE Wayland session.
++#
++# The compositor is the session leader: the display manager launches this
++# command through the wayland-sessions desktop file and keeps the greeter
++# hidden only while the compositor process it tracks is running.  When the
++# compositor exits - whether through logout, a crash or a hotkey - the
++# display manager sees the session end and brings the login screen back.
++#
++# MATE's session manager is not started here.  The compositor configuration
++# ([autostart] section in wayfire.ini) runs "mate-session && killall
++# wayfire": the session runs as a child of the compositor and, when it ends,
++# tears the compositor down with it.  This makes wisdom-of-the-session the
++# *only* needed compositor liveness signal - no polling or watchdog code in
++# the session manager.
++#
++# Copyright (C) 2026 MATE Developers
++
++export XDG_SESSION_TYPE=wayland
++[ -n "$XDG_CURRENT_DESKTOP" ] || export XDG_CURRENT_DESKTOP=MATE
++
++# Make sure we have a runtime directory for the Wayland socket.
++if [ -z "$XDG_RUNTIME_DIR" ] || [ ! -d "$XDG_RUNTIME_DIR" ]; then
++    runtime_dir="/tmp/${USER:-mate}-runtime"
++    mkdir -p "$runtime_dir" 2>/dev/null && chmod 700 "$runtime_dir"
++    export XDG_RUNTIME_DIR="$runtime_dir"
++fi
++
++# If the user did not set an explicit keyboard layout, apply the system layout
++# from /etc/vconsole.conf so that libxkbcommon uses it when the compositor
++# configuration does not specify xkb_layout.
++unquote () {
++    case "$1" in
++        \"*\") printf '%s\n' "$1" | sed 's/^"//;s/"$//' ;;
++        \'*\') printf '%s\n' "$1" | sed "s/^'//;s/'$//" ;;
++        *)     printf '%s\n' "$1" ;;
++    esac
++}
++
++if [ -z "$XKB_DEFAULT_LAYOUT" ] && [ -r /etc/vconsole.conf ]; then
++    layout=""
++    variant=""
++    keymap=""
++    while IFS= read -r line; do
++        case "$line" in
++            KEYMAP=*)   keymap=${line#KEYMAP=}   ;;
++            XKBLAYOUT=*) layout=${line#XKBLAYOUT=} ;;
++            XKBVARIANT=*) variant=${line#XKBVARIANT=} ;;
++        esac
++    done < /etc/vconsole.conf
++
++    layout=$(unquote "$layout")
++    variant=$(unquote "$variant")
++    keymap=$(unquote "$keymap")
++    layout=$(printf '%s\n' "$layout"  | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
++    variant=$(printf '%s\n' "$variant" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
++    keymap=$(printf '%s\n' "$keymap"   | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
++
++    if [ -n "$layout" ]; then
++        export XKB_DEFAULT_LAYOUT="$layout"
++        if [ -n "$variant" ]; then
++            export XKB_DEFAULT_VARIANT="$variant"
++        fi
++    elif [ -n "$keymap" ]; then
++        export XKB_DEFAULT_LAYOUT="$keymap"
++    fi
++fi
++
++# Resolve the compositor to run.  $MATE_COMPOSITOR overrides the GSettings
++# choice, which in turn falls back to the configure-time default.
++compositor=${MATE_COMPOSITOR:-}
++if [ -z "$compositor" ]; then
++    compositor=$(gsettings get org.mate.session compositor 2>/dev/null | tr -d "'")
++fi
++[ -n "$compositor" ] || compositor=@DEFAULT_COMPOSITOR@
++
++# Per-compositor configuration handling.  To support another compositor
++# (e.g. labwc) add a case here, ship its template in this directory and
++# document its GSettings value.
++config_subdir=""
++config_template=""
++needs_config_arg=0
++case "$compositor" in
++    wayfire)
++        config_subdir=wayfire
++        config_template=wayfire.ini
++        needs_config_arg=1
++        ;;
++    *)
++        echo "startmatewayland: unsupported compositor '$compositor'" >&2
++        ;;
++esac
++
++config_arg=""
++if [ "$needs_config_arg" = 1 ]; then
++    if [ -n "$XDG_CONFIG_HOME" ]; then
++        config_dir=$XDG_CONFIG_HOME/mate
++    else
++        config_dir=$HOME/.config/mate
++    fi
++    config_path=$config_dir/$config_subdir/$config_template
++
++    # Create a private copy of the default configuration on the first login
++    # so the user can customize it afterwards; fall back to the system
++    # template read-only when a copy cannot be made.
++    if [ ! -f "$config_path" ]; then
++        mkdir -p "$config_dir/$config_subdir" 2>/dev/null
++        if [ -f @pkgdatadir@/$config_template ]; then
++            cp @pkgdatadir@/$config_template "$config_path" 2>/dev/null || true
++        fi
++    fi
++
++    if [ -f "$config_path" ]; then
++        config_arg="-c $config_path"
++    elif [ -f @pkgdatadir@/$config_template ]; then
++        config_arg="-c @pkgdatadir@/$config_template"
++    else
++        echo "startmatewayland: no configuration found for $compositor" >&2
++    fi
++fi
++
++# Replace ourselves with the compositor.  It becomes the session leader the
++# display manager tracks, and the greeter returns as soon as it exits.
++exec "$compositor" $config_arg
+\ No newline at end of file
+diff --git a/wayfire/wayfire.ini.in b/wayfire/wayfire.ini.in
+index def1b531..c7ba5ba3 100644
+--- a/wayfire/wayfire.ini.in
++++ b/wayfire/wayfire.ini.in
+@@ -77,6 +77,10 @@ modifier = <super> <alt>
+ # environment (also fixes the slow startup of Gtk+3 applications).
+ 0_env = dbus-update-activation-environment --systemd WAYLAND_DISPLAY DISPLAY XAUTHORITY
+ 
++# The MATE session.  Run while the session does, then kill this compositor so
++# the display manager sees the session end and returns to the login screen.
++session = mate-session && killall wayfire
++
+ # The background and panel are managed by MATE itself (mate-settings-daemon and
+ # mate-panel), so do not start the wf-shell clients. wf-background provides a
+ # placeholder background until then.
+
+From c4308456c9ba25452fa2124da83c22a96c981915 Mon Sep 17 00:00:00 2001
+From: Aleksey Samoilov <samoilov.lex@gmail.com>
+Date: Mon, 31 Aug 2026 06:42:17 -0400
+Subject: [PATCH 8/8] wayland: remove unnecessary gschena file
+
+---
+ wayfire/10_mate-wayland.gschema.override | 7 -------
+ wayfire/Makefile.am                      | 6 +-----
+ 2 files changed, 1 insertion(+), 12 deletions(-)
+ delete mode 100644 wayfire/10_mate-wayland.gschema.override
+
+diff --git a/wayfire/10_mate-wayland.gschema.override b/wayfire/10_mate-wayland.gschema.override
+deleted file mode 100644
+index 4b5e2eab..00000000
+--- a/wayfire/10_mate-wayland.gschema.override
++++ /dev/null
+@@ -1,7 +0,0 @@
+-[org.gnome.desktop.wm.preferences:MATE]
+-button-layout='menu:minimize,maximize,close'
+-
+-[org.gnome.desktop.interface:MATE]
+-gtk-theme='Menta'
+-icon-theme='mate'
+-overlay-scrolling=false
+diff --git a/wayfire/Makefile.am b/wayfire/Makefile.am
+index 6ecb64cb..74f5b62a 100644
+--- a/wayfire/Makefile.am
++++ b/wayfire/Makefile.am
+@@ -15,9 +15,6 @@ waylandsessionsdir = $(datadir)/wayland-sessions
+ waylandsession_in_files = mate-wayland.desktop.in
+ waylandsessions_DATA = $(waylandsession_in_files:.desktop.in=.desktop)
+ 
+-schemasdir = $(datadir)/glib-2.0/schemas
+-schemas_DATA = 10_mate-wayland.gschema.override
+-
+ %.desktop: %.desktop.in Makefile
+ if USE_NLS
+ 	$(AM_V_GEN) $(MSGFMT) --desktop --template $< -d $(top_srcdir)/po -o $@
+@@ -28,8 +25,7 @@ endif
+ EXTRA_DIST =				\
+ 	$(waylandsession_in_files)	\
+ 	startmatewayland.in		\
+-	wayfire.ini.in			\
+-	$(schemas_DATA)
++	wayfire.ini.in
+ 
+ CLEANFILES =				\
+ 	$(waylandsessions_DATA)		\
