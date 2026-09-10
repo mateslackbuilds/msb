@@ -9,4 +9,5 @@ lxml (included in current)
 libsoup3 (included in current)
 gtk-layer-shell (included in current)
 gtksourceview4 (included in current)
-libadwaita (Included in current).
+libadwaita (included in current).
+zenity (included in current).
