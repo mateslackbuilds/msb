@@ -1,4 +1,3 @@
-
 #!/bin/sh
 
 # Slackware build script for mate-panel
@@ -26,7 +25,7 @@
 
 PRGNAM=mate-panel
 VERSION=${VERSION:-1.29.0}
-COMMITVER="d869608bba160725b5c16fa4919722e29d843521"
+COMMITVER="4e6d23d06cc334c05a20b41c299ab3181535741e"
 BUILD=${BUILD:-1}
 TAG=${TAG:-_msb}
 
