@@ -40,6 +40,9 @@ MSBROOT=$(pwd)
 # Check for duplicate sources (default: OFF)
 CHECKDUPLICATE=0
 
+# Rebuild package if the same version is already installed? (default: OFF)
+REBUILDPKG=0
+
 # Loop for all base packages
 for dir in \
   base/mate-common \
@@ -67,6 +70,10 @@ for dir in \
   base/mate-power-manager \
   base/mate-system-monitor \
   ; do
+
+  # start loop in original directory
+  cd $MSBROOT || exit 1
+
   # Get the package name
   package=$(echo $dir | cut -f2- -d /)
 
@@ -78,6 +85,16 @@ for dir in \
 
   # Get the build
   build=$(cat ${package}.SlackBuild | grep "BUILD:" | cut -d "-" -f2 | rev | cut -c 2- | rev)
+
+  if [ $REBUILDPKG -eq 0 ]; then
+    # If the current package version is already installed, skip rebuilding it.
+    pkgname="$(find /var/log/packages/${package}-${version}-*-${build}*msb | sed 's/^.*\///g')"
+    # check against null and non-usable strings
+    if [ -n "$pkgname" ] && [ "${#pkgname}" -gt "${#package}" ]; then
+      echo "MSB package ${pkgname} is already installed ... rebuild skipped"
+      continue
+    fi
+  fi
 
   if [ $CHECKDUPLICATE -eq 1 ]; then
     # Check for duplicate sources
@@ -93,15 +110,13 @@ for dir in \
   # The real build starts here
   TMP=$TMP OUTPUT=$OUTPUT sh ${package}.SlackBuild || exit 1
   if [ "$INST" = "1" ]; then
-    PACKAGE=$(ls $OUTPUT/${package}-${version}-*-${build}*msb.txz 2>/dev/null)
+    PACKAGE="$(ls $OUTPUT/${package}-${version}-*-${build}*msb.txz)"
     if [ -f "$PACKAGE" ]; then
       upgradepkg --install-new --reinstall "$PACKAGE"
     else
-      echo "Error:  package to upgrade "$PACKAGE" not found in $OUTPUT"
+      echo "Error:  package to upgrade $PACKAGE not found in $OUTPUT"
       exit 1
     fi
   fi
 
-  # back to original directory
-  cd $MSBROOT
 done
