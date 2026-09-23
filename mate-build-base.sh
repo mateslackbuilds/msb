@@ -69,6 +69,7 @@ for dir in \
   base/mate-media \
   base/mate-power-manager \
   base/mate-system-monitor \
+  mate-wayland-session \
   ; do
 
   # start loop in original directory
@@ -86,7 +87,7 @@ for dir in \
   # Get the build
   build=$(cat ${package}.SlackBuild | grep "BUILD:" | cut -d "-" -f2 | rev | cut -c 2- | rev)
 
-   if [ $CHECKDUPLICATE -eq 1 ]; then
+  if [ $CHECKDUPLICATE -eq 1 ]; then
     # Check for duplicate sources
     sourcefile="$(ls -l $MSBROOT/$dir/${package}-*.tar.?z* 2>/dev/null | wc -l)"
     if [ $sourcefile -gt 1 ]; then

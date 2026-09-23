@@ -60,6 +60,14 @@ for dir in \
   deps/gupnp \
   deps/libgxps \
   deps/libgepub \
+  deps/yyjson \
+  deps/gtk4-layer-shell \
+  gtk4-layer-shell \
+  glm \
+  wf-config \
+  wayfire \
+  wf-shell \
+  wcm \
   ; do
 
   # start loop in original directory
