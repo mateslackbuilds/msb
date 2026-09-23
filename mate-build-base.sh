@@ -69,7 +69,7 @@ for dir in \
   base/mate-media \
   base/mate-power-manager \
   base/mate-system-monitor \
-  mate-wayland-session \
+  base/mate-wayland-session \
   ; do
 
   # start loop in original directory

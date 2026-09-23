@@ -62,12 +62,11 @@ for dir in \
   deps/libgepub \
   deps/yyjson \
   deps/gtk4-layer-shell \
-  gtk4-layer-shell \
-  glm \
-  wf-config \
-  wayfire \
-  wf-shell \
-  wcm \
+  deps/glm \
+  deps/wf-config \
+  deps/wayfire \
+  deps/wf-shell \
+  deps/wcm \
   ; do
 
   # start loop in original directory
