@@ -39,6 +39,9 @@ MSBROOT=$(pwd)
 # Check for duplicate sources (default: OFF)
 CHECKDUPLICATE=0
 
+# Skip rebuild package, if the same version is already installed (default: ON)
+SKIPREBUILD=1
+
 # Loop for all packages
 for dir in \
   yelp \
@@ -57,6 +60,10 @@ for dir in \
   wf-shell \
   wcm \
   ; do
+
+  # start loop in original directory
+  cd $MSBROOT || exit 1
+
   # Get the package name
   package=$(echo $dir | cut -f2- -d /)
 
@@ -80,14 +87,24 @@ for dir in \
     fi
   fi
 
+  if [ $SKIPREBUILD -eq 1 ]; then
+    # If the current package version is already installed, skip rebuilding it.
+    pkgname="$(find /var/log/packages/${package}-${version}-*-${build}*msb | sed 's/^.*\///g')"
+    # check against null and non-usable strings
+    if [ -n "$pkgname" ] && [ "${#pkgname}" -gt "${#package}" ]; then
+      echo "MSB package ${pkgname} is already installed ... rebuild skipped"
+      continue
+    fi
+  fi
+
   # The real build starts here
   sh ${package}.SlackBuild || exit 1
   if [ "$INST" = "1" ]; then
-    PACKAGE=`ls $TMP/${package}-${version}-*-${build}*msb.txz`
+    PACKAGE="$(ls $OUTPUT/${package}-${version}-*-${build}*msb.txz)"
     if [ -f "$PACKAGE" ]; then
       upgradepkg --install-new --reinstall "$PACKAGE"
     else
-      echo "Error:  package to upgrade "$PACKAGE" not found in $TMP"
+      echo "Error:  package to upgrade $PACKAGE not found in $TMP"
       exit 1
     fi
   fi
