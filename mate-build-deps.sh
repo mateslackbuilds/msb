@@ -67,6 +67,9 @@ for dir in \
   deps/wayfire \
   deps/wf-shell \
   deps/wcm \
+  deps/lightdm \
+  deps/lightdm-slick-greeter \
+  deps/lightdm-settings \
   ; do
 
   # start loop in original directory
