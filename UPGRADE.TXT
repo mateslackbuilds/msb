@@ -1,7 +1,7 @@
-MATE 1.26 to 1.28 Upgrade HOWTO
+MATE 1.28 to 1.29 Upgrade HOWTO
 <mateslackbuilds@gmail.com>
 
-This document explains how to upgrade from MATE 1.26 on MATE 1.28 on
+This document explains how to upgrade from MATE 1.28 on MATE 1.29 on
 Slackware Linux Current
 
 ----------------------------------------------------------------------------
@@ -13,30 +13,31 @@ is complete. Back it up, or take your chances.
 
 OK, now that everything is safely backed up, let's proceed. :-)
 
-You will need the MATE 1.28 packages available on your local system.  Grab
+You will need the MATE 1.29 packages available on your local system.  Grab
 them from the official repository at https://www.slackware.uk/msb/ or
-any of the mirror sites.  Please note that MATE 1.28 has no new packages and 2 removed packages.
+any of the mirror sites.  Please note that MATE 1.29 has some new packages and removed packages.
 
-1.  Upgrade and install all new MATE 1.28 packages:
+1.  Upgrade and install all new MATE 1.29 packages:
 
     upgradepkg --install-new --reinstall /path/to/deps/*.txz
     upgradepkg --install-new --reinstall /path/to/base/*.txz
     upgradepkg --install-new --reinstall /path/to/extra/*.txz
 
 2.  Remove MSB packages that are now part of Slackware:
-    lxml libsoup3
+    lxml libsoup3 gtk-layer-shell gtksourceview4 libadwaita zenity
     It's advised to reinstall those packages from Slackware repository after removing MSB packages.
+    note: they might have different names under Slackware. Please refer to ChangeLog.
 
-3.  Run xwmconfig and select xinitrc.mate-session. This ensures you get the
-    latest copy of xinitrc.mate-session due to changes in mate-session-
-    manager.  ALWAYS run this command for both new installations or upgrades
-    from MATE 1.28
+3.  If you are using X11, run xwmconfig and select xinitrc.mate-session.
+    This ensures you get the latest copy of xinitrc.mate-session due to changes in mate-session-
+    manager. ALWAYS run this command for both new installations or upgrades.
+    Run startx to login to MATE Desktop under X11.
+    Run startmatewayland to login to MATE Desktop under Wayland
 
-At this point you should be running MATE 1.28 on Slackware Current.  :-)
+At this point you should be running MATE 1.29 on Slackware Current.  :-)
 
 We wish everyone good luck with this!  Please report any issues to
 mateslackbuilds@gmail.com.
 
 ---
-Chess Griffin
 Willy Sudiarto Raharjo
