@@ -2,11 +2,10 @@ MATE SlackBuilds
 ================
 
 This project provides SlackBuild scripts to build and install the MATE
-desktop environment (http://www.mate-desktop.org) on Slackware Linux.
+desktop environment (https://www.mate-desktop.org) on Slackware Linux.
 Please check the main project website at https://mateslackbuilds.github.io
-for screenshots and more information.  There is also a link to MATE 1.18
-binary packages for Slackware 14.2 and also older MATE packages for Slackware
-14.0 and 14.1.
+for screenshots and more information.  There is also a link to older MATE
+binary packages for previous Slackware releases.
 
 Please read GIT_BRANCHES.TXT to make sure you are on the right branch of
 the MSB repo before attempting to build from the scripts.
@@ -19,7 +18,7 @@ is MATE version 1.28, released in February 2024.  Checkout that branch using 'gi
 checkout 15.0-mate-1.28' to build from the stable MSB branch.
 
 The rest of this README.TXT is specific to building from the 'master'
-branch which will build MATE 1.28, which is the latest stable version of MATE.
+branch which will build MATE 1.29, which is the development version of MATE.
 
 How to build and install the MATE packages using these scripts:
 
@@ -32,10 +31,7 @@ Please use "su" or "su -" to build as root instead of using "sudo".
 3.  Run the 'mate-build-base.sh' in the msb root directory which will build
 and install all the base (required) packages. There are a total of 25 packages
 and they do not replace any stock Slackware packages. The SlackBuilds will use
-wget to download the sources.  Or, you can also manually download the
-sources from: http://pub.mate-desktop.org/releases/1.28 and the download
-locations for each dependency and put each source into the corresponding
-directory within 'base' and 'deps'.
+wget to download the sources.
 
 4.  Optionally, build and install any of the extra packages in the /extra
 directory.  If you want to build and install them all, then you can use the
@@ -43,9 +39,21 @@ directory.  If you want to build and install them all, then you can use the
 into the directory of whatever package you want in /extra and run the
 SlackBuild.  As with 'base', each SlackBuild will download the source.
 
-5.  Once the base packages are built and installed, plus any from /extra,
-you can use 'xwmconfig' to select the mate session.  Or, if you use KDM,
-just log out and select MATE from the KDM session dialog.
+5.  Once all the packages are installed, you can 2 options of running MATE:
+
+For users using runlevel 3:
+you can use 'xwmconfig' to select the mate session if you are using X11.
+If you prefer Wayland, you can run startmatewayland.
+
+For users using runlevel 4:
+You can use the default sddm (provided by Slackware's Plasma) or lightdm.
+If you prefer to use lightdm, edit /etc/rc.d/rc.4 and add this code after
+"Starting up X11 session manager..." line:
+
+# Use lightdm (A Lightweight Desktop Manager)
+if [ -x /usr/bin/lightdm ]; then
+  exec /usr/bin/lightdm
+fi
 
 6.  Check the 'startup applications' because there might be some duplicate
 or conflicting entries.  For example, there will be an entry for
@@ -65,11 +73,10 @@ full install of the latest official Slackware release.  It might run on a
 less-than-full install and it might run on -current.  Or, it might not.
 Neither of those are our official target systems.
 
-9.  Enjoy and let us know of any issues.  Email is:
-mateslackbuilds@gmail.com.
+9.  Enjoy and let me know of any issues. Contact us at mateslackbuilds@gmail.com
+or send PR via github/gitlab.
 
 Thanks!
 
 ---
-Chess Griffin
 Willy Sudiarto Raharjo
