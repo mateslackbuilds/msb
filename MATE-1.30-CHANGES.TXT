@@ -9,6 +9,7 @@ wf-config (needed for Wayland)
 wayfire (needed for Wayland)
 wf-shell (needed for Wayland)
 wcm (needed for Wayland)
+python3-setproctitle (needed for lightdm-settings)
 lightdm
 lightdm-slick-greeter
 lightdm-settings
