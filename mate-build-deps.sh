@@ -67,6 +67,7 @@ for dir in \
   deps/wayfire \
   deps/wf-shell \
   deps/wcm \
+  deps/python3-setproctitle \
   deps/lightdm \
   deps/lightdm-slick-greeter \
   deps/lightdm-settings \
