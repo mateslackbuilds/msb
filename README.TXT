@@ -55,6 +55,15 @@ if [ -x /usr/bin/lightdm ]; then
   exec /usr/bin/lightdm
 fi
 
+For lightdm greeters, we provides 2 variants, slick and gtk
+For default, we uses slick:
+If you wish to change to gtk, edit /etc/lightdm/lightdm.conf and change
+this line:
+greeter-session=lightdm-slick-greeter
+into
+greeter-session=lightdm-gtk-greeter
+and reboot
+
 6.  Check the 'startup applications' because there might be some duplicate
 or conflicting entries.  For example, there will be an entry for
 polkit-mate and polkit-gnome, the result of which might be duplicate
