@@ -70,6 +70,7 @@ for dir in \
   deps/lightdm \
   deps/lightdm-slick-greeter \
   deps/lightdm-settings \
+  deps/lightdm-gtk-greeter \
   ; do
 
   # start loop in original directory

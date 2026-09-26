@@ -9,9 +9,10 @@ wf-config (needed for Wayland)
 wayfire (needed for Wayland)
 wf-shell (needed for Wayland)
 wcm (needed for Wayland)
-lightdm (needed for Wayland)
-lightdm-slick-greeter (needed for Wayland)
-lightdm-settings (needed for Wayland)
+lightdm
+lightdm-slick-greeter
+lightdm-settings
+lightdm-gtk-greeter
 
 Renamed Packages in MATE 1.30:
 
