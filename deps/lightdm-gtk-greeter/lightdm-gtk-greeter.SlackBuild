@@ -97,6 +97,7 @@ make docdir=/usr/doc/$PRGNAM-$VERSION
 make docdir=/usr/doc/$PRGNAM-$VERSION install DESTDIR=$PKG
 
 mv $PKG/etc/lightdm/lightdm-gtk-greeter.conf $PKG/etc/lightdm/lightdm-gtk-greeter.conf.new
+sed -i "s|#background=|background=/usr/share/backgrounds/mate/desktop/slackware-background-blue.png|g" $PKG/etc/lightdm/lightdm-gtk-greeter.conf.new
 
 find $PKG -print0 | xargs -0 file | grep -e "executable" -e "shared object" | grep ELF \
   | cut -f 1 -d : | xargs strip --strip-unneeded 2> /dev/null || true
