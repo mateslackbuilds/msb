@@ -1,7 +1,6 @@
 New Packages in MATE 1.30:
 tinyxml (needed by rarian)
 libgepub (needed by Atril)
-mate-wayland-session (needed for Wayland)
 yyjson (needed for Wayland)
 gtk4-layer-shell (needed for Wayland)
 glm (needed for Wayland)
