@@ -32,9 +32,12 @@ any of the mirror sites.  Please note that MATE 1.29 has some new packages and r
     This ensures you get the latest copy of xinitrc.mate-session due to changes in mate-session-
     manager. ALWAYS run this command for both new installations or upgrades.
     Run startx to login to MATE Desktop under X11.
-    Run startmatewayland to login to MATE Desktop under Wayland
 
-At this point you should be running MATE 1.29 on Slackware Current.  :-)
+4.  If you are planning to use Wayland, run startmatewayland to login to MATE Desktop under Wayland.
+
+5.  If you are using runlevel 4, lightdm or SDDM will list MATE and MATE (Wayland) for you to pick
+
+6.  At this point you should be running MATE 1.29 on Slackware Current.  :-)
 
 We wish everyone good luck with this!  Please report any issues to
 mateslackbuilds@gmail.com.
