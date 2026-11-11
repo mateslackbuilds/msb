@@ -1,9 +1,6 @@
 MATE SlackBuilds
 ================
 
-MSB will follow MATE's workflow on versioning and releases as described in
-MATE's wiki: http://wiki.mate-desktop.org/dev-doc.
-
 Currently, there are three branches in the MSB GIT repository:
 
 - master:  The MSB development branch.  It represents the most up-to-date
