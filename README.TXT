@@ -64,6 +64,8 @@ into
 greeter-session=lightdm-gtk-greeter
 and reboot
 
+Upon reboot, you can choose MATE (Wayland) from the list.
+
 6.  Check the 'startup applications' because there might be some duplicate
 or conflicting entries.  For example, there will be an entry for
 polkit-mate and polkit-gnome, the result of which might be duplicate
