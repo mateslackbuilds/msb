@@ -1,0 +1,12 @@
+            |-----handy-ruler------------------------------------------------------|
+wl-clipboard: wl-clipboard (Wayland clipboard utilities)
+wl-clipboard:
+wl-clipboard: wl-clipboard implements two command-line Wayland clipboard 
+wl-clipboard: utilities, wl-copy and wl-paste, that let you easily copy data 
+wl-clipboard: between the clipboard and Unix pipes, sockets, files and so on.
+wl-clipboard:
+wl-clipboard:
+wl-clipboard:
+wl-clipboard:
+wl-clipboard: https://github.com/bugaevc/wl-clipboard
+wl-clipboard:

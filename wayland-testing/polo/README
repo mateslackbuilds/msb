@@ -1,0 +1,8 @@
+Polo is a window manager, compositor, and session authority for the
+MATE Wayland desktop.
+
+This requires
+- xdg-desktop-portal-wlr
+- grim
+- wl-clipboard
+- slurp

@@ -1,0 +1,12 @@
+     |-----handy-ruler------------------------------------------------------|
+slurp: slurp (wayland region selection)
+slurp:
+slurp: Select a region in a Wayland compositor and print it to the standard
+slurp: output. Works well with grim.
+slurp:
+slurp: Homepage: https://github.com/emersion/slurp
+slurp:
+slurp:
+slurp:
+slurp:
+slurp:
