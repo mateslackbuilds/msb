@@ -1,0 +1,4 @@
+This directory contains packages that are considered experimental.
+
+This builds polo, a wayland compositor that tried to mimic MATE's marco
+behavior and window management policies to Wayland
