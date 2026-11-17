@@ -68,7 +68,7 @@ for dir in \
 
   if [ $CHECKDUPLICATE -eq 1 ]; then
     # Check for duplicate sources
-    sourcefile="$(ls -l $MSBROOT/$dir/${package}-*.tar.?z* | wc -l)"
+    sourcefile="$(ls -l $MSBROOT/$dir/${package}-*.tar.?z* 2>/dev/null | wc -l)"
     if [ $sourcefile -gt 1 ]; then
       echo "You have following duplicate sources:"
       ls $MSBROOT/$dir/${package}-*.tar.?z* | cut -d " " -f1
@@ -88,17 +88,14 @@ for dir in \
   fi
 
   # The real build starts here
-  sh ${package}.SlackBuild || exit 1
+  TMP=$TMP OUTPUT=$OUTPUT sh ${package}.SlackBuild || exit 1
   if [ "$INST" = "1" ]; then
     PACKAGE="$(ls $OUTPUT/${package}-${version}-*-${build}*msb.txz)"
     if [ -f "$PACKAGE" ]; then
       upgradepkg --install-new --reinstall "$PACKAGE"
     else
-      echo "Error:  package to upgrade $PACKAGE not found in $TMP"
+      echo "Error:  package to upgrade $PACKAGE not found in $OUTPUT"
       exit 1
     fi
   fi
-
-  # back to original directory
-  cd $MSBROOT
 done
